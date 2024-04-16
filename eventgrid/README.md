@@ -4,9 +4,10 @@ A simple demo to show how you can use the MQTT characteristics of Azure Event Gr
 
 ## Current scope
 
-Using MQTTX we can simulate having three devices. Client1 acts as the service, so it can read all telemetry (data/+/telemetry) and send C2D messages to a single device or to a broadcast topic. Client2 and 3 are devices, so they can subscribe to their own inward message topic and to the devices/all/# topic to receive broadcast messages. Devices can also publish telemetry to the data/{device-id}/telemetry where device-id is the unique login name for the device.
+Using [MQTTX](https://mqttx.app/) we can simulate having three devices. Client1 acts as the service, so it can read all telemetry (data/+/telemetry) and send C2D messages to a single device or to a broadcast topic. Client2 and 3 are devices, so they can subscribe to their own inward message topic and to the devices/all/# topic to receive broadcast messages. Devices can also publish telemetry to the data/{device-id}/telemetry where device-id is the unique login name for the device.
 
-I provide a backup of the current mqttx config and some already created privte test certificates, because I also create them when creating the Event Grid namespace.
+I provide a backup of the current mqttx config and some already created private test certificates, because I also create them when creating the Event Grid namespace.
+
 
 ## What will be created
 
