@@ -86,7 +86,7 @@ resource namespace_devicespublish 'Microsoft.EventGrid/namespaces/permissionBind
   properties: {
     topicSpaceName: namespace_topic_spaces_devices.name
     permission: 'Publisher'
-    clientGroupName: namespace_group_devices.name
+    clientGroupName: namespace_group_c2d_publishers.name
   }
 }
 
@@ -96,7 +96,7 @@ resource namespace_devicessubscribe 'Microsoft.EventGrid/namespaces/permissionBi
   properties: {
     topicSpaceName: namespace_topic_spaces_devices.name
     permission: 'Subscriber'
-    clientGroupName: namespace_group_devices.name
+    clientGroupName: namespace_group_telemetry_subscribers.name
   }
 }
 
