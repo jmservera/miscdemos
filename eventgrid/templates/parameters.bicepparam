@@ -1,6 +1,6 @@
-using 'eventgrid.bicep'
+using 'template.bicep'
 
-param namespaces_name = 'jmioteventgridns'
+param name_base = 'jmioteventgridns'
 param clients = [
   {
     name: 'client1'

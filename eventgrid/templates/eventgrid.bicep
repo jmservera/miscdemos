@@ -33,6 +33,10 @@ resource namespace_resource 'Microsoft.EventGrid/namespaces@2023-12-15-preview' 
   }
 }
 
+// ********************************************************************************************************************
+// * Create client groups
+// ********************************************************************************************************************
+
 resource namespace_group_c2d_publishers 'Microsoft.EventGrid/namespaces/clientGroups@2023-12-15-preview' = {
   parent: namespace_resource
   name: 'publishers'
@@ -59,6 +63,10 @@ resource namespace_group_devices 'Microsoft.EventGrid/namespaces/clientGroups@20
     query: 'attributes.role in [\'device\']'
   }
 }
+
+// ********************************************************************************************************************
+// * Create permission bindings
+// ********************************************************************************************************************
 
 resource namespace_telemetrypublish 'Microsoft.EventGrid/namespaces/permissionBindings@2023-12-15-preview' = {
   parent: namespace_resource
@@ -110,6 +118,9 @@ resource namespace_test 'Microsoft.EventGrid/namespaces/topics@2023-12-15-previe
   }
 }
 
+// ********************************************************************************************************************
+// * Create topic spaces
+// ********************************************************************************************************************
 resource namespace_topic_spaces_data 'Microsoft.EventGrid/namespaces/topicSpaces@2023-12-15-preview' = {
   parent: namespace_resource
   name: 'data'
@@ -130,6 +141,10 @@ resource namespace_topic_spaces_devices 'Microsoft.EventGrid/namespaces/topicSpa
     ]
   }
 }
+
+// ********************************************************************************************************************
+// * Create clients
+// ********************************************************************************************************************
 
 module eventgrid_clients 'modules/eventgrid_clients.bicep' = {
   name: 'clients'
