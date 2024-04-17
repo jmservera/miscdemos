@@ -2,7 +2,7 @@
 param location string = resourceGroup().location
 @description('The name of the Event Grid namespace.')
 param namespaces_name string = 'jmeventgrid'
-param custom_topic_name string ='test'
+param custom_topic_name string = 'test'
 @description('An array containing the clients that will be allowed to interact with the Event Grid namespace. Each client must have a name, a thumbprint, and a role. The role can be either "service" or "device".')
 param clients array = [
   {
@@ -28,11 +28,8 @@ resource namespace_resource 'Microsoft.EventGrid/namespaces@2023-12-15-preview' 
       state: 'Enabled'
       maximumSessionExpiryInHours: 2
       maximumClientSessionsPerAuthenticationName: 2 // to allow for some disconnection test scenarios
-//      routeTopicResourceId: resourceId('Microsoft.EventGrid/namespaces/topics', namespaces_name, custom_topic_name)
-      routingIdentityInfo: {
-         type: 'SystemAssigned'
-        }
-      }
+      routeTopicResourceId: resourceId('Microsoft.EventGrid/namespaces/topics', namespaces_name, custom_topic_name)
+    }
     isZoneRedundant: true
     publicNetworkAccess: 'Enabled'
   }
@@ -40,12 +37,9 @@ resource namespace_resource 'Microsoft.EventGrid/namespaces@2023-12-15-preview' 
   resource topics 'topics' = {
     name: custom_topic_name
     properties: {
-      publisherType: 'Custom'
       inputSchema: 'CloudEventSchemaV1_0'
-      eventRetentionInDays: 7
     }
   }
-
 }
 
 // ********************************************************************************************************************
@@ -122,8 +116,6 @@ resource namespace_devicessubscribe 'Microsoft.EventGrid/namespaces/permissionBi
     clientGroupName: namespace_group_telemetry_subscribers.name
   }
 }
-
-
 
 // ********************************************************************************************************************
 // * Create topic spaces
