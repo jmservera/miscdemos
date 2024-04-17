@@ -28,10 +28,24 @@ resource namespace_resource 'Microsoft.EventGrid/namespaces@2023-12-15-preview' 
       state: 'Enabled'
       maximumSessionExpiryInHours: 2
       maximumClientSessionsPerAuthenticationName: 2 // to allow for some disconnection test scenarios
-    }
+//      routeTopicResourceId: resourceId('Microsoft.EventGrid/namespaces/topics', namespaces_name, custom_topic_name)
+      routingIdentityInfo: {
+         type: 'SystemAssigned'
+        }
+      }
     isZoneRedundant: true
     publicNetworkAccess: 'Enabled'
   }
+
+  resource topics 'topics' = {
+    name: custom_topic_name
+    properties: {
+      publisherType: 'Custom'
+      inputSchema: 'CloudEventSchemaV1_0'
+      eventRetentionInDays: 7
+    }
+  }
+
 }
 
 // ********************************************************************************************************************
@@ -109,15 +123,7 @@ resource namespace_devicessubscribe 'Microsoft.EventGrid/namespaces/permissionBi
   }
 }
 
-resource namespace_test 'Microsoft.EventGrid/namespaces/topics@2023-12-15-preview' = {
-  parent: namespace_resource
-  name: custom_topic_name
-  properties: {
-    publisherType: 'Custom'
-    inputSchema: 'CloudEventSchemaV1_0'
-    eventRetentionInDays: 7
-  }
-}
+
 
 // ********************************************************************************************************************
 // * Create topic spaces
@@ -147,15 +153,24 @@ resource namespace_topic_spaces_devices 'Microsoft.EventGrid/namespaces/topicSpa
 // * Create clients
 // ********************************************************************************************************************
 
-module eventgrid_clients 'modules/eventgrid_clients.bicep' = {
-  name: 'clients'
-  params: {
-    namespaces_name: namespaces_name
-    clients: clients
+resource namespaces_name_clients 'Microsoft.EventGrid/namespaces/clients@2023-12-15-preview' = [
+  for (config, i) in clients: {
+    parent: namespace_resource
+    name: config.name
+    properties: {
+      authenticationName: '${config.name}-authn-ID'
+      clientCertificateAuthentication: {
+        validationScheme: 'ThumbprintMatch'
+        allowedThumbprints: [
+          config.thumbprint
+        ]
+      }
+      state: 'Enabled'
+      attributes: {
+        role: config.role
+      }
+    }
   }
-  dependsOn: [
-    namespace_resource
-  ]
-}
+]
 
 output namespace_mqtt_hostname string = namespace_resource.properties.topicSpacesConfiguration.hostname

@@ -39,6 +39,10 @@ module eventhubintegration 'eventhubintegration.bicep' = {
     eventhub_name: '${name_base}sink'
     topic_name: topic_name
   }
+  dependsOn:[
+    eventgrid
+    eventhub
+  ]
 }
 
 output namespace_mqtt_hostname string = eventgrid.outputs.namespace_mqtt_hostname
