@@ -10,13 +10,15 @@ param clients array = [
     role: 'service or device'
   }
 ]
+param topic_name string = 'test'
 
 module eventgrid 'eventgrid.bicep' = {
-  name: 'clients'
+  name: 'eventgrid'
   params: {
     location: location
     namespaces_name: name_base
     clients: clients
+    custom_topic_name: topic_name
   }
 }
 
@@ -29,5 +31,14 @@ module eventhub 'eventhubs.bicep' = {
   }
 }
 
-output namespace_mqtt_hostname string = eventgrid.outputs.namespace_mqtt_hostname
+module eventhubintegration 'eventhubintegration.bicep' = {
+  name: 'eventhubintegration'
+  params: {
+    eventgrid_name: name_base
+    eventhub_namespace_name: name_base
+    eventhub_name: '${name_base}sink'
+    topic_name: topic_name
+  }
+}
 
+output namespace_mqtt_hostname string = eventgrid.outputs.namespace_mqtt_hostname

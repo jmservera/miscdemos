@@ -22,8 +22,6 @@ resource eventhub_namespace 'Microsoft.EventHub/namespaces@2023-01-01-preview' =
   }
 }
 
-
-
 resource eventhubs_eventgridsink 'Microsoft.EventHub/namespaces/eventhubs@2023-01-01-preview' = {
   parent: eventhub_namespace
   name: eventhub_name
@@ -38,20 +36,4 @@ resource eventhubs_eventgridsink 'Microsoft.EventHub/namespaces/eventhubs@2023-0
   }
 }
 
-// resource namespaces_jmevgrid_name_default 'Microsoft.EventHub/namespaces/networkrulesets@2023-01-01-preview' = {
-//   parent: namespaces_jmevgrid_name_resource
-//   name: 'default'
-//   properties: {
-//     publicNetworkAccess: 'Enabled'
-//     defaultAction: 'Allow'
-//     virtualNetworkRules: []
-//     ipRules: []
-//     trustedServiceAccessEnabled: false
-//   }
-// }
-
-// resource namespaces_jmevgrid_name_evengridsink_Default 'Microsoft.EventHub/namespaces/eventhubs/consumergroups@2023-01-01-preview' = {
-//   parent: namespaces_jmevgrid_name_evengridsink
-//   name: '$Default'
-//   properties: {}
-// }
+output eventhub object= eventhub_namespace

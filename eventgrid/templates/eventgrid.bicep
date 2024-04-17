@@ -2,6 +2,7 @@
 param location string = resourceGroup().location
 @description('The name of the Event Grid namespace.')
 param namespaces_name string = 'jmeventgrid'
+param custom_topic_name string ='test'
 @description('An array containing the clients that will be allowed to interact with the Event Grid namespace. Each client must have a name, a thumbprint, and a role. The role can be either "service" or "device".')
 param clients array = [
   {
@@ -110,7 +111,7 @@ resource namespace_devicessubscribe 'Microsoft.EventGrid/namespaces/permissionBi
 
 resource namespace_test 'Microsoft.EventGrid/namespaces/topics@2023-12-15-preview' = {
   parent: namespace_resource
-  name: 'test'
+  name: custom_topic_name
   properties: {
     publisherType: 'Custom'
     inputSchema: 'CloudEventSchemaV1_0'
