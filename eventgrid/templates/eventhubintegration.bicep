@@ -21,23 +21,11 @@ resource eventgrid_topic 'Microsoft.EventGrid/namespaces/topics@2023-12-15-previ
 resource eventgrid_namespace 'Microsoft.EventGrid/namespaces@2023-12-15-preview' = {
   name: eventgrid_name
   location: location
-  // sku: {
-  //   name: 'Standard'
-  //   capacity: 1
-  // }
-  // identity: {
-  //   type: 'SystemAssigned'
-  // }
   properties: {
-    // topicsConfiguration: {}
     topicSpacesConfiguration: {
-      // state: 'Enabled'
-      // maximumSessionExpiryInHours: 2
-      // maximumClientSessionsPerAuthenticationName: 2 // to allow for some disconnection test scenarios
+      state: 'Enabled'
       routeTopicResourceId: resourceId('Microsoft.EventGrid/namespaces/topics', eventgrid_name, topic_name)
     }
-    // isZoneRedundant: true
-    // publicNetworkAccess: 'Enabled'
   }
 }
 
