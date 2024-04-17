@@ -28,7 +28,7 @@ resource namespace_resource 'Microsoft.EventGrid/namespaces@2023-12-15-preview' 
       state: 'Enabled'
       maximumSessionExpiryInHours: 2
       maximumClientSessionsPerAuthenticationName: 2 // to allow for some disconnection test scenarios
-      routeTopicResourceId: resourceId('Microsoft.EventGrid/namespaces/topics', namespaces_name, custom_topic_name)
+      //routeTopicResourceId: resourceId('Microsoft.EventGrid/namespaces/topics', namespaces_name, custom_topic_name)
     }
     isZoneRedundant: true
     publicNetworkAccess: 'Enabled'

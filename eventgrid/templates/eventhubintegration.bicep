@@ -3,18 +3,42 @@ param topic_name string
 param eventhub_name string
 @description('The name of the Event Grid namespace.')
 param eventgrid_name string
+param location string = resourceGroup().location
 
 resource eventhub 'Microsoft.EventHub/namespaces/eventhubs@2023-01-01-preview' existing = {
   name: '${eventhub_namespace_name}/${eventhub_name}'
 }
 
-resource eventgrid_namespace 'Microsoft.EventGrid/namespaces@2023-12-15-preview' existing = {
-  name: eventgrid_name
-}
+// resource eventgrid_namespace 'Microsoft.EventGrid/namespaces@2023-12-15-preview' existing = {
+//   name: eventgrid_name
+// }
 
 resource eventgrid_topic 'Microsoft.EventGrid/namespaces/topics@2023-12-15-preview' existing = {
   parent: eventgrid_namespace
   name: topic_name
+}
+
+resource eventgrid_namespace 'Microsoft.EventGrid/namespaces@2023-12-15-preview' = {
+  name: eventgrid_name
+  location: location
+  // sku: {
+  //   name: 'Standard'
+  //   capacity: 1
+  // }
+  // identity: {
+  //   type: 'SystemAssigned'
+  // }
+  properties: {
+    // topicsConfiguration: {}
+    topicSpacesConfiguration: {
+      // state: 'Enabled'
+      // maximumSessionExpiryInHours: 2
+      // maximumClientSessionsPerAuthenticationName: 2 // to allow for some disconnection test scenarios
+      routeTopicResourceId: resourceId('Microsoft.EventGrid/namespaces/topics', eventgrid_name, topic_name)
+    }
+    // isZoneRedundant: true
+    // publicNetworkAccess: 'Enabled'
+  }
 }
 
 @description('This is the built-in Azure Event Hubs Data Sender. See https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#contributor')
