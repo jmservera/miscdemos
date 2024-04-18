@@ -17,7 +17,7 @@ resource eventgrid_topic 'Microsoft.EventGrid/namespaces/topics@2023-12-15-previ
 // need this trick, routeTopic cannot be set during creation, so we have to "recreate" it again after
 // the namespace is created to enable the topic
 module eventgrid_namespace 'modules/eventgridinstance.bicep' = {
-  name: eventgrid_name
+  name: '${eventgrid_name}_update'
   params: {
     location: location
     namespaces_name: eventgrid_name
@@ -34,7 +34,7 @@ resource eventHubsDataSenderRoleDefinition 'Microsoft.Authorization/roleDefiniti
 // Event Grid needs permissions to send messages to the Event Hub, so we use a role assignment
 // to grant the Event Grid namespace the built-in Azure Event Hubs Data Sender role.
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid('roleAssignment')
+  name: '${eventgrid_name}_eventgrid_sender'
   scope: eventhub
   properties: {
     principalId: eventgrid_namespace.outputs.namespace_resource.identity.principalId

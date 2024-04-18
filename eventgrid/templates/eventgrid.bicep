@@ -29,7 +29,7 @@ var names = {
 // because when building the integration with Event Hub and assigning the routeTopicResourceId
 // we will need to call the module again
 module namespace_creation 'modules/eventgridinstance.bicep' = {
-  name: namespaces_name
+  name: '${namespaces_name}_module'
   params: {
     location: location
     namespaces_name: namespaces_name
