@@ -34,6 +34,7 @@ module eventhub 'eventhubs.bicep' = {
 module eventhubintegration 'eventhubintegration.bicep' = {
   name: 'eventhubintegration'
   params: {
+    location: location
     eventgrid_name: name_base
     eventhub_namespace_name: name_base
     eventhub_name: '${name_base}sink'

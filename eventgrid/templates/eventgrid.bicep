@@ -2,6 +2,7 @@
 param location string = resourceGroup().location
 @description('The name of the Event Grid namespace.')
 param namespaces_name string = 'jmeventgrid'
+@minLength(3)
 param custom_topic_name string = 'test'
 @description('An array containing the clients that will be allowed to interact with the Event Grid namespace. Each client must have a name, a thumbprint, and a role. The role can be either "service" or "device".')
 param clients array = [
@@ -12,34 +13,37 @@ param clients array = [
   }
 ]
 
-resource namespace_resource 'Microsoft.EventGrid/namespaces@2023-12-15-preview' = {
-  name: namespaces_name
-  location: location
-  sku: {
-    name: 'Standard'
-    capacity: 1
+var names = {
+  topics:{
+    data: 'data'
+    devices: 'devices'
   }
-  identity: {
-    type: 'SystemAssigned'
+  clientGroups:{
+    publishers: 'publishers'
+    datasubscribers: 'datasubscribers'
+    devices: 'devices'
   }
-  properties: {
-    topicsConfiguration: {}
-    topicSpacesConfiguration: {
-      state: 'Enabled'
-      maximumSessionExpiryInHours: 2
-      maximumClientSessionsPerAuthenticationName: 2 // to allow for some disconnection test scenarios
-      //routeTopicResourceId: resourceId('Microsoft.EventGrid/namespaces/topics', namespaces_name, custom_topic_name)
-    }
-    isZoneRedundant: true
-    publicNetworkAccess: 'Enabled'
-  }
+}
 
-  resource topics 'topics' = {
-    name: custom_topic_name
-    properties: {
-      inputSchema: 'CloudEventSchemaV1_0'
-    }
+// we use a module to create the basic Event Grid namespace
+// because when building the integration with Event Hub and assigning the routeTopicResourceId
+// we will need to call the module again
+module namespace_creation 'modules/eventgridinstance.bicep' = {
+  name: namespaces_name
+  params: {
+    location: location
+    namespaces_name: namespaces_name
   }
+}
+
+resource topics 'Microsoft.EventGrid/namespaces/topics@2023-12-15-preview' = {
+  name: '${namespaces_name}/${custom_topic_name}' // now with the module we cannot use the parent property, so using the names instead
+  properties: {
+    inputSchema: 'CloudEventSchemaV1_0'
+  }
+  dependsOn:[
+    namespace_creation
+  ]
 }
 
 // ********************************************************************************************************************
@@ -47,30 +51,36 @@ resource namespace_resource 'Microsoft.EventGrid/namespaces@2023-12-15-preview' 
 // ********************************************************************************************************************
 
 resource namespace_group_c2d_publishers 'Microsoft.EventGrid/namespaces/clientGroups@2023-12-15-preview' = {
-  parent: namespace_resource
-  name: 'publishers'
+  name: '${namespaces_name}/${names.clientGroups.publishers}'
   properties: {
     description: 'Group for services that can send data to devices.'
     query: 'attributes.role in [\'service\']'
   }
+  dependsOn:[
+    namespace_creation
+  ]
 }
 
 resource namespace_group_telemetry_subscribers 'Microsoft.EventGrid/namespaces/clientGroups@2023-12-15-preview' = {
-  parent: namespace_resource
-  name: 'datasubscribers'
+  name: '${namespaces_name}/${names.clientGroups.datasubscribers}'
   properties: {
     description: 'Group for services that can subscribe to the device data feed.'
     query: 'attributes.role in [\'service\', \'device\']'
   }
+  dependsOn:[
+    namespace_creation
+  ]
 }
 
 resource namespace_group_devices 'Microsoft.EventGrid/namespaces/clientGroups@2023-12-15-preview' = {
-  parent: namespace_resource
-  name: 'devices'
+  name: '${namespaces_name}/${names.clientGroups.devices}'
   properties: {
     description: 'Group for the devices.'
     query: 'attributes.role in [\'device\']'
   }
+  dependsOn:[
+    namespace_creation
+  ]
 }
 
 // ********************************************************************************************************************
@@ -78,67 +88,83 @@ resource namespace_group_devices 'Microsoft.EventGrid/namespaces/clientGroups@20
 // ********************************************************************************************************************
 
 resource namespace_telemetrypublish 'Microsoft.EventGrid/namespaces/permissionBindings@2023-12-15-preview' = {
-  parent: namespace_resource
-  name: 'telemetrypublish'
+  name: '${namespaces_name}/telemetrypublish'
   properties: {
-    topicSpaceName: namespace_topic_spaces_data.name
+    topicSpaceName: names.topics.data //cannot contain namespace name prefix, so we cannot use the namespace_topic_spaces_data.name variable
     permission: 'Publisher'
-    clientGroupName: namespace_group_devices.name
+    clientGroupName: names.clientGroups.devices // cannot contain the namespace prefix, so we cannot use the namespace_group_devices.name variable
   }
+  dependsOn:[
+    namespace_creation
+    namespace_group_devices
+  ]
 }
 
 resource namespace_telemetryread 'Microsoft.EventGrid/namespaces/permissionBindings@2023-12-15-preview' = {
-  parent: namespace_resource
-  name: 'telemetryread'
+  name: '${namespaces_name}/telemetryread'
   properties: {
-    topicSpaceName: namespace_topic_spaces_data.name
+    topicSpaceName: names.topics.data
     permission: 'Subscriber'
-    clientGroupName: namespace_group_telemetry_subscribers.name
+    clientGroupName: names.clientGroups.datasubscribers
   }
+  dependsOn:[
+    namespace_creation
+    namespace_group_telemetry_subscribers
+  ]
 }
 
 resource namespace_devicespublish 'Microsoft.EventGrid/namespaces/permissionBindings@2023-12-15-preview' = {
-  parent: namespace_resource
-  name: 'devicespublish'
+  name: '${namespaces_name}/devicespublish'
   properties: {
-    topicSpaceName: namespace_topic_spaces_devices.name
+    topicSpaceName: names.topics.devices
     permission: 'Publisher'
-    clientGroupName: namespace_group_c2d_publishers.name
+    clientGroupName: names.clientGroups.publishers
   }
+  dependsOn:[
+    namespace_creation
+    namespace_group_c2d_publishers
+  ]
 }
 
 resource namespace_devicessubscribe 'Microsoft.EventGrid/namespaces/permissionBindings@2023-12-15-preview' = {
-  parent: namespace_resource
-  name: 'devicessubscribe'
+  name: '${namespaces_name}/devicessubscribe'
   properties: {
-    topicSpaceName: namespace_topic_spaces_devices.name
+    topicSpaceName: names.topics.devices
     permission: 'Subscriber'
-    clientGroupName: namespace_group_telemetry_subscribers.name
+    clientGroupName: names.clientGroups.datasubscribers
   }
+  dependsOn:[
+    namespace_creation
+    namespace_group_telemetry_subscribers
+  ]
 }
 
 // ********************************************************************************************************************
 // * Create topic spaces
 // ********************************************************************************************************************
 resource namespace_topic_spaces_data 'Microsoft.EventGrid/namespaces/topicSpaces@2023-12-15-preview' = {
-  parent: namespace_resource
-  name: 'data'
+  name: '${namespaces_name}/${names.topics.data}'
   properties: {
     topicTemplates: [
       'data/#'
       'data/\${client.authenticationName}/telemetry'
     ]
   }
+  dependsOn:[
+    namespace_creation
+  ]
 }
 
 resource namespace_topic_spaces_devices 'Microsoft.EventGrid/namespaces/topicSpaces@2023-12-15-preview' = {
-  parent: namespace_resource
-  name: 'devices'
+  name: '${namespaces_name}/${names.topics.devices}'
   properties: {
     topicTemplates: [
       'devices/#'
     ]
   }
+  dependsOn:[
+    namespace_creation
+  ]
 }
 
 // ********************************************************************************************************************
@@ -147,8 +173,7 @@ resource namespace_topic_spaces_devices 'Microsoft.EventGrid/namespaces/topicSpa
 
 resource namespaces_name_clients 'Microsoft.EventGrid/namespaces/clients@2023-12-15-preview' = [
   for (config, i) in clients: {
-    parent: namespace_resource
-    name: config.name
+    name: '${namespaces_name}/${config.name}'
     properties: {
       authenticationName: '${config.name}-authn-ID'
       clientCertificateAuthentication: {
@@ -162,7 +187,10 @@ resource namespaces_name_clients 'Microsoft.EventGrid/namespaces/clients@2023-12
         role: config.role
       }
     }
+    dependsOn:[
+      namespace_creation
+    ]
   }
 ]
 
-output namespace_mqtt_hostname string = namespace_resource.properties.topicSpacesConfiguration.hostname
+output namespace_mqtt_hostname string = namespace_creation.outputs.namespace_resource.properties.topicSpacesConfiguration.hostname
