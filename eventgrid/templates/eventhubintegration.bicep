@@ -34,7 +34,7 @@ resource eventHubsDataSenderRoleDefinition 'Microsoft.Authorization/roleDefiniti
 // Event Grid needs permissions to send messages to the Event Hub, so we use a role assignment
 // to grant the Event Grid namespace the built-in Azure Event Hubs Data Sender role.
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: '${eventgrid_name}_eventgrid_sender'
+  name: guid('${eventgrid_name}_eventgrid_sender')
   scope: eventhub
   properties: {
     principalId: eventgrid_namespace.outputs.namespace_resource.identity.principalId
