@@ -6,8 +6,8 @@ resource eventhub_namespace 'Microsoft.EventHub/namespaces@2023-01-01-preview' =
   name: eventhub_namespace_name
   location: location
   sku: {
-    name: 'Basic'
-    tier: 'Basic'
+    name: 'Standard'
+    tier: 'Standard'
     capacity: 1
   }
   properties: {
