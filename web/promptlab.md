@@ -12,7 +12,9 @@ Authors:
 
 ## Prompt Engineering Hands-on Lab: An Introduction  
    
-Welcome to the Prompt Engineering Hands-on Lab! This  guide is designed to assist you in understanding and utilizing Microsoft's AI companion, Copilot, in a practical and engaging manner.   
+Welcome to the Prompt Engineering Hands-on Lab!
+
+This  guide is designed to assist you in understanding and utilizing Microsoft's AI companion, Copilot, in a practical and engaging manner.   
   
 Throughout this lab, we will delve into the world of AI-powered chat, explore various types of prompts, and learn how to guide an AI language model to generate desired content. The exercises are designed to be hands-on, allowing you to learn by doing and apply your newfound skills in real-time.   
   
