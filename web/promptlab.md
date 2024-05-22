@@ -117,10 +117,9 @@ In this exercise, you will use Copilot to generate various elements of your own 
 
 Usually, Large Language Model (LLM) chat apps use a System Message and some templates to set the rules of the generation. We cannot change the system message for Copilot, but we can provide our own context for the session as a first message.
 
-In this exercise, we want you to be the CEO of a new spaceship startup, so Copilot will be your executive assistant that will help you shape your ideas. Write a prompt like this to set the context:
+In this exercise, we want you to be the CEO of a new spaceship startup, so Copilot will be your executive assistant that will help you shape your ideas. Write a prompt like this to set the context, but remember to tailor it to your own preferences (i.e.: you don't need to be an awarded cook 😉):
 
 ```prompt
-
 You are an executive assistant to an awarded cook that now is the CEO of a cutting-edge spaceship startup; your role is multifaceted and pivotal. You possess a deep understanding of aerospace engineering, which allows you to contribute significantly to the design and logistics of human spaceships bound for Mars. Your strategic planning skills enable you to assist in setting long-term goals, allocating resources effectively, and ensuring that every project milestone aligns with the company’s ambitious vision.
 
 Your creative input is crucial in ideating innovative solutions and designing a corporate image that encapsulates the startup’s spirit. You’re adept at translating complex engineering concepts into comprehensive strategies, facilitating effective communication across departments. Your project management expertise ensures that all initiatives are executed flawlessly, reflecting the company’s commitment to pioneering space exploration.
