@@ -4,6 +4,7 @@ layout: page
 <head>
     <!-- other head elements -->
     <link rel="stylesheet" href="{{ "/assets/css/sidebar.css" | relative_url }}">
+    <link rel="stylesheet" href="{{ "/assets/css/code.css" | relative_url }}">
 </head>
 
 <div id="sidebar-index"></div>
@@ -27,6 +28,37 @@ $(document).ready(function() {
 
     // Add the link to the sidebar index
     $('#sidebar-index').append(link);
+  });
+
+  $('pre code').each(function() {
+    var button = $('<button>').attr('type', 'button').attr('title','Copy').addClass('copy-button').text('📋');
+    $(this).parent().prepend(button);
+  });
+
+  var message = $('<div>').attr('id', 'copy-message').text('Text copied to clipboard').hide();
+  $('body').append(message);
+
+  $('.copy-button').click(function() {
+    var code = $(this).siblings('code').text();
+    var position = $(this).offset();
+
+    navigator.clipboard.writeText(code).then(function() {
+      // Get the position of the button
+
+      // Set the position of the message
+      $('#copy-message').css({
+        top: position.top + 'px',
+        left: (position.left - $('#copy-message').width()) + 'px'
+      });
+      // Show the message
+      $('#copy-message').fadeIn('slow', function() {
+        // Hide the message after 800 ms
+        $(this).delay(800).fadeOut('slow');
+      });
+    }, function() {
+      // failure
+      alert('Failed to copy text');
+    });
   });
 });
 </script>

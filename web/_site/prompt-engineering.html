@@ -7,8 +7,8 @@
 <meta name="generator" content="Jekyll v3.9.0" />
 <meta property="og:title" content="Prompt Engineering Hands on Lab" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Demos of tols and azure services." />
-<meta property="og:description" content="Demos of tols and azure services." />
+<meta name="description" content="Demos of tools and Azure services." />
+<meta property="og:description" content="Demos of tools and Azure services." />
 <link rel="canonical" href="http://localhost:4000/prompt-engineering" />
 <meta property="og:url" content="http://localhost:4000/prompt-engineering" />
 <meta property="og:site_name" content="Demos and labs" />
@@ -16,7 +16,7 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Prompt Engineering Hands on Lab" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","description":"Demos of tols and azure services.","headline":"Prompt Engineering Hands on Lab","url":"http://localhost:4000/prompt-engineering"}</script>
+{"@context":"https://schema.org","@type":"WebPage","description":"Demos of tools and Azure services.","headline":"Prompt Engineering Hands on Lab","url":"http://localhost:4000/prompt-engineering"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Demos and labs" /></head>
 <body><header class="site-header" role="banner">
@@ -46,13 +46,23 @@
     <head>
     <!-- other head elements -->
     <link rel="stylesheet" href="/assets/css/sidebar.css">
+    <link rel="stylesheet" href="/assets/css/code.css">
 </head>
 
 <div id="sidebar-index"></div>
 
+<p>Authors:</p>
+
+<ul>
+  <li>Florian Follonier - Cloud Solution Architect Data &amp; AI - Microsoft</li>
+  <li>Juan Manuel Servera - Cloud Solution Architect App Inno - Microsoft</li>
+</ul>
+
 <h2 id="prompt-engineering-hands-on-lab-an-introduction">Prompt Engineering Hands-on Lab: An Introduction</h2>
 
-<p>Welcome to the Prompt Engineering Hands-on Lab! This  guide is designed to assist you in understanding and utilizing Microsoft’s AI companion, Copilot, in a practical and engaging manner.</p>
+<p>Welcome to the Prompt Engineering Hands-on Lab!</p>
+
+<p>This  guide is designed to assist you in understanding and utilizing Microsoft’s AI companion, Copilot, in a practical and engaging manner.</p>
 
 <p>Throughout this lab, we will delve into the world of AI-powered chat, explore various types of prompts, and learn how to guide an AI language model to generate desired content. The exercises are designed to be hands-on, allowing you to learn by doing and apply your newfound skills in real-time.</p>
 
@@ -72,7 +82,8 @@
 
 <p>Write the following prompt in the “Ask me anything…” textbox:</p>
 
-<p>The space is</p>
+<pre><code class="language-prompt">The space is
+</code></pre>
 
 <p>This is the most basic prompt and is called a <strong>seed text prompt</strong>. A seed text prompt is a simple, open-ended statement or question that serves as a starting point for AI-generated content.</p>
 
@@ -151,9 +162,9 @@ Sentiment:
 
 <p>Usually, Large Language Model (LLM) chat apps use a System Message and some templates to set the rules of the generation. We cannot change the system message for Copilot, but we can provide our own context for the session as a first message.</p>
 
-<pre><code class="language-prompt">In this exercise, we want you to be the CEO of a new spaceship startup, so Copilot will be your executive assistant that will help you shape your ideas. Write a prompt like this to set the context:
+<p>In this exercise, we want you to be the CEO of a new spaceship startup, so Copilot will be your executive assistant that will help you shape your ideas. Write a prompt like this to set the context, but remember to tailor it to your own preferences (i.e.: you don’t need to be an awarded cook 😉):</p>
 
-You are an executive assistant to an awarded cook that now is the CEO of a cutting-edge spaceship startup; your role is multifaceted and pivotal. You possess a deep understanding of aerospace engineering, which allows you to contribute significantly to the design and logistics of human spaceships bound for Mars. Your strategic planning skills enable you to assist in setting long-term goals, allocating resources effectively, and ensuring that every project milestone aligns with the company’s ambitious vision.
+<pre><code class="language-prompt">You are an executive assistant to an awarded cook that now is the CEO of a cutting-edge spaceship startup; your role is multifaceted and pivotal. You possess a deep understanding of aerospace engineering, which allows you to contribute significantly to the design and logistics of human spaceships bound for Mars. Your strategic planning skills enable you to assist in setting long-term goals, allocating resources effectively, and ensuring that every project milestone aligns with the company’s ambitious vision.
 
 Your creative input is crucial in ideating innovative solutions and designing a corporate image that encapsulates the startup’s spirit. You’re adept at translating complex engineering concepts into comprehensive strategies, facilitating effective communication across departments. Your project management expertise ensures that all initiatives are executed flawlessly, reflecting the company’s commitment to pioneering space exploration.
 
@@ -418,6 +429,37 @@ $(document).ready(function() {
     // Add the link to the sidebar index
     $('#sidebar-index').append(link);
   });
+
+  $('pre code').each(function() {
+    var button = $('<button>').attr('type', 'button').attr('title','Copy').addClass('copy-button').text('📋');
+    $(this).parent().prepend(button);
+  });
+
+  var message = $('<div>').attr('id', 'copy-message').text('Text copied to clipboard').hide();
+  $('body').append(message);
+
+  $('.copy-button').click(function() {
+    var code = $(this).siblings('code').text();
+    var position = $(this).offset();
+
+    navigator.clipboard.writeText(code).then(function() {
+      // Get the position of the button
+
+      // Set the position of the message
+      $('#copy-message').css({
+        top: position.top + 'px',
+        left: (position.left - $('#copy-message').width()) + 'px'
+      });
+      // Show the message
+      $('#copy-message').fadeIn('slow', function() {
+        // Hide the message after 800 ms
+        $(this).delay(800).fadeOut('slow');
+      });
+    }, function() {
+      // failure
+      alert('Failed to copy text');
+    });
+  });
 });
 </script>
   </div>
@@ -442,7 +484,7 @@ $(document).ready(function() {
 </div>
 
       <div class="footer-col footer-col-3">
-        <p>Demos of tols and azure services.</p>
+        <p>Demos of tools and Azure services.</p>
       </div>
     </div>
 

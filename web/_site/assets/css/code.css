@@ -1,0 +1,33 @@
+pre {
+    position: relative;
+    white-space: pre-wrap;       /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    overflow: auto;
+  }
+  
+  pre code {
+    overflow: visible;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  
+  pre .copy-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    cursor: pointer;
+  }
+  
+  #copy-message {
+    position: absolute;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    font-size: 12px;
+  }
