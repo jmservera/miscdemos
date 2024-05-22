@@ -1,7 +1,8 @@
 ---
 layout: page
 ---
-<div id="sidebar-index"></div>
+
+<div id="sidebar-index"><button type="button" id="sidebar-toggle">&gt;</button></div>
 
 {{ content }}
 
@@ -21,22 +22,29 @@ $(document).ready(function() {
     var link = $('<a>').attr('href', '#' + id).text(text);
     var item = $('<li>').append(link);
 
-    while (level > currentLevel) {
-      var newList = $('<ul>');
-      hierarchy[hierarchy.length - 1].append(newList);
-      hierarchy.push(newList);
-      currentLevel++;
-    }
-
-    while (level < currentLevel) {
+    if (level > currentLevel) {
+      var newLevel = $('<ul>');
+      var button = $('<button>').attr('type','button').addClass('collapser').text('+').click(function() {
+        newLevel.toggle();
+        button.text(newLevel.is(':visible') ? '-' : '+');
+      });
+      hierarchy[hierarchy.length - 1].children().last().append(button);
+      hierarchy[hierarchy.length - 1].children().last().append(newLevel);
+      hierarchy.push(newLevel);
+    } else if (level < currentLevel) {
       hierarchy.pop();
-      currentLevel--;
     }
 
     hierarchy[hierarchy.length - 1].append(item);
+    currentLevel = level;
   });
 
   $('#sidebar-index').append(hierarchy[0]);
+
+  $('#sidebar-toggle').click(function() {
+    $('#sidebar-index').toggleClass('collapsed');
+    $('#sidebar-index').hasClass('collapsed') ? $(this).text('<') : $(this).text('>');
+  });
 
   $('pre code').each(function() {
     var button = $('<button>').attr('type', 'button').attr('title','Copy').addClass('copy-button').text('📋');

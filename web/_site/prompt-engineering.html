@@ -10,16 +10,16 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Demos of tools and Azure services." />
 <meta property="og:description" content="Demos of tools and Azure services." />
-<link rel="canonical" href="/prompt-engineering" />
-<meta property="og:url" content="/prompt-engineering" />
+<link rel="canonical" href="http://localhost:4000/prompt-engineering" />
+<meta property="og:url" content="http://localhost:4000/prompt-engineering" />
 <meta property="og:site_name" content="Demos and labs" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Prompt Engineering Hands-on Lab" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"Florian Follonier - Microsoft"},"description":"Demos of tools and Azure services.","headline":"Prompt Engineering Hands-on Lab","url":"/prompt-engineering"}</script>
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"Florian Follonier - Microsoft"},"description":"Demos of tools and Azure services.","headline":"Prompt Engineering Hands-on Lab","url":"http://localhost:4000/prompt-engineering"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Demos and labs" /><!--custom head--><link rel="stylesheet" href="/assets/css/custom.css">
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Demos and labs" /><!--custom head--><link rel="stylesheet" href="/assets/css/custom.css">
 </head><body><header class="site-header" role="banner">
 
   <div class="wrapper"><a class="site-title" rel="author" href="/">Demos and labs</a><nav class="site-nav">
@@ -44,7 +44,7 @@
   </header>
 
   <div class="post-content">
-    <div id="sidebar-index"></div>
+    <div id="sidebar-index"><button type="button" id="sidebar-toggle">&gt;</button></div>
 
 <p>By Florian Follonier - Cloud Solution Architect Data &amp; AI - Microsoft</p>
 
@@ -382,22 +382,29 @@ $(document).ready(function() {
     var link = $('<a>').attr('href', '#' + id).text(text);
     var item = $('<li>').append(link);
 
-    while (level > currentLevel) {
-      var newList = $('<ul>');
-      hierarchy[hierarchy.length - 1].append(newList);
-      hierarchy.push(newList);
-      currentLevel++;
-    }
-
-    while (level < currentLevel) {
+    if (level > currentLevel) {
+      var newLevel = $('<ul>');
+      var button = $('<button>').attr('type','button').addClass('collapser').text('+').click(function() {
+        newLevel.toggle();
+        button.text(newLevel.is(':visible') ? '-' : '+');
+      });
+      hierarchy[hierarchy.length - 1].children().last().append(button);
+      hierarchy[hierarchy.length - 1].children().last().append(newLevel);
+      hierarchy.push(newLevel);
+    } else if (level < currentLevel) {
       hierarchy.pop();
-      currentLevel--;
     }
 
     hierarchy[hierarchy.length - 1].append(item);
+    currentLevel = level;
   });
 
   $('#sidebar-index').append(hierarchy[0]);
+
+  $('#sidebar-toggle').click(function() {
+    $('#sidebar-index').toggleClass('collapsed');
+    $('#sidebar-index').hasClass('collapsed') ? $(this).text('<') : $(this).text('>');
+  });
 
   $('pre code').each(function() {
     var button = $('<button>').attr('type', 'button').attr('title','Copy').addClass('copy-button').text('📋');

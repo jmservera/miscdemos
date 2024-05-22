@@ -5,9 +5,36 @@
   width: 200px;
   height: 100%;
   padding: 1em;
-  background-color: #f9f9f9;
+  background-color: rgba(239,239,239,0.5);
   overflow: auto;
   border-left: 1px solid #ccc;
+  transition: width 0.3s ease;
+  &.collapsed {
+    width: 0;
+    overflow: hidden;
+    ul {
+      visibility: hidden;
+      overflow: hidden;
+    }
+  }
+}
+
+#sidebar-index #sidebar-toggle {
+  position:absolute;
+  display: block;
+  margin-left: -1em;
+  margin-top: -1em;
+  padding: 0;
+  z-index: 1;
+}
+
+#sidebar-index .collapser{
+  position:absolute;
+  display: block;
+  margin-left: -1.5em;
+  margin-top: -4em;
+  padding: 0;
+  z-index: 1;
 }
 
 #sidebar-index a {

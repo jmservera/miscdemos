@@ -6,7 +6,13 @@ pre .copy-button { position: absolute; top: 0; right: 0; padding: 2px 5px; backg
 
 #copy-message { position: absolute; padding: 5px; background-color: #f9f9f9; border: 1px solid #ccc; font-size: 12px; }
 
-#sidebar-index { position: fixed; top: 0; right: 0; width: 200px; height: 100%; padding: 1em; background-color: #f9f9f9; overflow: auto; border-left: 1px solid #ccc; }
+#sidebar-index { position: fixed; top: 0; right: 0; width: 200px; height: 100%; padding: 1em; background-color: rgba(239, 239, 239, 0.5); overflow: auto; border-left: 1px solid #ccc; transition: width 0.3s ease; }
+#sidebar-index.collapsed { width: 0; overflow: hidden; }
+#sidebar-index.collapsed ul { visibility: hidden; overflow: hidden; }
+
+#sidebar-index #sidebar-toggle { position: absolute; display: block; margin-left: -1em; margin-top: -1em; padding: 0; z-index: 1; }
+
+#sidebar-index .collapser { position: absolute; display: block; margin-left: -1.5em; margin-top: -4em; padding: 0; z-index: 1; }
 
 #sidebar-index a { display: block; margin-bottom: 0.5em; }
 
