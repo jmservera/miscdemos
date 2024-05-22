@@ -1,0 +1,31 @@
+{
+    "schema": 1,
+    "type": "completion",
+    "description": "a function for a chat",
+    "chat-completion": {
+        "max_tokens": 2000,
+        "temperature": 0.3
+    },
+    "input": {
+        "parameters": [
+            {
+                "name": "request",
+                "description": "User's request.",
+                "defaultValue": "",
+                "required": true
+            },
+            {
+                "name": "history",
+                "description": "Conversation history.",
+                "defaultValue": "",
+                "required": true
+            }
+        ]
+    },
+    "default_backends": [],
+    "completion": {
+        "max_tokens": 2000,
+        "stop_sequences": [],
+        "temperature": 0.4
+    }
+}

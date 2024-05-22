@@ -1,0 +1,115 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "streamingjobs_jmpbi_name": {
+            "defaultValue": "jmpbi",
+            "type": "String"
+        },
+        "namespaces_jmioteventgridns_name": {
+            "defaultValue": "jmioteventgridns",
+            "type": "String"
+        },
+        "namespaces_jmioteventgridns_name_1": {
+            "defaultValue": "jmioteventgridns",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.StreamAnalytics/streamingjobs",
+            "apiVersion": "2021-10-01-preview",
+            "name": "[parameters('streamingjobs_jmpbi_name')]",
+            "location": "Switzerland North",
+            "tags": {
+                "hidden-link:/Microsoft.StreamAnalytics/streamingDataFlow/resource": "https://jmioteventgridns.servicebus.windows.net:443/jmioteventgridnssink",
+                "hidden-link:/Microsoft.StreamAnalytics/streamingjobs/settings": "{\"streamDataFlowJob\":true,\"streamDataFlowJobWizardType\":\"WizardPowerBIOutput\"}"
+            },
+            "sku": {
+                "name": "StandardV2",
+                "capacity": 3
+            },
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "sku": {
+                    "name": "StandardV2"
+                },
+                "outputStartMode": "JobStartTime",
+                "outputStartTime": "2024-04-19T14:41:04.573Z",
+                "eventsOutOfOrderPolicy": "Adjust",
+                "outputErrorPolicy": "Stop",
+                "eventsOutOfOrderMaxDelayInSeconds": 0,
+                "eventsLateArrivalMaxDelayInSeconds": 5,
+                "dataLocale": "en-US",
+                "compatibilityLevel": "1.2",
+                "contentStoragePolicy": "SystemAccount",
+                "jobType": "Cloud"
+            }
+        },
+        {
+            "type": "Microsoft.StreamAnalytics/streamingjobs/inputs",
+            "apiVersion": "2021-10-01-preview",
+            "name": "[concat(parameters('streamingjobs_jmpbi_name'), '/247c8d10-a6a2-dd63-6f91-dc95f51f64de-input')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.StreamAnalytics/streamingjobs', parameters('streamingjobs_jmpbi_name'))]"
+            ],
+            "properties": {
+                "type": "Stream",
+                "datasource": {
+                    "type": "Microsoft.ServiceBus/EventHub",
+                    "properties": {
+                        "consumerGroupName": "pbiexport-cg",
+                        "eventHubName": "jmioteventgridnssink",
+                        "serviceBusNamespace": "jmioteventgridns",
+                        "sharedAccessPolicyName": "RootManageSharedAccessKey",
+                        "authenticationMode": "Msi"
+                    }
+                },
+                "compression": {
+                    "type": "None"
+                },
+                "serialization": {
+                    "type": "Json",
+                    "properties": {
+                        "encoding": "UTF8"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.StreamAnalytics/streamingjobs/outputs",
+            "apiVersion": "2021-10-01-preview",
+            "name": "[concat(parameters('streamingjobs_jmpbi_name'), '/8c219e00-fd81-af1a-d9e7-6e415eac2552')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.StreamAnalytics/streamingjobs', parameters('streamingjobs_jmpbi_name'))]"
+            ],
+            "properties": {
+                "datasource": {
+                    "type": "PowerBI",
+                    "properties": {
+                        "authenticationMode": "Msi",
+                        "dataset": "jmpbieventgrid",
+                        "table": "devices",
+                        "groupId": "f2c94502-3553-4412-9f6e-2595e1d33a14"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+            "apiVersion": "2023-01-01-preview",
+            "name": "[concat(parameters('namespaces_jmioteventgridns_name'), '/', parameters('namespaces_jmioteventgridns_name'), 'sink/pbiexport-cg')]",
+            "location": "switzerlandnorth",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('namespaces_jmioteventgridns_name'), concat(parameters('namespaces_jmioteventgridns_name'), 'sink'))]",
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('namespaces_jmioteventgridns_name'))]"
+            ],
+            "properties": {
+                "userMetadata": "pbiexport-cg"
+            }
+        }
+    ]
+}

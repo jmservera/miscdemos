@@ -1,0 +1,47 @@
+{
+  "name": "fluent-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@fluentui-copilot/react-copilot": "^0.14.2",
+    "@fluentui/keyboard-keys": "^9.0.7",
+    "@fluentui/react-components": "^9.48.0",
+    "@fluentui/react-context-selector": "^9.1.57",
+    "@fluentui/react-icons": "^2.0.236",
+    "@fluentui/react-jsx-runtime": "^9.0.35",
+    "@fluentui/react-shared-contexts": "^9.16.0",
+    "@fluentui/react-tabster": "^9.20.0",
+    "@fluentui/react-utilities": "^9.18.6",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
