@@ -7,8 +7,8 @@ permalink: /prompt-engineering
 ---
 Authors:
 
-   * Florian Follonier - Microsoft
-   * Juan Manuel Servera - Microsoft"
+   * Florian Follonier - Cloud Solution Architect Data & AI - Microsoft
+   * Juan Manuel Servera - Cloud Solution Architect App Inno - Microsoft
 
 ## Prompt Engineering Hands-on Lab: An Introduction  
    
