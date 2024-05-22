@@ -1,12 +1,12 @@
-|  |  |
-| - | - |
-| Title: | Prompt Engineering Hands on Lab |
-| SubTitle: | HSG Alumni |
-| Authors: | Florian Follonier - Microsoft, Juan Manuel Servera - Microsoft |
+---
+layout: custom
+title: "Prompt Engineering Hands on Lab"
+subTitle: "HSG Alumni"
+authors: "Florian Follonier - Microsoft, Juan Manuel Servera - Microsoft"
+permalink: /prompt-engineering
+---
 
-
-   
-# Prompt Engineering Hands-on Lab: An Introduction  
+## Prompt Engineering Hands-on Lab: An Introduction  
    
 Welcome to the Prompt Engineering Hands-on Lab! This  guide is designed to assist you in understanding and utilizing Microsoft's AI companion, Copilot, in a practical and engaging manner.   
   
@@ -21,7 +21,7 @@ By the end of this lab, you will have a comprehensive understanding of how to in
 Now, let's dive in and get started with our first exercise!  
    
 
-# Exercise 1 – Warmup & Basic prompts
+## Exercise 1 – Warmup & Basic prompts
 
 For this exercise we are going to use Microsoft Copilot, your everyday AI companion, providing AI-powered chat for the web. Open it at <https://www.bing.com/chat> and configure the conversation style to “**More creative**”, because today we are going to have an ideation session and, as Linus Pauling said once, the best way to have a good idea is to have lots of ideas.
 
@@ -91,11 +91,11 @@ Now Copilot must have given this a second thought and understood the nuances.
 
 > Great job on completing the first exercise! Remember, there's no 'one-size-fits-all' approach to using AI. Feel free to experiment with different types of prompts to see what results you get. The more you experiment, the more you'll understand how to guide Copilot effectively. If you need some more examples for each type of prompt, check the [example guide](#some-more-example-prompts) at the end of this document.
 
-# Exercise 2 – Create your own space startup
+## Exercise 2 – Create your own space startup
 
 > As we dive into the second exercise, keep in mind that this is your opportunity to get creative and experiment. Try different prompt techniques, adjust your instructions, and see how Copilot responds. Remember, there's no right or wrong way to do this – the goal is to learn and have fun!
 
-## Introduction
+### Introduction
 
 You may have noticed by now that Copilot can give you up to 30 answers in a session:
 
@@ -105,7 +105,7 @@ This means that after iterating 30 times you will need to start again from scrat
 
 In this exercise, you will use Copilot to generate various elements of your own space startup, such as the name, the mission statement, the logo, and the business plan. You will also learn how to use different prompting techniques, such as few-shot prompts, chain-of-thought prompts, and tree-of thought-prompts, to guide the generation process and produce high-quality results.
 
-## Step 1: Set the context
+### Step 1: Set the context
 
 Usually, Large Language Model (LLM) chat apps use a System Message and some templates to set the rules of the generation. We cannot change the system message for Copilot, but we can provide our own context for the session as a first message.
 
@@ -121,7 +121,7 @@ Above all, your personal traits are what make you extraordinary. Your passion fo
 
 This was again a zero-Shot prompt, but we are just establishing the context.
 
-## Step 2: Generate a name for your space startup
+### Step 2: Generate a name for your space startup
 
 To generate a name for your space startup, you can use a **few-shot prompt**, which is a type of prompt that provides some examples of the desired output, followed by an empty line where Bing Chat will fill in a new output based on the examples. For example, you can write:
 
@@ -138,7 +138,7 @@ Generate three names for our space startup that builds and sends human spaceship
 
 You can try different examples or add more details to the prompt, such as the type of service or product your startup offers, to get different results.
 
-## Step 3: Assess the costs
+### Step 3: Assess the costs
 
 Sending a spaceship with humans is tough. But as a startup, we must show investors that we've done our math. You can use **chain-of-thought prompting** to enforce the model to think about all the details. It involves guiding the AI to think through the problem step-by-step, leading it to the desired output:
 
@@ -150,7 +150,7 @@ This part of the project is called Budget.
 
 Now that you've calculated the costs of the mission, you might want to experiment with different scenarios. What if the crew size changed? Or the distance to Mars varied? Feel free to play around with these variables and see how the costs change.
 
-## Step 4: Generate a business plan
+### Step 4: Generate a business plan
 
 As you will be challenged by the investors when you present your plan, you can use a [**tree-of-thought**](https://www.promptingguide.ai/techniques/tot) prompting technique. This technique helps the model generate different ideas and choose the best one from them.
 
@@ -167,7 +167,7 @@ Now, based on the executive summary and budget, please complete the business pla
 This part of the project work is called Business Plan.
 ```
 
-## Step 5: Generate a mission statement for your space startup
+### Step 5: Generate a mission statement for your space startup
 
 Now that we have a lot of content, we can generate a mission statement for your space startup. For example, you can write:
 
@@ -177,7 +177,7 @@ This part of the project work is called Mission Statement.
 Write a mission statement that reflects our objectives and the values of the company.
 ```
 
-## Step 6: Create a logo for your company
+### Step 6: Create a logo for your company
 
 Microsoft Copilot in Bing is a **multimodal** model, this means that it can also generate and understand pictures and audio. In this case the LLM has already a lot of information to work with, so we don’t need to provide lots of details, just indicate what we want in a clear statement. Let’s ask Copilot to generate a logo for our company:
 
@@ -189,7 +189,7 @@ Create a monochromatic logo in red for our company that reflects the mission and
 
 > Did you notice that the prompt for DALL·E was crafted by Copilot? You didn’t need to explain again that it was a spaceship company going to Mars, because it used the **chains** it already had. You can also go directly to <https://www.bing.com/images/create> to generate images with your own prompts.
 
-## Step 7: pulling it all together
+### Step 7: pulling it all together
 
 In this step, you will use the AI to review and summarize all the content generated during the previous exercises. This step is crucial in ensuring that all the elements of your project are coherent and aligned with your objectives.  
    
@@ -221,7 +221,7 @@ Can you format it like this:
 Description
 ```
 
-# Conclusion  
+## Conclusion  
    
 Congratulations on completing this lab! Remember, the key to mastering AI is practice and experimentation. Don't be afraid to try new things, make mistakes and learn from them. Keep experimenting with different prompts and techniques, and see where your creativity takes you with AI!
 
@@ -235,7 +235,7 @@ We hope you found this lab engaging and insightful. We encourage you to continue
 
 Happy prompting!
 
-# Glossary  
+## Glossary  
    
 1. **AI Companion**: An artificial intelligence system designed to assist users in various tasks.  
    
@@ -267,7 +267,7 @@ Happy prompting!
    
 *These definitions are specific to this lab guide and the usage of Microsoft's AI companion, Copilot. The definitions might vary slightly in different contexts or with different AI systems.*
 
-# Some more example prompts
+## Some more example prompts
 
 Here are a few more examples for each type of prompt mentioned in the guide:  
    

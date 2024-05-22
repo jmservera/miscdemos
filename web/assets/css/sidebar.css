@@ -1,0 +1,16 @@
+#sidebar-index {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 100%;
+    padding: 1em;
+    background-color: #f9f9f9;
+    overflow: auto;
+    border-left: 1px solid #ccc;
+  }
+  
+  #sidebar-index a {
+    display: block;
+    margin-bottom: 0.5em;
+  }
