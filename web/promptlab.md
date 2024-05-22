@@ -5,6 +5,10 @@ subTitle: "HSG Alumni"
 authors: "Florian Follonier - Microsoft, Juan Manuel Servera - Microsoft"
 permalink: /prompt-engineering
 ---
+Authors:
+
+   * Florian Follonier - Microsoft
+   * Juan Manuel Servera - Microsoft"
 
 ## Prompt Engineering Hands-on Lab: An Introduction  
    
