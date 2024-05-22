@@ -2,13 +2,12 @@
 layout: custom
 title: "Prompt Engineering Hands-on Lab"
 subtitle: "HSG Alumni"
-authors: "Florian Follonier - Microsoft, Juan Manuel Servera - Microsoft"
+authors: ["Florian Follonier - Microsoft", "Juan Manuel Servera - Microsoft"]
 permalink: /prompt-engineering
 ---
-Authors:
+By Florian Follonier - Cloud Solution Architect Data & AI - Microsoft
 
-* Florian Follonier - Cloud Solution Architect Data & AI - Microsoft
-* Juan Manuel Servera - Cloud Solution Architect App Inno - Microsoft
+& Juan Manuel Servera - Cloud Solution Architect App Inno - Microsoft
 
 ## Prompt Engineering Hands-on Lab: An Introduction
 
@@ -26,7 +25,7 @@ By the end of this lab, you will have a comprehensive understanding of how to in
   
 Now, let's dive in and get started with our first exercise!
 
-## Exercise 1 – Warmup & Basic prompts
+## Exercise 1 – Warmup with Basic prompts
 
 For this exercise we are going to use Microsoft Copilot, your everyday AI companion, providing AI-powered chat for the web. Open it at <https://www.bing.com/chat> and configure the conversation style to “**More creative**”, because today we are going to have an ideation session and, as Linus Pauling said once, the best way to have a good idea is to have lots of ideas.
 
@@ -120,7 +119,7 @@ You are an executive assistant to an awarded cook that now is the CEO of a cutti
 
 Your creative input is crucial in ideating innovative solutions and designing a corporate image that encapsulates the startup’s spirit. You’re adept at translating complex engineering concepts into comprehensive strategies, facilitating effective communication across departments. Your project management expertise ensures that all initiatives are executed flawlessly, reflecting the company’s commitment to pioneering space exploration.
 
-Above all, your personal traits are what make you extraordinary. Your passion for space, visionary outlook, and proactive nature equips you to anticipate challenges and address them with resilience. Detail-oriented and adaptable, you maintain composure under pressure, making you an indispensable asset to the CEO and the entire organization as you collectively strive to achieve the monumental task of shipping a human spaceship to Mars.
+Your personal traits are what make you extraordinary. Your passion for space, visionary outlook, and proactive nature equips you to anticipate challenges and address them with resilience. Detail-oriented and adaptable, you maintain composure under pressure, making you an indispensable asset to the CEO and the entire organization as you collectively strive to achieve the monumental task of shipping a human spaceship to Mars.
 ```
 
 This was again a zero-Shot prompt, but we are just establishing the context.
@@ -183,7 +182,7 @@ Write a mission statement that reflects our objectives and the values of the com
 
 ### Step 6: Create a logo for your company
 
-Microsoft Copilot in Bing is a **multimodal** model, this means that it can also generate and understand pictures and audio. In this case the LLM has already a lot of information to work with, so we don’t need to provide lots of details, just indicate what we want in a clear statement. Let’s ask Copilot to generate a logo for our company:
+Microsoft Copilot in Bing is a **multimodal** model, this means that it can also generate and understand pictures and audio. In this case the LLM already has a lot of information to work with, so we don’t need to provide lots of details, just indicate what we want in a clear statement. Let’s ask Copilot to generate a logo for our company:
 
 ```prompt
 This part of the project is called Company Branding
@@ -229,7 +228,7 @@ Congratulations on completing this lab! Remember, the key to mastering AI is pra
 
 Throughout this lab, you have gained hands-on experience in crafting and refining prompts, guiding AI language models to generate the desired content, and using AI tools for practical applications.  
 
-In particular, you have learned about various types of prompts, including seed text prompts, conditional prompts, multiple choice prompts, zero-shot prompts, and few-shot prompts. You have seen how these prompts can guide the AI model in different ways, from generating creative ideas to making detailed calculations.  
+You have learned about various types of prompts, including seed text prompts, conditional prompts, multiple choice prompts, zero-shot prompts, and few-shot prompts. You have seen how these prompts can guide the AI model in diverse ways, from generating creative ideas to making detailed calculations.  
 
 By creating elements for a fictional space startup, you have also seen how these techniques can be applied to real-world scenarios. Whether you are generating a company name, mission statement, business plan, or logo, you now have the skills to use AI tools effectively in your own projects.  
 

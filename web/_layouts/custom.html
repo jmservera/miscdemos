@@ -1,12 +1,6 @@
 ---
 layout: page
 ---
-<head>
-    <!-- other head elements -->
-    <link rel="stylesheet" href="{{ "/assets/css/sidebar.css" | relative_url }}">
-    <link rel="stylesheet" href="{{ "/assets/css/code.css" | relative_url }}">
-</head>
-
 <div id="sidebar-index"></div>
 
 {{ content }}
@@ -16,19 +10,33 @@ layout: page
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script lang="JavaScript">
 $(document).ready(function() {
-  // Find all the headings in the content
+  var hierarchy = [$('<ul>')];
+  var currentLevel = 2;
+
   var headings = $('.page-content h2, .page-content h3, .page-content h4, .page-content h5, .page-content h6');
-
-
-  // Create a link for each heading
   headings.each(function(i, heading) {
+    var level = parseInt(heading.tagName.slice(1));
     var id = $(heading).attr('id');
     var text = $(heading).text();
     var link = $('<a>').attr('href', '#' + id).text(text);
+    var item = $('<li>').append(link);
 
-    // Add the link to the sidebar index
-    $('#sidebar-index').append(link);
+    while (level > currentLevel) {
+      var newList = $('<ul>');
+      hierarchy[hierarchy.length - 1].append(newList);
+      hierarchy.push(newList);
+      currentLevel++;
+    }
+
+    while (level < currentLevel) {
+      hierarchy.pop();
+      currentLevel--;
+    }
+
+    hierarchy[hierarchy.length - 1].append(item);
   });
+
+  $('#sidebar-index').append(hierarchy[0]);
 
   $('pre code').each(function() {
     var button = $('<button>').attr('type', 'button').attr('title','Copy').addClass('copy-button').text('📋');
