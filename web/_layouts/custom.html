@@ -149,8 +149,10 @@ $(document).ready(function() {
   codeCopy();
   tutorial();
   //TODO: Fix the issue with the hashchange event
-  let oldLoc=location.href;
-  window.location=location+"&";
-  window.location=oldLoc;
+  if(location.hash){
+    let oldLoc=location.href;
+    window.location=location+"&";
+    window.location=oldLoc;
+  }
 });
 </script>
