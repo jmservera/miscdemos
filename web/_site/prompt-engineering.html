@@ -523,26 +523,14 @@ function codeCopy(){
     $(this).parent().prepend(button);
   });
 
-  var message = $('<div>').attr('id', 'copy-message').text('Text copied to clipboard').hide();
-  $('body').append(message);
-
   $('.copy-button').click(function() {
+    let btn = $(this);
     var code = $(this).siblings('code').text();
     var position = $(this).offset();
 
     navigator.clipboard.writeText(code).then(function() {
-      // Get the position of the button
-
-      // Set the position of the message
-      $('#copy-message').css({
-        top: position.top + 'px',
-        left: (position.left - $('#copy-message').width()) + 'px'
-      });
-      // Show the message
-      $('#copy-message').fadeIn('slow', function() {
-        // Hide the message after 800 ms
-        $(this).delay(800).fadeOut('slow');
-      });
+      btn.text('✅');
+      setTimeout(()=>btn.text('📋'),1800);      
     }, function() {
       // failure
       alert('Failed to copy text');
