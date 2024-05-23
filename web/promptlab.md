@@ -289,7 +289,10 @@ Description
 ## Conclusion  
 
 <div class="step" markdown="1">
-Congratulations on completing this lab! Remember, the key to mastering AI is practice and experimentation. Don't be afraid to try new things, make mistakes and learn from them. Keep experimenting with different prompts and techniques and see where your creativity takes you with AI!
+
+Congratulations on completing this lab! You can download your Prompt Hero Badge below.
+
+Remember, the key to mastering AI is practice and experimentation. Don't be afraid to try new things, make mistakes and learn from them. Keep experimenting with different prompts and techniques and see where your creativity takes you with AI!
 
 Throughout this lab, you have gained hands-on experience in crafting and refining prompts, guiding AI language models to generate the desired content, and using AI tools for practical applications.  
 
@@ -300,6 +303,7 @@ By creating elements for a fictional space startup, you have also seen how these
 We hope you find this lab engaging and insightful. We encourage you to continue exploring and experimenting with AI tools like Copilot in your future projects. Remember, the possibilities are as vast as space itself.
 
 Happy prompting!
+![You are the Prompt Hero](./img/prompt%20hero%20badge.png)
 </div>
 </div>
 <div class="section" markdown="1">
