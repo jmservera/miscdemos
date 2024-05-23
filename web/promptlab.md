@@ -128,6 +128,7 @@ Excellent job on completing the first exercise!
 
 > Remember, there is no 'one-size-fits-all' approach to using AI. Feel free to experiment with different types of prompts to see what results you get. The more you experiment, the more you will understand how to guide Copilot effectively. If you need some more examples for each type of prompt, check the [example guide](#some-more-example-prompts) at the end of this document.
 
+Now, let's move on to the second exercise, where you will create your own space startup using Copilot. This exercise will allow you to experiment with different prompting techniques and generate a variety of content for your startup. Let's get started!
 </div>
 
 </div>
