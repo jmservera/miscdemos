@@ -175,14 +175,17 @@ This was again a **zero-Shot prompt**, but we are just establishing the context.
 To generate a name for your space startup, you can use a **few-shot prompt**, which is a type of prompt that provides some examples of the desired output, followed by an empty line where Bing Chat will fill in a new output based on the examples. For example, you can write:
 
 ```prompt
-Some possible names for a space startup are:
+I am looking on naming ideas for our startup that builds and sends human spaceships to Mars. 
+I want the names to reflect the special background of our CEO and contain a number.
 
-- SpaceX
-- Blue Origin
-- Virgin Galactic
-- Clearspace
+Generate four names for our space startup:
 
-Generate three names for our space startup that builds and sends human spaceships to Mars and show the special background of our CEO:
+- MarsChefX1
+- AstroCuisine7
+- OrbitGourmet9
+- GalacticGourmet8
+
+Generate four names for our space startup:
 ```
 
 You can try different examples or add more details to the prompt, such as the type of service or product your startup offers, to get different results.
