@@ -9,7 +9,7 @@ permalink: /prompt-engineering
 <div class="section" markdown="1">
 By Florian Follonier - Cloud Solution Architect Data & AI - Microsoft
 
-& Juan Manuel Servera - Cloud Solution Architect App Inno - Microsoft
+& Juan Manuel Servera - Cloud Solution Architect App Innovation - Microsoft
 
 ## Introduction
 
@@ -40,6 +40,9 @@ For this exercise we are going to use Microsoft Copilot, your everyday AI compan
 > The best way to have a good idea is to have lots of ideas.
 
 ![Screenshot showing Copilot on the web.](./img/Copilot%20in%20desktop.png)
+
+*If you follow this exercise from the mobile browser, you may see a different interface and Copilot may ask you for login credentials. You can use your Microsoft account to log in and continue with the exercise.*
+
 </div>
 <div class="step" markdown="1">
 
@@ -96,12 +99,13 @@ B) a DeLorean
 C) a spaceship
 D) a private jet
 ```
+
 </div>
 <div class="step" markdown="1">
 
-### Zero-shot Prompt: classification example
+### Zero-Shot Prompt: classification example
 
-The previous examples are simple **Zero-shot prompts**. In these prompts we do not provide any example, we directly instruct the model to answer a question and we rely on the training data to obtain the answer. (Keep in mind that nowadays Bing chat has access to the internet, and it is also using some other techniques like meta-prompting, function calling, content filtering and RAG, so this is not completely true, but for this exercise we will just ignore this).
+The previous examples are simple **Zero-Shot prompts**. In these prompts we do not provide any example, we directly instruct the model to answer a question and we rely on the training data to obtain the answer. (Keep in mind that nowadays Bing chat has access to the internet, and it is also using some other techniques like meta-prompting, function calling, content filtering and RAG, so this is not completely true, but for this exercise we will just ignore this).
 
 ```prompt
 Classify the text into neutral, negative, or positive.
@@ -166,7 +170,7 @@ Your creative input is crucial in ideating innovative solutions and designing a 
 Your personal traits are what make you extraordinary. Your passion for space, visionary outlook, and proactive nature equips you to anticipate challenges and address them with resilience. Detail-oriented and adaptable, you maintain composure under pressure, making you an indispensable asset to the CEO and the entire organization as you collectively strive to achieve the monumental task of shipping a human spaceship to Mars.
 ```
 
-This was again a **zero-Shot prompt**, but we are just establishing the context.
+This was again a **Zero-Shot prompt**, but we are just establishing the context.
 
 </div>
 <div class="step" markdown="1">
@@ -293,6 +297,8 @@ Description
 ```
 
 And now you can start calling your investors to present your project!
+
+Think about what you would want to show them, and ask Copilot to generate it for you. Remember, you are the CEO of a spaceship startup, and you need to show them that you are ready to take off!
 </div>
 
 </div>
@@ -319,6 +325,14 @@ Happy prompting!
 </div>
 </div>
 <div class="section" markdown="1">
+
+### Additional Resources
+
+If you want to learn more, here you have a few interesting resources to extend your knowledge on prompt engineering and AI language models:
+
+* [Prompting Guide](https://www.promptingguide.ai): A comprehensive guide to prompting techniques for AI language models.
+* [OpenAI Prompt Engineering](https://platform.openai.com/docs/guides/prompt-engineering/prompt-engineering): A guide to prompt engineering by the GPT-4 creators.
+* [Prompt Engineering Techniques](https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/advanced-prompt-engineering): Tips and tricks for prompting with Azure OpenAI Service.
 
 ## Glossary  
 
@@ -365,10 +379,10 @@ Here are a few more examples for each type of prompt mentioned in the guide:
      B) Cycling  
      C) Driving  
      D) Public transport"  
-4. **Zero-shot Prompts**:  
+4. **Zero-Shot Prompts**:  
    * "Translate the following sentence into French: 'The sky is clear today.'"  
    * "Solve the following equation: 2x + 3 = 9."  
-5. **Few-shot Prompts**:  
+5. **Few-Shot Prompts**:  
    * "Some possible names for a fitness app are:  
      * FitBuddy  
      * HealthTrack  
@@ -379,10 +393,10 @@ Here are a few more examples for each type of prompt mentioned in the guide:
      * 'Baked with love'  
      * 'Your daily bread'  
      Generate three slogans for our bakery that specializes in gluten-free products:"  
-6. **Chain-of-thought Prompting**:
+6. **Chain-Of-Thought Prompting**:
    * "Let's plan a 3-day trip to New York. Start with choosing the places to visit, then decide the best order to visit them to save travel time."
    * "We need to plan a surprise birthday party for our friend. Start by listing out what we need, then decide the order in which we should arrange everything."
-7. **Tree-of-thought Prompting**:  
+7. **Tree-Of-Thought Prompting**:  
    * "Three of our best chefs are creating a new menu for our restaurant. They are discussing the main dish and have three different ideas. Generate them and select the best one based on your expertise."  
    * "Our marketing team is brainstorming ideas for our next ad campaign. They have three different concepts. Generate them and choose the best one."
 
