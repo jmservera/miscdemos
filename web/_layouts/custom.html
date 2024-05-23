@@ -22,22 +22,22 @@ function hierarchyMenu(steps, changeIndex){
     var level = parseInt(heading.tagName.slice(1));
     var id = $(heading).attr('id');
     var text = $(heading).text();
-    var link = $('<a>').attr('href', '#').text(text);
+    var link = $('<a>').attr('href', `#${id}`).text(text);
     
-    link.click(function() {
-      var step;
-
-      if(level==2){
-        step=$($(heading).parents('.section')[0]).find('.step:first')[0];
+    //TODO: manage hashchange at main level
+    $(window).on('hashchange', function(e){      
+      if(location.hash==`#${id}`){
+          var step;
+          if(level==2){
+            step=$($(heading).parents('.section')[0]).find('.step:first')[0];
+          }
+          else{
+            step=$(heading).parents('.step')[0];
+          }
+          let current=steps.index(step);
+          changeIndex(current);
       }
-      else{
-        step=$(heading).parents('.step')[0];
-      }
-      let current=steps.index(step);
-      changeIndex(current);
     });
-      
-    
 
     var item = $('<li>').append(link);
 
@@ -148,5 +148,9 @@ function tutorial(){
 $(document).ready(function() {
   codeCopy();
   tutorial();
+  //TODO: Fix the issue with the hashchange event
+  let oldLoc=location;
+  window.location=location+"&";
+  window.location=oldLoc;
 });
 </script>
