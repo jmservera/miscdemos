@@ -77,7 +77,11 @@
   <h2 id="exercise-1--warmup-with-basic-prompts">Exercise 1 – Warmup with Basic prompts</h2>
 
   <div class="step">
-    <p>For this exercise we are going to use Microsoft Copilot, your everyday AI companion, providing AI-powered chat for the web. Open it at <a href="https://www.bing.com/chat">https://www.bing.com/chat</a> and configure the conversation style to “<strong>More creative</strong>”, because today we are going to have an ideation session and, as Linus Pauling said once, the best way to have a good idea is to have lots of ideas.</p>
+    <p>For this exercise we are going to use Microsoft Copilot, your everyday AI companion, providing AI-powered chat for the web. Open it at <a href="https://www.bing.com/chat">https://www.bing.com/chat</a> and configure the conversation style to “<strong>More creative</strong>”, because today we are going to have an ideation session and, as Linus Pauling said once:</p>
+
+    <blockquote>
+      <p>The best way to have a good idea is to have lots of ideas.</p>
+    </blockquote>
 
     <p><img src="./img/Copilot%20in%20desktop.png" alt="Screenshot showing Copilot on the web." /></p>
   </div>
@@ -461,22 +465,22 @@ function hierarchyMenu(steps, changeIndex){
     var level = parseInt(heading.tagName.slice(1));
     var id = $(heading).attr('id');
     var text = $(heading).text();
-    var link = $('<a>').attr('href', '#').text(text);
+    var link = $('<a>').attr('href', `#${id}`).text(text);
     
-    link.click(function() {
-      var step;
-
-      if(level==2){
-        step=$($(heading).parents('.section')[0]).find('.step:first')[0];
+    //TODO: manage hashchange at main level
+    $(window).on('hashchange', function(e){      
+      if(location.hash==`#${id}`){
+          var step;
+          if(level==2){
+            step=$($(heading).parents('.section')[0]).find('.step:first')[0];
+          }
+          else{
+            step=$(heading).parents('.step')[0];
+          }
+          let current=steps.index(step);
+          changeIndex(current);
       }
-      else{
-        step=$(heading).parents('.step')[0];
-      }
-      let current=steps.index(step);
-      changeIndex(current);
     });
-      
-    
 
     var item = $('<li>').append(link);
 
@@ -587,6 +591,10 @@ function tutorial(){
 $(document).ready(function() {
   codeCopy();
   tutorial();
+  //TODO: Fix the issue with the hashchange event
+  let oldLoc=location.href;
+  window.location=location+"&";
+  window.location=oldLoc;
 });
 </script>
   </div>
