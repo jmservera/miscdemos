@@ -190,12 +190,18 @@ Generate four names for our space startup:
 
 You can try different examples or add more details to the prompt, such as the type of service or product your startup offers, to get different results.
 
+When you have a name you like, tell it to Copilot so it remembers it for later:
+
+```prompt
+I choose [WRITE YOUR PREFERRED NAME HERE], I love it!
+```
+
 </div>
 <div class="step" markdown="1">
 
 ### Step 3: Assess the costs
 
-Sending a spaceship with humans is tough. But as a startup, we must show investors that we've done our math. You can use **chain-of-thought prompting** to enforce the model to think about all the details. It involves guiding the AI to think through the problem step-by-step, leading it to the desired output:
+Sending a spaceship with humans is tough. But as a startup, we must show investors that we've done our math. You can use **chain-of-thought prompting** to enforce the model to think about all the details. It involves guiding the AI to think through the problem step-by-step, leading it to the desired output. It as simple as asking a question and then telling the AI to think step by step. For example, you can write:
 
 ```prompt
 Calculate the costs of shipping a spaceship to Mars with a crew of 6, this first mission is a one-way trip, so we need to consider the travel time and how to send all the materials needed to survive on Mars. Let’s think step by step.
@@ -213,7 +219,6 @@ Now that you have calculated the costs of the mission, you might want to experim
 As you will be challenged by the investors when you present your plan, you can use a [**tree-of-thought**](https://www.promptingguide.ai/techniques/tot) prompting technique. This technique helps the model generate different ideas and choose the best one from them.
 
 ```prompt
-I have selected the name for the startup: [PUT THE NAME YOU SELECTED HERE].
 Imagine our top three engineers are discussing three different ideas for our startup's business plan. Generate them and pick the best one.
 ```
 
@@ -286,6 +291,7 @@ Can you format it like this:
 Description
 ```
 
+And now you can start calling your investors to present your project!
 </div>
 
 </div>

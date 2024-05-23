@@ -215,24 +215,32 @@ Your personal traits are what make you extraordinary. Your passion for space, vi
 
     <p>To generate a name for your space startup, you can use a <strong>few-shot prompt</strong>, which is a type of prompt that provides some examples of the desired output, followed by an empty line where Bing Chat will fill in a new output based on the examples. For example, you can write:</p>
 
-    <pre><code class="language-prompt">Some possible names for a space startup are:
+    <pre><code class="language-prompt">I am looking on naming ideas for our startup that builds and sends human spaceships to Mars. 
+I want the names to reflect the special background of our CEO and contain a number.
 
-- SpaceX
-- Blue Origin
-- Virgin Galactic
-- Clearspace
+Generate four names for our space startup:
 
-Generate three names for our space startup that builds and sends human spaceships to Mars and show the special background of our CEO:
+- MarsChefX1
+- AstroCuisine7
+- OrbitGourmet9
+- GalacticGourmet8
+
+Generate four names for our space startup:
 </code></pre>
 
     <p>You can try different examples or add more details to the prompt, such as the type of service or product your startup offers, to get different results.</p>
+
+    <p>When you have a name you like, tell it to Copilot so it remembers it for later:</p>
+
+    <pre><code class="language-prompt">I choose [WRITE YOUR PREFERRED NAME HERE], I love it!
+</code></pre>
 
   </div>
   <div class="step">
 
     <h3 id="step-3-assess-the-costs">Step 3: Assess the costs</h3>
 
-    <p>Sending a spaceship with humans is tough. But as a startup, we must show investors that we’ve done our math. You can use <strong>chain-of-thought prompting</strong> to enforce the model to think about all the details. It involves guiding the AI to think through the problem step-by-step, leading it to the desired output:</p>
+    <p>Sending a spaceship with humans is tough. But as a startup, we must show investors that we’ve done our math. You can use <strong>chain-of-thought prompting</strong> to enforce the model to think about all the details. It involves guiding the AI to think through the problem step-by-step, leading it to the desired output. It as simple as asking a question and then telling the AI to think step by step. For example, you can write:</p>
 
     <pre><code class="language-prompt">Calculate the costs of shipping a spaceship to Mars with a crew of 6, this first mission is a one-way trip, so we need to consider the travel time and how to send all the materials needed to survive on Mars. Let’s think step by step.
 
@@ -248,8 +256,7 @@ This part of the project is called Budget.
 
     <p>As you will be challenged by the investors when you present your plan, you can use a <a href="https://www.promptingguide.ai/techniques/tot"><strong>tree-of-thought</strong></a> prompting technique. This technique helps the model generate different ideas and choose the best one from them.</p>
 
-    <pre><code class="language-prompt">I have selected the name for the startup: [PUT THE NAME YOU SELECTED HERE].
-Imagine our top three engineers are discussing three different ideas for our startup's business plan. Generate them and pick the best one.
+    <pre><code class="language-prompt">Imagine our top three engineers are discussing three different ideas for our startup's business plan. Generate them and pick the best one.
 </code></pre>
 
     <p><strong>Prompt refinement and iteration</strong>: ask for additional improvements to the content generated. For example, generate the full plan based on that idea:</p>
@@ -321,6 +328,7 @@ Can you format it like this:
 Description
 </code></pre>
 
+    <p>And now you can start calling your investors to present your project!</p>
   </div>
 
 </div>
