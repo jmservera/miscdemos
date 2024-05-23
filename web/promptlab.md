@@ -9,7 +9,7 @@ By Florian Follonier - Cloud Solution Architect Data & AI - Microsoft
 
 & Juan Manuel Servera - Cloud Solution Architect App Inno - Microsoft
 
-## Prompt Engineering Hands-on Lab: An Introduction
+## Introduction
 
 Welcome to the Prompt Engineering Hands-on Lab!
 
@@ -30,6 +30,8 @@ Now, let's dive in and get started with our first exercise!
 For this exercise we are going to use Microsoft Copilot, your everyday AI companion, providing AI-powered chat for the web. Open it at <https://www.bing.com/chat> and configure the conversation style to “**More creative**”, because today we are going to have an ideation session and, as Linus Pauling said once, the best way to have a good idea is to have lots of ideas.
 
 ![Screenshot showing Copilot on the web.](./img/Copilot%20in%20desktop.png)
+
+### Seed Text Prompt
 
 Write the following prompt in the “Ask me anything…” textbox:
 
@@ -57,11 +59,15 @@ The space is
 
 You will get a shorter, more concise answer.
 
+### Conditional Prompt
+
 Next, we have **conditional prompts**. You use these to tell the AI to create content based on certain rules or conditions. Try this one:
 
 ```prompt
 Draft a story about a new company building a spaceship to fly to Mars, founded by an astronaut, a few former NASA and ESA engineers, and an awarded cook.
 ```
+
+### Multiple Choice Prompt
 
 In **multiple choice prompts** you present the AI with several options from which it must choose or recommend the most appropriate one based on the context or criteria provided.
 
@@ -73,6 +79,8 @@ B) a DeLorean
 C) a spaceship
 D) a private jet
 ```
+
+### Zero-shot Prompt: classification example
 
 The previous examples are simple **Zero-shot prompts**. In these prompts we do not provide any example, we directly instruct the model to answer a question and we rely on the training data to obtain the answer. (Keep in mind that nowadays Bing chat has access to the internet, and it is also using some other techniques like meta-prompting, function calling, content filtering and RAG, so this is not completely true, but for this exercise we will just ignore this).
 
@@ -92,13 +100,15 @@ Are you sure? What if the word cool was factual in this sentence?
 
 Now Copilot must have given this a second thought and understood the nuances.
 
+### Exercise 1 Conclusion
+
 > Excellent job on completing the first exercise! Remember, there is no 'one-size-fits-all' approach to using AI. Feel free to experiment with different types of prompts to see what results you get. The more you experiment, the more you will understand how to guide Copilot effectively. If you need some more examples for each type of prompt, check the [example guide](#some-more-example-prompts) at the end of this document.
 
 ## Exercise 2 – Create your own space startup
 
 > As we dive into the second exercise, keep in mind that this is your opportunity to get creative and experiment. Try different prompt techniques, adjust your instructions, and see how Copilot responds. Remember, there is no right or wrong way to do this – the goal is to learn and have fun!
 
-### Introduction
+### Copilot details
 
 You may have noticed by now that Copilot can give you up to thirty answers in a session:
 
@@ -110,9 +120,9 @@ In this exercise, you will use Copilot to generate various elements of your own 
 
 ### Step 1: Set the context
 
-Usually, Large Language Model (LLM) chat apps use a System Message and some templates to set the rules of the generation. We cannot change the system message for Copilot, but we can provide our own context for the session as a first message.
+Usually, Large Language Model (LLM) chat apps use a **System Message** (usually hidden to you) and templates to set the rules of the generation. We cannot change the system message for Copilot, but we can provide a message to define our own context for the session.
 
-In this exercise, we want you to be the CEO of a new spaceship startup, so Copilot will be your executive assistant, which will help you shape your ideas. Write a prompt like this to set the context, but remember to tailor it to your own preferences (i.e.: you do not need to be an awarded cook 😉):
+In this exercise, we want you to be the CEO of a new spaceship startup, and Copilot will be your executive assistant, which will help you shape your ideas. Write a prompt like this to set the context, but remember to **tailor it to your own preferences** (i.e.: you do not need to be an awarded cook 😉):
 
 ```prompt
 You are an executive assistant to an awarded cook that now is the CEO of a cutting-edge spaceship startup; your role is multifaceted and pivotal. You possess a deep understanding of aerospace engineering, which allows you to contribute significantly to the design and logistics of human spaceships bound for Mars. Your strategic planning skills enable you to assist in setting long-term goals, allocating resources effectively, and ensuring that every project milestone aligns with the company’s ambitious vision.
@@ -122,7 +132,7 @@ Your creative input is crucial in ideating innovative solutions and designing a 
 Your personal traits are what make you extraordinary. Your passion for space, visionary outlook, and proactive nature equips you to anticipate challenges and address them with resilience. Detail-oriented and adaptable, you maintain composure under pressure, making you an indispensable asset to the CEO and the entire organization as you collectively strive to achieve the monumental task of shipping a human spaceship to Mars.
 ```
 
-This was again a zero-Shot prompt, but we are just establishing the context.
+This was again a **zero-Shot prompt**, but we are just establishing the context.
 
 ### Step 2: Generate a name for your space startup
 

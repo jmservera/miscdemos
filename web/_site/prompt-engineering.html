@@ -50,7 +50,7 @@
 
 <p>&amp; Juan Manuel Servera - Cloud Solution Architect App Inno - Microsoft</p>
 
-<h2 id="prompt-engineering-hands-on-lab-an-introduction">Prompt Engineering Hands-on Lab: An Introduction</h2>
+<h2 id="introduction">Introduction</h2>
 
 <p>Welcome to the Prompt Engineering Hands-on Lab!</p>
 
@@ -71,6 +71,8 @@
 <p>For this exercise we are going to use Microsoft Copilot, your everyday AI companion, providing AI-powered chat for the web. Open it at <a href="https://www.bing.com/chat">https://www.bing.com/chat</a> and configure the conversation style to “<strong>More creative</strong>”, because today we are going to have an ideation session and, as Linus Pauling said once, the best way to have a good idea is to have lots of ideas.</p>
 
 <p><img src="./img/Copilot%20in%20desktop.png" alt="Screenshot showing Copilot on the web." /></p>
+
+<h3 id="seed-text-prompt">Seed Text Prompt</h3>
 
 <p>Write the following prompt in the “Ask me anything…” textbox:</p>
 
@@ -96,10 +98,14 @@ The space is
 
 <p>You will get a shorter, more concise answer.</p>
 
+<h3 id="conditional-prompt">Conditional Prompt</h3>
+
 <p>Next, we have <strong>conditional prompts</strong>. You use these to tell the AI to create content based on certain rules or conditions. Try this one:</p>
 
 <pre><code class="language-prompt">Draft a story about a new company building a spaceship to fly to Mars, founded by an astronaut, a few former NASA and ESA engineers, and an awarded cook.
 </code></pre>
+
+<h3 id="multiple-choice-prompt">Multiple Choice Prompt</h3>
 
 <p>In <strong>multiple choice prompts</strong> you present the AI with several options from which it must choose or recommend the most appropriate one based on the context or criteria provided.</p>
 
@@ -110,6 +116,8 @@ B) a DeLorean
 C) a spaceship
 D) a private jet
 </code></pre>
+
+<h3 id="zero-shot-prompt-classification-example">Zero-shot Prompt: classification example</h3>
 
 <p>The previous examples are simple <strong>Zero-shot prompts</strong>. In these prompts we do not provide any example, we directly instruct the model to answer a question and we rely on the training data to obtain the answer. (Keep in mind that nowadays Bing chat has access to the internet, and it is also using some other techniques like meta-prompting, function calling, content filtering and RAG, so this is not completely true, but for this exercise we will just ignore this).</p>
 
@@ -127,6 +135,8 @@ Sentiment:
 
 <p>Now Copilot must have given this a second thought and understood the nuances.</p>
 
+<h3 id="exercise-1-conclusion">Exercise 1 Conclusion</h3>
+
 <blockquote>
   <p>Excellent job on completing the first exercise! Remember, there is no ‘one-size-fits-all’ approach to using AI. Feel free to experiment with different types of prompts to see what results you get. The more you experiment, the more you will understand how to guide Copilot effectively. If you need some more examples for each type of prompt, check the <a href="#some-more-example-prompts">example guide</a> at the end of this document.</p>
 </blockquote>
@@ -137,7 +147,7 @@ Sentiment:
   <p>As we dive into the second exercise, keep in mind that this is your opportunity to get creative and experiment. Try different prompt techniques, adjust your instructions, and see how Copilot responds. Remember, there is no right or wrong way to do this – the goal is to learn and have fun!</p>
 </blockquote>
 
-<h3 id="introduction">Introduction</h3>
+<h3 id="copilot-details">Copilot details</h3>
 
 <p>You may have noticed by now that Copilot can give you up to thirty answers in a session:</p>
 
@@ -149,9 +159,9 @@ Sentiment:
 
 <h3 id="step-1-set-the-context">Step 1: Set the context</h3>
 
-<p>Usually, Large Language Model (LLM) chat apps use a System Message and some templates to set the rules of the generation. We cannot change the system message for Copilot, but we can provide our own context for the session as a first message.</p>
+<p>Usually, Large Language Model (LLM) chat apps use a <strong>System Message</strong> (usually hidden to you) and templates to set the rules of the generation. We cannot change the system message for Copilot, but we can provide a message to define our own context for the session.</p>
 
-<p>In this exercise, we want you to be the CEO of a new spaceship startup, so Copilot will be your executive assistant, which will help you shape your ideas. Write a prompt like this to set the context, but remember to tailor it to your own preferences (i.e.: you do not need to be an awarded cook 😉):</p>
+<p>In this exercise, we want you to be the CEO of a new spaceship startup, and Copilot will be your executive assistant, which will help you shape your ideas. Write a prompt like this to set the context, but remember to <strong>tailor it to your own preferences</strong> (i.e.: you do not need to be an awarded cook 😉):</p>
 
 <pre><code class="language-prompt">You are an executive assistant to an awarded cook that now is the CEO of a cutting-edge spaceship startup; your role is multifaceted and pivotal. You possess a deep understanding of aerospace engineering, which allows you to contribute significantly to the design and logistics of human spaceships bound for Mars. Your strategic planning skills enable you to assist in setting long-term goals, allocating resources effectively, and ensuring that every project milestone aligns with the company’s ambitious vision.
 
@@ -160,7 +170,7 @@ Your creative input is crucial in ideating innovative solutions and designing a 
 Your personal traits are what make you extraordinary. Your passion for space, visionary outlook, and proactive nature equips you to anticipate challenges and address them with resilience. Detail-oriented and adaptable, you maintain composure under pressure, making you an indispensable asset to the CEO and the entire organization as you collectively strive to achieve the monumental task of shipping a human spaceship to Mars.
 </code></pre>
 
-<p>This was again a zero-Shot prompt, but we are just establishing the context.</p>
+<p>This was again a <strong>zero-Shot prompt</strong>, but we are just establishing the context.</p>
 
 <h3 id="step-2-generate-a-name-for-your-space-startup">Step 2: Generate a name for your space startup</h3>
 
