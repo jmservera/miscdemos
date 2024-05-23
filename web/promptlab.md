@@ -35,7 +35,9 @@ Now, let's dive in and get started with our first exercise!
 ## Exercise 1 – Warmup with Basic prompts
 
 <div class="step" markdown="1">
-For this exercise we are going to use Microsoft Copilot, your everyday AI companion, providing AI-powered chat for the web. Open it at <https://www.bing.com/chat> and configure the conversation style to “**More creative**”, because today we are going to have an ideation session and, as Linus Pauling said once, the best way to have a good idea is to have lots of ideas.
+For this exercise we are going to use Microsoft Copilot, your everyday AI companion, providing AI-powered chat for the web. Open it at <https://www.bing.com/chat> and configure the conversation style to “**More creative**”, because today we are going to have an ideation session and, as Linus Pauling said once:
+
+> The best way to have a good idea is to have lots of ideas.
 
 ![Screenshot showing Copilot on the web.](./img/Copilot%20in%20desktop.png)
 </div>
