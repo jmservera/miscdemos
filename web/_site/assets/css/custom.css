@@ -17,3 +17,11 @@ pre .copy-button { position: absolute; top: 0; right: 0; padding: 2px 5px; backg
 #sidebar-index a { display: block; margin-bottom: 0.5em; }
 
 @media screen and (max-width: 1200px) { #sidebar-index { display: none; } }
+/* CSS */
+.section { display: none; }
+
+.section.active { display: block; }
+
+.step { display: none; }
+
+.step.active { display: block; }

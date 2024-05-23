@@ -43,88 +43,13 @@
   </header>
 
   <div class="post-content">
-    <div id="sidebar-index"><button type="button" id="sidebar-toggle">&gt;</button></div>
-
-<p>Here’s a list of all the pages on this site:</p>
+    <p>Here’s a list of all the pages on this site:</p>
 
 <ul>
   <li><a href="/prompt-engineering">Prompt Engineering Hands-on Lab</a></li>
 </ul>
 
 
-
-<!-- _layouts/page.html -->
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script lang="JavaScript">
-$(document).ready(function() {
-  var hierarchy = [$('<ul>')];
-  var currentLevel = 2;
-
-  var headings = $('.page-content h2, .page-content h3, .page-content h4, .page-content h5, .page-content h6');
-  headings.each(function(i, heading) {
-    var level = parseInt(heading.tagName.slice(1));
-    var id = $(heading).attr('id');
-    var text = $(heading).text();
-    var link = $('<a>').attr('href', '#' + id).text(text);
-    var item = $('<li>').append(link);
-
-    if (level > currentLevel) {
-      var newLevel = $('<ul>');
-      var button = $('<button>').attr('type','button').addClass('collapser').text('+').click(function() {
-        newLevel.toggle();
-        button.text(newLevel.is(':visible') ? '-' : '+');
-      });
-      hierarchy[hierarchy.length - 1].children().last().append(button);
-      hierarchy[hierarchy.length - 1].children().last().append(newLevel);
-      hierarchy.push(newLevel);
-    } else if (level < currentLevel) {
-      hierarchy.pop();
-    }
-
-    hierarchy[hierarchy.length - 1].append(item);
-    currentLevel = level;
-  });
-
-  $('#sidebar-index').append(hierarchy[0]);
-
-  $('#sidebar-toggle').click(function() {
-    $('#sidebar-index').toggleClass('collapsed');
-    $('#sidebar-index').hasClass('collapsed') ? $(this).text('<') : $(this).text('>');
-  });
-
-  $('pre code').each(function() {
-    var button = $('<button>').attr('type', 'button').attr('title','Copy').addClass('copy-button').text('📋');
-    $(this).parent().prepend(button);
-  });
-
-  var message = $('<div>').attr('id', 'copy-message').text('Text copied to clipboard').hide();
-  $('body').append(message);
-
-  $('.copy-button').click(function() {
-    var code = $(this).siblings('code').text();
-    var position = $(this).offset();
-
-    navigator.clipboard.writeText(code).then(function() {
-      // Get the position of the button
-
-      // Set the position of the message
-      $('#copy-message').css({
-        top: position.top + 'px',
-        left: (position.left - $('#copy-message').width()) + 'px'
-      });
-      // Show the message
-      $('#copy-message').fadeIn('slow', function() {
-        // Hide the message after 800 ms
-        $(this).delay(800).fadeOut('slow');
-      });
-    }, function() {
-      // failure
-      alert('Failed to copy text');
-    });
-  });
-});
-</script>
   </div>
 
 </article>

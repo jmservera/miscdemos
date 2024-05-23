@@ -1,25 +1,44 @@
 ---
 layout: page
 ---
-
-<div id="sidebar-index"><button type="button" id="sidebar-toggle">&gt;</button></div>
+<button class="prev">Previous</button>
+<button class="next">Next</button>
+<div id="sidebar-index" class="collapsed"><button type="button" id="sidebar-toggle">&lt;</button></div>
 
 {{ content }}
 
+<button class="prev">Previous</button>
+<button class="next">Next</button>
 <!-- _layouts/page.html -->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script lang="JavaScript">
-$(document).ready(function() {
+<script>
+function hierarchyMenu(steps, changeIndex){
   var hierarchy = [$('<ul>')];
   var currentLevel = 2;
 
-  var headings = $('.page-content h2, .page-content h3, .page-content h4, .page-content h5, .page-content h6');
+  var headings = $('.page-content h2, .page-content h3');
   headings.each(function(i, heading) {
     var level = parseInt(heading.tagName.slice(1));
     var id = $(heading).attr('id');
     var text = $(heading).text();
-    var link = $('<a>').attr('href', '#' + id).text(text);
+    var link = $('<a>').attr('href', '#').text(text);
+    
+    link.click(function() {
+      var step;
+
+      if(level==2){
+        step=$($(heading).parents('.section')[0]).find('.step:first')[0];
+      }
+      else{
+        step=$(heading).parents('.step')[0];
+      }
+      let current=steps.index(step);
+      changeIndex(current);
+    });
+      
+    
+
     var item = $('<li>').append(link);
 
     if (level > currentLevel) {
@@ -40,12 +59,13 @@ $(document).ready(function() {
   });
 
   $('#sidebar-index').append(hierarchy[0]);
-
   $('#sidebar-toggle').click(function() {
     $('#sidebar-index').toggleClass('collapsed');
     $('#sidebar-index').hasClass('collapsed') ? $(this).text('<') : $(this).text('>');
   });
+}
 
+function codeCopy(){
   $('pre code').each(function() {
     var button = $('<button>').attr('type', 'button').attr('title','Copy').addClass('copy-button').text('📋');
     $(this).parent().prepend(button);
@@ -76,5 +96,57 @@ $(document).ready(function() {
       alert('Failed to copy text');
     });
   });
+}
+
+function tutorial(){
+  let steps = $('.step');
+  let currentIndex = 0;
+
+  // Show the first section
+  steps[currentIndex].classList.add('active');
+  $(steps[currentIndex]).parents('.section')[0].classList.add('active');
+
+  let changeIndex= (index)=>{
+    $(steps[currentIndex]).parents('.section')[0].classList.remove('active');
+    steps[currentIndex].classList.remove('active');
+    currentIndex=index;
+    steps[currentIndex].classList.add('active');
+    $(steps[currentIndex]).parents('.section')[0].classList.add('active');
+    if(currentIndex>0){
+      $('button.prev').removeAttr('disabled');
+    }
+    else{
+      $('button.prev').attr('disabled','disabled');
+    }
+    if(currentIndex<steps.length-1){
+      $('button.next').removeAttr('disabled');
+    }
+    else{
+      $('button.next').attr('disabled','disabled');
+    }
+  };
+
+  let movePrev=() => {
+    if (currentIndex > 0) {
+        changeIndex(currentIndex-1);
+    }
+  };
+  let moveNext= () => {
+    if (currentIndex < steps.length - 1) {
+        changeIndex(currentIndex+1);
+      }
+  }
+
+  $('button.prev').each((i,btn)=>btn.addEventListener('click',movePrev,false));
+  $('button.next').each((i,btn)=>btn.addEventListener('click',moveNext,false));
+
+  changeIndex(0);
+
+  hierarchyMenu(steps,changeIndex);
+}
+
+$(document).ready(function() {
+  codeCopy();
+  tutorial();
 });
 </script>

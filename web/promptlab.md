@@ -5,12 +5,15 @@ subtitle: "HSG Alumni"
 authors: ["Florian Follonier - Microsoft", "Juan Manuel Servera - Microsoft"]
 permalink: /prompt-engineering
 ---
+
+<div class="section" markdown="1">
 By Florian Follonier - Cloud Solution Architect Data & AI - Microsoft
 
 & Juan Manuel Servera - Cloud Solution Architect App Inno - Microsoft
 
 ## Introduction
 
+<div class="step" markdown="1">
 Welcome to the Prompt Engineering Hands-on Lab!
 
 We designed this guide to assist you in understanding and utilizing Microsoft's AI companion, Copilot, in a practical and engaging manner.
@@ -24,12 +27,19 @@ In the first exercise, you'll get to know how Copilot works by using simple prom
 By the end of this lab, you will have a comprehensive understanding of how to interact with and guide AI language models, and how to use them as a powerful tool in your own projects.
   
 Now, let's dive in and get started with our first exercise!
+</div>
+</div>
+
+<div class="section" markdown="1">
 
 ## Exercise 1 – Warmup with Basic prompts
 
+<div class="step" markdown="1">
 For this exercise we are going to use Microsoft Copilot, your everyday AI companion, providing AI-powered chat for the web. Open it at <https://www.bing.com/chat> and configure the conversation style to “**More creative**”, because today we are going to have an ideation session and, as Linus Pauling said once, the best way to have a good idea is to have lots of ideas.
 
 ![Screenshot showing Copilot on the web.](./img/Copilot%20in%20desktop.png)
+</div>
+<div class="step" markdown="1">
 
 ### Seed Text Prompt
 
@@ -58,6 +68,8 @@ The space is
 ```
 
 You will get a shorter, more concise answer.
+</div>
+<div class="step" markdown="1">
 
 ### Conditional Prompt
 
@@ -66,6 +78,9 @@ Next, we have **conditional prompts**. You use these to tell the AI to create co
 ```prompt
 Draft a story about a new company building a spaceship to fly to Mars, founded by an astronaut, a few former NASA and ESA engineers, and an awarded cook.
 ```
+
+</div>
+<div class="step" markdown="1">
 
 ### Multiple Choice Prompt
 
@@ -79,6 +94,8 @@ B) a DeLorean
 C) a spaceship
 D) a private jet
 ```
+</div>
+<div class="step" markdown="1">
 
 ### Zero-shot Prompt: classification example
 
@@ -100,11 +117,23 @@ Are you sure? What if the word cool was factual in this sentence?
 
 Now Copilot must have given this a second thought and understood the nuances.
 
+</div>
+<div class="step" markdown="1">
+
 ### Exercise 1 Conclusion
 
-> Excellent job on completing the first exercise! Remember, there is no 'one-size-fits-all' approach to using AI. Feel free to experiment with different types of prompts to see what results you get. The more you experiment, the more you will understand how to guide Copilot effectively. If you need some more examples for each type of prompt, check the [example guide](#some-more-example-prompts) at the end of this document.
+Excellent job on completing the first exercise!
+
+> Remember, there is no 'one-size-fits-all' approach to using AI. Feel free to experiment with different types of prompts to see what results you get. The more you experiment, the more you will understand how to guide Copilot effectively. If you need some more examples for each type of prompt, check the [example guide](#some-more-example-prompts) at the end of this document.
+
+</div>
+
+</div>
+<div class="section" markdown="1">
 
 ## Exercise 2 – Create your own space startup
+
+<div class="step" markdown="1">
 
 > As we dive into the second exercise, keep in mind that this is your opportunity to get creative and experiment. Try different prompt techniques, adjust your instructions, and see how Copilot responds. Remember, there is no right or wrong way to do this – the goal is to learn and have fun!
 
@@ -117,6 +146,8 @@ You may have noticed by now that Copilot can give you up to thirty answers in a 
 This means that after iterating 30 times you will need to start again from scratch. So, before starting this second exercise, click on the "**New topic**" button to start a new session.
 
 In this exercise, you will use Copilot to generate various elements of your own space startup, such as the name, the mission statement, the logo, and the business plan. You will also learn how to use different prompting techniques, such as few-shot prompts, chain-of-thought prompts, and tree-of thought-prompts, to guide the generation process and produce high-quality results.
+</div>
+<div class="step" markdown="1">
 
 ### Step 1: Set the context
 
@@ -133,6 +164,9 @@ Your personal traits are what make you extraordinary. Your passion for space, vi
 ```
 
 This was again a **zero-Shot prompt**, but we are just establishing the context.
+
+</div>
+<div class="step" markdown="1">
 
 ### Step 2: Generate a name for your space startup
 
@@ -151,6 +185,9 @@ Generate three names for our space startup that builds and sends human spaceship
 
 You can try different examples or add more details to the prompt, such as the type of service or product your startup offers, to get different results.
 
+</div>
+<div class="step" markdown="1">
+
 ### Step 3: Assess the costs
 
 Sending a spaceship with humans is tough. But as a startup, we must show investors that we've done our math. You can use **chain-of-thought prompting** to enforce the model to think about all the details. It involves guiding the AI to think through the problem step-by-step, leading it to the desired output:
@@ -162,6 +199,9 @@ This part of the project is called Budget.
 ```
 
 Now that you have calculated the costs of the mission, you might want to experiment with different scenarios. What if the crew size changed? Or the distance to Mars varied? Feel free to play around with these variables and see how the costs change.
+
+</div>
+<div class="step" markdown="1">
 
 ### Step 4: Generate a business plan
 
@@ -180,6 +220,9 @@ Now, based on the executive summary and budget, please complete the business pla
 This part of the project work is called Business Plan.
 ```
 
+</div>
+<div class="step" markdown="1">
+
 ### Step 5: Generate a mission statement for your space startup
 
 Now that we have extensive content, we can generate a mission statement for your space startup. For example, you can write:
@@ -189,6 +232,9 @@ This part of the project work is called Mission Statement.
 
 Write a mission statement that reflects our objectives and the values of the company.
 ```
+
+</div>
+<div class="step" markdown="1">
 
 ### Step 6: Create a logo for your company
 
@@ -201,6 +247,9 @@ Create a monochromatic logo in red for our company that reflects the mission and
 ```
 
 > Did you notice that Copilot crafted the prompt for DALL·E? You did not need to explain again that it was a spaceship company going to Mars, because it used the **chains** it already had. You can also go directly to <https://www.bing.com/images/create> to generate images with your own prompts.
+
+</div>
+<div class="step" markdown="1">
 
 ### Step 7: pulling it all together
 
@@ -232,8 +281,14 @@ Can you format it like this:
 Description
 ```
 
+</div>
+
+</div>
+<div class="section" markdown="1">
+
 ## Conclusion  
 
+<div class="step" markdown="1">
 Congratulations on completing this lab! Remember, the key to mastering AI is practice and experimentation. Don't be afraid to try new things, make mistakes and learn from them. Keep experimenting with different prompts and techniques and see where your creativity takes you with AI!
 
 Throughout this lab, you have gained hands-on experience in crafting and refining prompts, guiding AI language models to generate the desired content, and using AI tools for practical applications.  
@@ -245,9 +300,13 @@ By creating elements for a fictional space startup, you have also seen how these
 We hope you find this lab engaging and insightful. We encourage you to continue exploring and experimenting with AI tools like Copilot in your future projects. Remember, the possibilities are as vast as space itself.
 
 Happy prompting!
+</div>
+</div>
+<div class="section" markdown="1">
 
 ## Glossary  
 
+<div class="step" markdown="1">
 1. **AI Companion**: An artificial intelligence system designed to assist users in various tasks.
 2. **Prompt**: A command or statement that guides the AI in generating content.  
 3. **Seed Text Prompt**: A simple, open-ended statement or question that serves as a starting point for AI-generated content.  
@@ -264,9 +323,13 @@ Happy prompting!
 14. **Session**: A sequence of interactions with the AI model.  
 
 *These definitions are specific to this lab guide and the usage of Microsoft's AI companion, Copilot. The definitions might vary slightly in different contexts or with different AI systems.*
+</div>
+</div>
+<div class="section" markdown="1">
 
 ## Some more example prompts
 
+<div class="step" markdown="1">
 Here are a few more examples for each type of prompt mentioned in the guide:  
 
 1. **Seed Text Prompt**:  
@@ -308,3 +371,5 @@ Here are a few more examples for each type of prompt mentioned in the guide:
    * "Our marketing team is brainstorming ideas for our next ad campaign. They have three different concepts. Generate them and choose the best one."
 
 Remember to tailor the prompts to your specific needs and goals, and do not be afraid to experiment with different formats and styles to get the best results.
+</div>
+</div>

@@ -44,139 +44,174 @@
   </header>
 
   <div class="post-content">
-    <div id="sidebar-index"><button type="button" id="sidebar-toggle">&gt;</button></div>
+    <button class="prev">Previous</button>
+<button class="next">Next</button>
+<div id="sidebar-index" class="collapsed"><button type="button" id="sidebar-toggle">&lt;</button></div>
 
-<p>By Florian Follonier - Cloud Solution Architect Data &amp; AI - Microsoft</p>
+<div class="section">
+  <p>By Florian Follonier - Cloud Solution Architect Data &amp; AI - Microsoft</p>
 
-<p>&amp; Juan Manuel Servera - Cloud Solution Architect App Inno - Microsoft</p>
+  <p>&amp; Juan Manuel Servera - Cloud Solution Architect App Inno - Microsoft</p>
 
-<h2 id="introduction">Introduction</h2>
+  <h2 id="introduction">Introduction</h2>
 
-<p>Welcome to the Prompt Engineering Hands-on Lab!</p>
+  <div class="step">
+    <p>Welcome to the Prompt Engineering Hands-on Lab!</p>
 
-<p>We designed this guide to assist you in understanding and utilizing Microsoft’s AI companion, Copilot, in a practical and engaging manner.</p>
+    <p>We designed this guide to assist you in understanding and utilizing Microsoft’s AI companion, Copilot, in a practical and engaging manner.</p>
 
-<p>Throughout this lab, we will delve into the world of AI-powered chat, explore diverse types of prompts, and learn how to guide an AI language model to generate the desired content. The exercises are designed to be hands-on, allowing you to learn by doing and applying your newfound skills in real-time.</p>
+    <p>Throughout this lab, we will delve into the world of AI-powered chat, explore diverse types of prompts, and learn how to guide an AI language model to generate the desired content. The exercises are designed to be hands-on, allowing you to learn by doing and applying your newfound skills in real-time.</p>
 
-<p>Our goal is to equip you with the skills and understanding to effectively use AI tools like Copilot in your own projects, whether they are for business, education, or personal use.</p>
+    <p>Our goal is to equip you with the skills and understanding to effectively use AI tools like Copilot in your own projects, whether they are for business, education, or personal use.</p>
 
-<p>In the first exercise, you’ll get to know how Copilot works by using simple prompts. In the second exercise, you will use Copilot to create different things for a made-up space startup. This will involve generating a company name, mission statement, logo, and even a business plan, all using different prompting techniques.</p>
+    <p>In the first exercise, you’ll get to know how Copilot works by using simple prompts. In the second exercise, you will use Copilot to create different things for a made-up space startup. This will involve generating a company name, mission statement, logo, and even a business plan, all using different prompting techniques.</p>
 
-<p>By the end of this lab, you will have a comprehensive understanding of how to interact with and guide AI language models, and how to use them as a powerful tool in your own projects.</p>
+    <p>By the end of this lab, you will have a comprehensive understanding of how to interact with and guide AI language models, and how to use them as a powerful tool in your own projects.</p>
 
-<p>Now, let’s dive in and get started with our first exercise!</p>
+    <p>Now, let’s dive in and get started with our first exercise!</p>
+  </div>
+</div>
 
-<h2 id="exercise-1--warmup-with-basic-prompts">Exercise 1 – Warmup with Basic prompts</h2>
+<div class="section">
 
-<p>For this exercise we are going to use Microsoft Copilot, your everyday AI companion, providing AI-powered chat for the web. Open it at <a href="https://www.bing.com/chat">https://www.bing.com/chat</a> and configure the conversation style to “<strong>More creative</strong>”, because today we are going to have an ideation session and, as Linus Pauling said once, the best way to have a good idea is to have lots of ideas.</p>
+  <h2 id="exercise-1--warmup-with-basic-prompts">Exercise 1 – Warmup with Basic prompts</h2>
 
-<p><img src="./img/Copilot%20in%20desktop.png" alt="Screenshot showing Copilot on the web." /></p>
+  <div class="step">
+    <p>For this exercise we are going to use Microsoft Copilot, your everyday AI companion, providing AI-powered chat for the web. Open it at <a href="https://www.bing.com/chat">https://www.bing.com/chat</a> and configure the conversation style to “<strong>More creative</strong>”, because today we are going to have an ideation session and, as Linus Pauling said once, the best way to have a good idea is to have lots of ideas.</p>
 
-<h3 id="seed-text-prompt">Seed Text Prompt</h3>
+    <p><img src="./img/Copilot%20in%20desktop.png" alt="Screenshot showing Copilot on the web." /></p>
+  </div>
+  <div class="step">
 
-<p>Write the following prompt in the “Ask me anything…” textbox:</p>
+    <h3 id="seed-text-prompt">Seed Text Prompt</h3>
 
-<pre><code class="language-prompt">The space is
+    <p>Write the following prompt in the “Ask me anything…” textbox:</p>
+
+    <pre><code class="language-prompt">The space is
 </code></pre>
 
-<p>This is the most basic prompt and is called a <strong>seed text prompt</strong>. A seed text prompt is a simple, open-ended statement or question that serves as a starting point for AI-generated content.</p>
+    <p>This is the most basic prompt and is called a <strong>seed text prompt</strong>. A seed text prompt is a simple, open-ended statement or question that serves as a starting point for AI-generated content.</p>
 
-<p>What was the output that Copilot generated? Depending on the day, it can generate a long dissertation about the vastness and complexity of space. It is just filling the emptiness…</p>
+    <p>What was the output that Copilot generated? Depending on the day, it can generate a long dissertation about the vastness and complexity of space. It is just filling the emptiness…</p>
 
-<p>If we want a specific answer, we need to ask a specific question. The more detailed our question, the better the answer.</p>
+    <p>If we want a specific answer, we need to ask a specific question. The more detailed our question, the better the answer.</p>
 
-<p>Before starting with the new prompt, click on “<strong>New topic</strong>” button, this will clear the context to start from scratch.</p>
+    <p>Before starting with the new prompt, click on “<strong>New topic</strong>” button, this will clear the context to start from scratch.</p>
 
-<p><img src="img/new%20topic.png" alt="New Topic button in Copilot" /></p>
+    <p><img src="img/new%20topic.png" alt="New Topic button in Copilot" /></p>
 
-<p>If you write this more explicit prompt:</p>
+    <p>If you write this more explicit prompt:</p>
 
-<pre><code class="language-prompt">Complete this sentence:
+    <pre><code class="language-prompt">Complete this sentence:
 
 The space is
 </code></pre>
 
-<p>You will get a shorter, more concise answer.</p>
+    <p>You will get a shorter, more concise answer.</p>
+  </div>
+  <div class="step">
 
-<h3 id="conditional-prompt">Conditional Prompt</h3>
+    <h3 id="conditional-prompt">Conditional Prompt</h3>
 
-<p>Next, we have <strong>conditional prompts</strong>. You use these to tell the AI to create content based on certain rules or conditions. Try this one:</p>
+    <p>Next, we have <strong>conditional prompts</strong>. You use these to tell the AI to create content based on certain rules or conditions. Try this one:</p>
 
-<pre><code class="language-prompt">Draft a story about a new company building a spaceship to fly to Mars, founded by an astronaut, a few former NASA and ESA engineers, and an awarded cook.
+    <pre><code class="language-prompt">Draft a story about a new company building a spaceship to fly to Mars, founded by an astronaut, a few former NASA and ESA engineers, and an awarded cook.
 </code></pre>
 
-<h3 id="multiple-choice-prompt">Multiple Choice Prompt</h3>
+  </div>
+  <div class="step">
 
-<p>In <strong>multiple choice prompts</strong> you present the AI with several options from which it must choose or recommend the most appropriate one based on the context or criteria provided.</p>
+    <h3 id="multiple-choice-prompt">Multiple Choice Prompt</h3>
 
-<pre><code class="language-prompt">What do we need to fly to Mars?
+    <p>In <strong>multiple choice prompts</strong> you present the AI with several options from which it must choose or recommend the most appropriate one based on the context or criteria provided.</p>
+
+    <pre><code class="language-prompt">What do we need to fly to Mars?
 
 A) a giant Mars chocolate bar
 B) a DeLorean
 C) a spaceship
 D) a private jet
 </code></pre>
+  </div>
+  <div class="step">
 
-<h3 id="zero-shot-prompt-classification-example">Zero-shot Prompt: classification example</h3>
+    <h3 id="zero-shot-prompt-classification-example">Zero-shot Prompt: classification example</h3>
 
-<p>The previous examples are simple <strong>Zero-shot prompts</strong>. In these prompts we do not provide any example, we directly instruct the model to answer a question and we rely on the training data to obtain the answer. (Keep in mind that nowadays Bing chat has access to the internet, and it is also using some other techniques like meta-prompting, function calling, content filtering and RAG, so this is not completely true, but for this exercise we will just ignore this).</p>
+    <p>The previous examples are simple <strong>Zero-shot prompts</strong>. In these prompts we do not provide any example, we directly instruct the model to answer a question and we rely on the training data to obtain the answer. (Keep in mind that nowadays Bing chat has access to the internet, and it is also using some other techniques like meta-prompting, function calling, content filtering and RAG, so this is not completely true, but for this exercise we will just ignore this).</p>
 
-<pre><code class="language-prompt">Classify the text into neutral, negative, or positive.
+    <pre><code class="language-prompt">Classify the text into neutral, negative, or positive.
 
 Text: I think the space is cool.
 
 Sentiment:
 </code></pre>
 
-<p>This should give you a positive sentiment, but you can challenge the LLM to fix its answer if you feel it is not the right one:</p>
+    <p>This should give you a positive sentiment, but you can challenge the LLM to fix its answer if you feel it is not the right one:</p>
 
-<pre><code class="language-prompt">Are you sure? What if the word cool was factual in this sentence?
+    <pre><code class="language-prompt">Are you sure? What if the word cool was factual in this sentence?
 </code></pre>
 
-<p>Now Copilot must have given this a second thought and understood the nuances.</p>
+    <p>Now Copilot must have given this a second thought and understood the nuances.</p>
 
-<h3 id="exercise-1-conclusion">Exercise 1 Conclusion</h3>
+  </div>
+  <div class="step">
 
-<blockquote>
-  <p>Excellent job on completing the first exercise! Remember, there is no ‘one-size-fits-all’ approach to using AI. Feel free to experiment with different types of prompts to see what results you get. The more you experiment, the more you will understand how to guide Copilot effectively. If you need some more examples for each type of prompt, check the <a href="#some-more-example-prompts">example guide</a> at the end of this document.</p>
-</blockquote>
+    <h3 id="exercise-1-conclusion">Exercise 1 Conclusion</h3>
 
-<h2 id="exercise-2--create-your-own-space-startup">Exercise 2 – Create your own space startup</h2>
+    <p>Excellent job on completing the first exercise!</p>
 
-<blockquote>
-  <p>As we dive into the second exercise, keep in mind that this is your opportunity to get creative and experiment. Try different prompt techniques, adjust your instructions, and see how Copilot responds. Remember, there is no right or wrong way to do this – the goal is to learn and have fun!</p>
-</blockquote>
+    <blockquote>
+      <p>Remember, there is no ‘one-size-fits-all’ approach to using AI. Feel free to experiment with different types of prompts to see what results you get. The more you experiment, the more you will understand how to guide Copilot effectively. If you need some more examples for each type of prompt, check the <a href="#some-more-example-prompts">example guide</a> at the end of this document.</p>
+    </blockquote>
 
-<h3 id="copilot-details">Copilot details</h3>
+  </div>
 
-<p>You may have noticed by now that Copilot can give you up to thirty answers in a session:</p>
+</div>
+<div class="section">
 
-<p><img src="./img/30%20answers.png" alt="The Copilot detail showing a max of 30 responses." /></p>
+  <h2 id="exercise-2--create-your-own-space-startup">Exercise 2 – Create your own space startup</h2>
 
-<p>This means that after iterating 30 times you will need to start again from scratch. So, before starting this second exercise, click on the “<strong>New topic</strong>” button to start a new session.</p>
+  <div class="step">
 
-<p>In this exercise, you will use Copilot to generate various elements of your own space startup, such as the name, the mission statement, the logo, and the business plan. You will also learn how to use different prompting techniques, such as few-shot prompts, chain-of-thought prompts, and tree-of thought-prompts, to guide the generation process and produce high-quality results.</p>
+    <blockquote>
+      <p>As we dive into the second exercise, keep in mind that this is your opportunity to get creative and experiment. Try different prompt techniques, adjust your instructions, and see how Copilot responds. Remember, there is no right or wrong way to do this – the goal is to learn and have fun!</p>
+    </blockquote>
 
-<h3 id="step-1-set-the-context">Step 1: Set the context</h3>
+    <h3 id="copilot-details">Copilot details</h3>
 
-<p>Usually, Large Language Model (LLM) chat apps use a <strong>System Message</strong> (usually hidden to you) and templates to set the rules of the generation. We cannot change the system message for Copilot, but we can provide a message to define our own context for the session.</p>
+    <p>You may have noticed by now that Copilot can give you up to thirty answers in a session:</p>
 
-<p>In this exercise, we want you to be the CEO of a new spaceship startup, and Copilot will be your executive assistant, which will help you shape your ideas. Write a prompt like this to set the context, but remember to <strong>tailor it to your own preferences</strong> (i.e.: you do not need to be an awarded cook 😉):</p>
+    <p><img src="./img/30%20answers.png" alt="The Copilot detail showing a max of 30 responses." /></p>
 
-<pre><code class="language-prompt">You are an executive assistant to an awarded cook that now is the CEO of a cutting-edge spaceship startup; your role is multifaceted and pivotal. You possess a deep understanding of aerospace engineering, which allows you to contribute significantly to the design and logistics of human spaceships bound for Mars. Your strategic planning skills enable you to assist in setting long-term goals, allocating resources effectively, and ensuring that every project milestone aligns with the company’s ambitious vision.
+    <p>This means that after iterating 30 times you will need to start again from scratch. So, before starting this second exercise, click on the “<strong>New topic</strong>” button to start a new session.</p>
+
+    <p>In this exercise, you will use Copilot to generate various elements of your own space startup, such as the name, the mission statement, the logo, and the business plan. You will also learn how to use different prompting techniques, such as few-shot prompts, chain-of-thought prompts, and tree-of thought-prompts, to guide the generation process and produce high-quality results.</p>
+  </div>
+  <div class="step">
+
+    <h3 id="step-1-set-the-context">Step 1: Set the context</h3>
+
+    <p>Usually, Large Language Model (LLM) chat apps use a <strong>System Message</strong> (usually hidden to you) and templates to set the rules of the generation. We cannot change the system message for Copilot, but we can provide a message to define our own context for the session.</p>
+
+    <p>In this exercise, we want you to be the CEO of a new spaceship startup, and Copilot will be your executive assistant, which will help you shape your ideas. Write a prompt like this to set the context, but remember to <strong>tailor it to your own preferences</strong> (i.e.: you do not need to be an awarded cook 😉):</p>
+
+    <pre><code class="language-prompt">You are an executive assistant to an awarded cook that now is the CEO of a cutting-edge spaceship startup; your role is multifaceted and pivotal. You possess a deep understanding of aerospace engineering, which allows you to contribute significantly to the design and logistics of human spaceships bound for Mars. Your strategic planning skills enable you to assist in setting long-term goals, allocating resources effectively, and ensuring that every project milestone aligns with the company’s ambitious vision.
 
 Your creative input is crucial in ideating innovative solutions and designing a corporate image that encapsulates the startup’s spirit. You’re adept at translating complex engineering concepts into comprehensive strategies, facilitating effective communication across departments. Your project management expertise ensures that all initiatives are executed flawlessly, reflecting the company’s commitment to pioneering space exploration.
 
 Your personal traits are what make you extraordinary. Your passion for space, visionary outlook, and proactive nature equips you to anticipate challenges and address them with resilience. Detail-oriented and adaptable, you maintain composure under pressure, making you an indispensable asset to the CEO and the entire organization as you collectively strive to achieve the monumental task of shipping a human spaceship to Mars.
 </code></pre>
 
-<p>This was again a <strong>zero-Shot prompt</strong>, but we are just establishing the context.</p>
+    <p>This was again a <strong>zero-Shot prompt</strong>, but we are just establishing the context.</p>
 
-<h3 id="step-2-generate-a-name-for-your-space-startup">Step 2: Generate a name for your space startup</h3>
+  </div>
+  <div class="step">
 
-<p>To generate a name for your space startup, you can use a <strong>few-shot prompt</strong>, which is a type of prompt that provides some examples of the desired output, followed by an empty line where Bing Chat will fill in a new output based on the examples. For example, you can write:</p>
+    <h3 id="step-2-generate-a-name-for-your-space-startup">Step 2: Generate a name for your space startup</h3>
 
-<pre><code class="language-prompt">Some possible names for a space startup are:
+    <p>To generate a name for your space startup, you can use a <strong>few-shot prompt</strong>, which is a type of prompt that provides some examples of the desired output, followed by an empty line where Bing Chat will fill in a new output based on the examples. For example, you can write:</p>
+
+    <pre><code class="language-prompt">Some possible names for a space startup are:
 
 - SpaceX
 - Blue Origin
@@ -186,73 +221,88 @@ Your personal traits are what make you extraordinary. Your passion for space, vi
 Generate three names for our space startup that builds and sends human spaceships to Mars and show the special background of our CEO:
 </code></pre>
 
-<p>You can try different examples or add more details to the prompt, such as the type of service or product your startup offers, to get different results.</p>
+    <p>You can try different examples or add more details to the prompt, such as the type of service or product your startup offers, to get different results.</p>
 
-<h3 id="step-3-assess-the-costs">Step 3: Assess the costs</h3>
+  </div>
+  <div class="step">
 
-<p>Sending a spaceship with humans is tough. But as a startup, we must show investors that we’ve done our math. You can use <strong>chain-of-thought prompting</strong> to enforce the model to think about all the details. It involves guiding the AI to think through the problem step-by-step, leading it to the desired output:</p>
+    <h3 id="step-3-assess-the-costs">Step 3: Assess the costs</h3>
 
-<pre><code class="language-prompt">Calculate the costs of shipping a spaceship to Mars with a crew of 6, this first mission is a one-way trip, so we need to consider the travel time and how to send all the materials needed to survive on Mars. Let’s think step by step.
+    <p>Sending a spaceship with humans is tough. But as a startup, we must show investors that we’ve done our math. You can use <strong>chain-of-thought prompting</strong> to enforce the model to think about all the details. It involves guiding the AI to think through the problem step-by-step, leading it to the desired output:</p>
+
+    <pre><code class="language-prompt">Calculate the costs of shipping a spaceship to Mars with a crew of 6, this first mission is a one-way trip, so we need to consider the travel time and how to send all the materials needed to survive on Mars. Let’s think step by step.
 
 This part of the project is called Budget.
 </code></pre>
 
-<p>Now that you have calculated the costs of the mission, you might want to experiment with different scenarios. What if the crew size changed? Or the distance to Mars varied? Feel free to play around with these variables and see how the costs change.</p>
+    <p>Now that you have calculated the costs of the mission, you might want to experiment with different scenarios. What if the crew size changed? Or the distance to Mars varied? Feel free to play around with these variables and see how the costs change.</p>
 
-<h3 id="step-4-generate-a-business-plan">Step 4: Generate a business plan</h3>
+  </div>
+  <div class="step">
 
-<p>As you will be challenged by the investors when you present your plan, you can use a <a href="https://www.promptingguide.ai/techniques/tot"><strong>tree-of-thought</strong></a> prompting technique. This technique helps the model generate different ideas and choose the best one from them.</p>
+    <h3 id="step-4-generate-a-business-plan">Step 4: Generate a business plan</h3>
 
-<pre><code class="language-prompt">I have selected the name for the startup: [PUT THE NAME YOU SELECTED HERE].
+    <p>As you will be challenged by the investors when you present your plan, you can use a <a href="https://www.promptingguide.ai/techniques/tot"><strong>tree-of-thought</strong></a> prompting technique. This technique helps the model generate different ideas and choose the best one from them.</p>
+
+    <pre><code class="language-prompt">I have selected the name for the startup: [PUT THE NAME YOU SELECTED HERE].
 Imagine our top three engineers are discussing three different ideas for our startup's business plan. Generate them and pick the best one.
 </code></pre>
 
-<p><strong>Prompt refinement and iteration</strong>: ask for additional improvements to the content generated. For example, generate the full plan based on that idea:</p>
+    <p><strong>Prompt refinement and iteration</strong>: ask for additional improvements to the content generated. For example, generate the full plan based on that idea:</p>
 
-<pre><code class="language-prompt">Now, based on the executive summary and budget, please complete the business plan with the following sections: the executive summary, the market analysis, the service description, the sales strategy, and the operations plan.
+    <pre><code class="language-prompt">Now, based on the executive summary and budget, please complete the business plan with the following sections: the executive summary, the market analysis, the service description, the sales strategy, and the operations plan.
 
 This part of the project work is called Business Plan.
 </code></pre>
 
-<h3 id="step-5-generate-a-mission-statement-for-your-space-startup">Step 5: Generate a mission statement for your space startup</h3>
+  </div>
+  <div class="step">
 
-<p>Now that we have extensive content, we can generate a mission statement for your space startup. For example, you can write:</p>
+    <h3 id="step-5-generate-a-mission-statement-for-your-space-startup">Step 5: Generate a mission statement for your space startup</h3>
 
-<pre><code class="language-prompt">This part of the project work is called Mission Statement.
+    <p>Now that we have extensive content, we can generate a mission statement for your space startup. For example, you can write:</p>
+
+    <pre><code class="language-prompt">This part of the project work is called Mission Statement.
 
 Write a mission statement that reflects our objectives and the values of the company.
 </code></pre>
 
-<h3 id="step-6-create-a-logo-for-your-company">Step 6: Create a logo for your company</h3>
+  </div>
+  <div class="step">
 
-<p>Microsoft Copilot in Bing is a <strong>multimodal</strong> model, this means that it can also generate and understand pictures and audio. In this case the LLM already has a lot of information to work with, so we don’t need to provide lots of details, just indicate what we want in a clear statement. Let’s ask Copilot to generate a logo for our company:</p>
+    <h3 id="step-6-create-a-logo-for-your-company">Step 6: Create a logo for your company</h3>
 
-<pre><code class="language-prompt">This part of the project is called Company Branding
+    <p>Microsoft Copilot in Bing is a <strong>multimodal</strong> model, this means that it can also generate and understand pictures and audio. In this case the LLM already has a lot of information to work with, so we don’t need to provide lots of details, just indicate what we want in a clear statement. Let’s ask Copilot to generate a logo for our company:</p>
+
+    <pre><code class="language-prompt">This part of the project is called Company Branding
 
 Create a monochromatic logo in red for our company that reflects the mission and values of our company.
 </code></pre>
 
-<blockquote>
-  <p>Did you notice that Copilot crafted the prompt for DALL·E? You did not need to explain again that it was a spaceship company going to Mars, because it used the <strong>chains</strong> it already had. You can also go directly to <a href="https://www.bing.com/images/create">https://www.bing.com/images/create</a> to generate images with your own prompts.</p>
-</blockquote>
+    <blockquote>
+      <p>Did you notice that Copilot crafted the prompt for DALL·E? You did not need to explain again that it was a spaceship company going to Mars, because it used the <strong>chains</strong> it already had. You can also go directly to <a href="https://www.bing.com/images/create">https://www.bing.com/images/create</a> to generate images with your own prompts.</p>
+    </blockquote>
 
-<h3 id="step-7-pulling-it-all-together">Step 7: pulling it all together</h3>
+  </div>
+  <div class="step">
 
-<p>In this step, you will use the AI to review and summarize all the content generated during the previous exercises. This step is crucial in ensuring that all the elements of your project are coherent and aligned with your objectives.</p>
+    <h3 id="step-7-pulling-it-all-together">Step 7: pulling it all together</h3>
 
-<p>Here’s how to proceed:</p>
+    <p>In this step, you will use the AI to review and summarize all the content generated during the previous exercises. This step is crucial in ensuring that all the elements of your project are coherent and aligned with your objectives.</p>
 
-<ol>
-  <li><strong>Review:</strong> Start by asking the AI to review the text generated during the previous exercises. This will allow you to see all the content in one place and assess its overall quality and coherence.</li>
-  <li><strong>Summarize:</strong> Next, instruct the AI to generate a summary of all the content. The summary should highlight the key points from each part of the project, such as the business plan, budget, and company branding.</li>
-  <li><strong>Format:</strong> Finally, ask the AI to format the content in a specific way. For instance, you might want each part of the project to be presented as a separate section with its own title and description. This will make the content easier to read and understand.</li>
-</ol>
+    <p>Here’s how to proceed:</p>
 
-<p>Remember, as with all AI interactions, you may need to refine your prompts or ask for additional improvements to get the desired output. Don’t be afraid to experiment and iterate until you get the results you are looking for.</p>
+    <ol>
+      <li><strong>Review:</strong> Start by asking the AI to review the text generated during the previous exercises. This will allow you to see all the content in one place and assess its overall quality and coherence.</li>
+      <li><strong>Summarize:</strong> Next, instruct the AI to generate a summary of all the content. The summary should highlight the key points from each part of the project, such as the business plan, budget, and company branding.</li>
+      <li><strong>Format:</strong> Finally, ask the AI to format the content in a specific way. For instance, you might want each part of the project to be presented as a separate section with its own title and description. This will make the content easier to read and understand.</li>
+    </ol>
 
-<p>Here’s the suggested prompt:</p>
+    <p>Remember, as with all AI interactions, you may need to refine your prompts or ask for additional improvements to get the desired output. Don’t be afraid to experiment and iterate until you get the results you are looking for.</p>
 
-<pre><code class="language-prompt">Let's review all the text we wrote for the project. Can you give me the last edited copy for these parts of the project:
+    <p>Here’s the suggested prompt:</p>
+
+    <pre><code class="language-prompt">Let's review all the text we wrote for the project. Can you give me the last edited copy for these parts of the project:
 
 * Business Plan
 * Budget
@@ -267,129 +317,163 @@ Can you format it like this:
 Description
 </code></pre>
 
-<h2 id="conclusion">Conclusion</h2>
+  </div>
 
-<p>Congratulations on completing this lab! Remember, the key to mastering AI is practice and experimentation. Don’t be afraid to try new things, make mistakes and learn from them. Keep experimenting with different prompts and techniques and see where your creativity takes you with AI!</p>
+</div>
+<div class="section">
 
-<p>Throughout this lab, you have gained hands-on experience in crafting and refining prompts, guiding AI language models to generate the desired content, and using AI tools for practical applications.</p>
+  <h2 id="conclusion">Conclusion</h2>
 
-<p>You have learned about various types of prompts, including seed text prompts, conditional prompts, multiple choice prompts, zero-shot prompts, and few-shot prompts. You have seen how these prompts can guide the AI model in diverse ways, from generating creative ideas to making detailed calculations.</p>
+  <div class="step">
+    <p>Congratulations on completing this lab! Remember, the key to mastering AI is practice and experimentation. Don’t be afraid to try new things, make mistakes and learn from them. Keep experimenting with different prompts and techniques and see where your creativity takes you with AI!</p>
 
-<p>By creating elements for a fictional space startup, you have also seen how these techniques can be applied to real-world scenarios. Whether you are generating a company name, mission statement, business plan, or logo, you now have the skills to use AI tools effectively in your own projects.</p>
+    <p>Throughout this lab, you have gained hands-on experience in crafting and refining prompts, guiding AI language models to generate the desired content, and using AI tools for practical applications.</p>
 
-<p>We hope you find this lab engaging and insightful. We encourage you to continue exploring and experimenting with AI tools like Copilot in your future projects. Remember, the possibilities are as vast as space itself.</p>
+    <p>You have learned about various types of prompts, including seed text prompts, conditional prompts, multiple choice prompts, zero-shot prompts, and few-shot prompts. You have seen how these prompts can guide the AI model in diverse ways, from generating creative ideas to making detailed calculations.</p>
 
-<p>Happy prompting!</p>
+    <p>By creating elements for a fictional space startup, you have also seen how these techniques can be applied to real-world scenarios. Whether you are generating a company name, mission statement, business plan, or logo, you now have the skills to use AI tools effectively in your own projects.</p>
 
-<h2 id="glossary">Glossary</h2>
+    <p>We hope you find this lab engaging and insightful. We encourage you to continue exploring and experimenting with AI tools like Copilot in your future projects. Remember, the possibilities are as vast as space itself.</p>
 
-<ol>
-  <li><strong>AI Companion</strong>: An artificial intelligence system designed to assist users in various tasks.</li>
-  <li><strong>Prompt</strong>: A command or statement that guides the AI in generating content.</li>
-  <li><strong>Seed Text Prompt</strong>: A simple, open-ended statement or question that serves as a starting point for AI-generated content.</li>
-  <li><strong>Conditional Prompt</strong>: A type of prompt where you guide the AI to generate content based on certain conditions or criteria.</li>
-  <li><strong>Multiple Choice Prompts</strong>: Prompts where the AI is presented with several options from which it must choose or recommend the most appropriate one.</li>
-  <li><strong>Zero-shot Prompts</strong>: These prompts do not provide any example; they directly instruct the model to answer a question and rely on the training data to obtain the answer.</li>
-  <li><strong>Few-shot Prompt</strong>: A type of prompt that provides some examples of the desired output, followed by an empty line where the AI will fill in a new output based on the examples.</li>
-  <li><strong>Chain-of-thought Prompting</strong>: A technique that involves guiding the AI to think through the problem step-by-step, leading it to the desired output.</li>
-  <li><strong>Tree-of-thought Prompting</strong>: A technique that helps the AI generate different ideas and choose the best one from them.</li>
-  <li><strong>Multimodal Model</strong>: An AI model capable of understanding and generating several types of data, such as text, images, and audio.</li>
-  <li><strong>System Message</strong>: A message that sets the rules for the generation process in AI chat apps.</li>
-  <li><strong>Templates</strong>: Predefined formats or structures that guide the generation process in AI chat apps.</li>
-  <li><strong>Context</strong>: The information that precedes the prompt and influences the AI’s response.</li>
-  <li><strong>Session</strong>: A sequence of interactions with the AI model.</li>
-</ol>
+    <p>Happy prompting!</p>
+  </div>
+</div>
+<div class="section">
 
-<p><em>These definitions are specific to this lab guide and the usage of Microsoft’s AI companion, Copilot. The definitions might vary slightly in different contexts or with different AI systems.</em></p>
+  <h2 id="glossary">Glossary</h2>
 
-<h2 id="some-more-example-prompts">Some more example prompts</h2>
+  <div class="step">
+    <ol>
+      <li><strong>AI Companion</strong>: An artificial intelligence system designed to assist users in various tasks.</li>
+      <li><strong>Prompt</strong>: A command or statement that guides the AI in generating content.</li>
+      <li><strong>Seed Text Prompt</strong>: A simple, open-ended statement or question that serves as a starting point for AI-generated content.</li>
+      <li><strong>Conditional Prompt</strong>: A type of prompt where you guide the AI to generate content based on certain conditions or criteria.</li>
+      <li><strong>Multiple Choice Prompts</strong>: Prompts where the AI is presented with several options from which it must choose or recommend the most appropriate one.</li>
+      <li><strong>Zero-shot Prompts</strong>: These prompts do not provide any example; they directly instruct the model to answer a question and rely on the training data to obtain the answer.</li>
+      <li><strong>Few-shot Prompt</strong>: A type of prompt that provides some examples of the desired output, followed by an empty line where the AI will fill in a new output based on the examples.</li>
+      <li><strong>Chain-of-thought Prompting</strong>: A technique that involves guiding the AI to think through the problem step-by-step, leading it to the desired output.</li>
+      <li><strong>Tree-of-thought Prompting</strong>: A technique that helps the AI generate different ideas and choose the best one from them.</li>
+      <li><strong>Multimodal Model</strong>: An AI model capable of understanding and generating several types of data, such as text, images, and audio.</li>
+      <li><strong>System Message</strong>: A message that sets the rules for the generation process in AI chat apps.</li>
+      <li><strong>Templates</strong>: Predefined formats or structures that guide the generation process in AI chat apps.</li>
+      <li><strong>Context</strong>: The information that precedes the prompt and influences the AI’s response.</li>
+      <li><strong>Session</strong>: A sequence of interactions with the AI model.</li>
+    </ol>
 
-<p>Here are a few more examples for each type of prompt mentioned in the guide:</p>
+    <p><em>These definitions are specific to this lab guide and the usage of Microsoft’s AI companion, Copilot. The definitions might vary slightly in different contexts or with different AI systems.</em></p>
+  </div>
+</div>
+<div class="section">
 
-<ol>
-  <li><strong>Seed Text Prompt</strong>:
-    <ul>
-      <li>“Artificial Intelligence is”</li>
-      <li>“The future of space exploration lies in”</li>
-    </ul>
-  </li>
-  <li><strong>Conditional Prompt</strong>:
-    <ul>
-      <li>“Describe a day in the life of an astronaut training for a mission to Mars.”</li>
-      <li>“Imagine a scenario where an AI becomes the president of a country. Write a short story based on this.”</li>
-    </ul>
-  </li>
-  <li><strong>Multiple Choice Prompts</strong>:
-    <ul>
-      <li>“Which of the following programming languages is most suitable for data science?<br />
+  <h2 id="some-more-example-prompts">Some more example prompts</h2>
+
+  <div class="step">
+    <p>Here are a few more examples for each type of prompt mentioned in the guide:</p>
+
+    <ol>
+      <li><strong>Seed Text Prompt</strong>:
+        <ul>
+          <li>“Artificial Intelligence is”</li>
+          <li>“The future of space exploration lies in”</li>
+        </ul>
+      </li>
+      <li><strong>Conditional Prompt</strong>:
+        <ul>
+          <li>“Describe a day in the life of an astronaut training for a mission to Mars.”</li>
+          <li>“Imagine a scenario where an AI becomes the president of a country. Write a short story based on this.”</li>
+        </ul>
+      </li>
+      <li><strong>Multiple Choice Prompts</strong>:
+        <ul>
+          <li>“Which of the following programming languages is most suitable for data science?<br />
 A) JavaScript<br />
 B) Python<br />
 C) C++<br />
 D) Swift”</li>
-      <li>“What’s the best way to travel to work?<br />
+          <li>“What’s the best way to travel to work?<br />
 A) Walking<br />
 B) Cycling<br />
 C) Driving<br />
 D) Public transport”</li>
-    </ul>
-  </li>
-  <li><strong>Zero-shot Prompts</strong>:
-    <ul>
-      <li>“Translate the following sentence into French: ‘The sky is clear today.’”</li>
-      <li>“Solve the following equation: 2x + 3 = 9.”</li>
-    </ul>
-  </li>
-  <li><strong>Few-shot Prompts</strong>:
-    <ul>
-      <li>“Some possible names for a fitness app are:
+        </ul>
+      </li>
+      <li><strong>Zero-shot Prompts</strong>:
         <ul>
-          <li>FitBuddy</li>
-          <li>HealthTrack</li>
-          <li>WorkoutPal<br />
+          <li>“Translate the following sentence into French: ‘The sky is clear today.’”</li>
+          <li>“Solve the following equation: 2x + 3 = 9.”</li>
+        </ul>
+      </li>
+      <li><strong>Few-shot Prompts</strong>:
+        <ul>
+          <li>“Some possible names for a fitness app are:
+            <ul>
+              <li>FitBuddy</li>
+              <li>HealthTrack</li>
+              <li>WorkoutPal<br />
 Generate three names for our fitness app that focuses on home workouts:”</li>
-        </ul>
-      </li>
-      <li>“Here are some slogans for a bakery:
-        <ul>
-          <li>‘Freshness you can taste’</li>
-          <li>‘Baked with love’</li>
-          <li>‘Your daily bread’<br />
+            </ul>
+          </li>
+          <li>“Here are some slogans for a bakery:
+            <ul>
+              <li>‘Freshness you can taste’</li>
+              <li>‘Baked with love’</li>
+              <li>‘Your daily bread’<br />
 Generate three slogans for our bakery that specializes in gluten-free products:”</li>
+            </ul>
+          </li>
         </ul>
       </li>
-    </ul>
-  </li>
-  <li><strong>Chain-of-thought Prompting</strong>:
-    <ul>
-      <li>“Let’s plan a 3-day trip to New York. Start with choosing the places to visit, then decide the best order to visit them to save travel time.”</li>
-      <li>“We need to plan a surprise birthday party for our friend. Start by listing out what we need, then decide the order in which we should arrange everything.”</li>
-    </ul>
-  </li>
-  <li><strong>Tree-of-thought Prompting</strong>:
-    <ul>
-      <li>“Three of our best chefs are creating a new menu for our restaurant. They are discussing the main dish and have three different ideas. Generate them and select the best one based on your expertise.”</li>
-      <li>“Our marketing team is brainstorming ideas for our next ad campaign. They have three different concepts. Generate them and choose the best one.”</li>
-    </ul>
-  </li>
-</ol>
+      <li><strong>Chain-of-thought Prompting</strong>:
+        <ul>
+          <li>“Let’s plan a 3-day trip to New York. Start with choosing the places to visit, then decide the best order to visit them to save travel time.”</li>
+          <li>“We need to plan a surprise birthday party for our friend. Start by listing out what we need, then decide the order in which we should arrange everything.”</li>
+        </ul>
+      </li>
+      <li><strong>Tree-of-thought Prompting</strong>:
+        <ul>
+          <li>“Three of our best chefs are creating a new menu for our restaurant. They are discussing the main dish and have three different ideas. Generate them and select the best one based on your expertise.”</li>
+          <li>“Our marketing team is brainstorming ideas for our next ad campaign. They have three different concepts. Generate them and choose the best one.”</li>
+        </ul>
+      </li>
+    </ol>
 
-<p>Remember to tailor the prompts to your specific needs and goals, and do not be afraid to experiment with different formats and styles to get the best results.</p>
+    <p>Remember to tailor the prompts to your specific needs and goals, and do not be afraid to experiment with different formats and styles to get the best results.</p>
+  </div>
+</div>
 
 
+<button class="prev">Previous</button>
+<button class="next">Next</button>
 <!-- _layouts/page.html -->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script lang="JavaScript">
-$(document).ready(function() {
+<script>
+function hierarchyMenu(steps, changeIndex){
   var hierarchy = [$('<ul>')];
   var currentLevel = 2;
 
-  var headings = $('.page-content h2, .page-content h3, .page-content h4, .page-content h5, .page-content h6');
+  var headings = $('.page-content h2, .page-content h3');
   headings.each(function(i, heading) {
     var level = parseInt(heading.tagName.slice(1));
     var id = $(heading).attr('id');
     var text = $(heading).text();
-    var link = $('<a>').attr('href', '#' + id).text(text);
+    var link = $('<a>').attr('href', '#').text(text);
+    
+    link.click(function() {
+      var step;
+
+      if(level==2){
+        step=$($(heading).parents('.section')[0]).find('.step:first')[0];
+      }
+      else{
+        step=$(heading).parents('.step')[0];
+      }
+      let current=steps.index(step);
+      changeIndex(current);
+    });
+      
+    
+
     var item = $('<li>').append(link);
 
     if (level > currentLevel) {
@@ -410,12 +494,13 @@ $(document).ready(function() {
   });
 
   $('#sidebar-index').append(hierarchy[0]);
-
   $('#sidebar-toggle').click(function() {
     $('#sidebar-index').toggleClass('collapsed');
     $('#sidebar-index').hasClass('collapsed') ? $(this).text('<') : $(this).text('>');
   });
+}
 
+function codeCopy(){
   $('pre code').each(function() {
     var button = $('<button>').attr('type', 'button').attr('title','Copy').addClass('copy-button').text('📋');
     $(this).parent().prepend(button);
@@ -446,6 +531,58 @@ $(document).ready(function() {
       alert('Failed to copy text');
     });
   });
+}
+
+function tutorial(){
+  let steps = $('.step');
+  let currentIndex = 0;
+
+  // Show the first section
+  steps[currentIndex].classList.add('active');
+  $(steps[currentIndex]).parents('.section')[0].classList.add('active');
+
+  let changeIndex= (index)=>{
+    $(steps[currentIndex]).parents('.section')[0].classList.remove('active');
+    steps[currentIndex].classList.remove('active');
+    currentIndex=index;
+    steps[currentIndex].classList.add('active');
+    $(steps[currentIndex]).parents('.section')[0].classList.add('active');
+    if(currentIndex>0){
+      $('button.prev').removeAttr('disabled');
+    }
+    else{
+      $('button.prev').attr('disabled','disabled');
+    }
+    if(currentIndex<steps.length-1){
+      $('button.next').removeAttr('disabled');
+    }
+    else{
+      $('button.next').attr('disabled','disabled');
+    }
+  };
+
+  let movePrev=() => {
+    if (currentIndex > 0) {
+        changeIndex(currentIndex-1);
+    }
+  };
+  let moveNext= () => {
+    if (currentIndex < steps.length - 1) {
+        changeIndex(currentIndex+1);
+      }
+  }
+
+  $('button.prev').each((i,btn)=>btn.addEventListener('click',movePrev,false));
+  $('button.next').each((i,btn)=>btn.addEventListener('click',moveNext,false));
+
+  changeIndex(0);
+
+  hierarchyMenu(steps,changeIndex);
+}
+
+$(document).ready(function() {
+  codeCopy();
+  tutorial();
 });
 </script>
   </div>
