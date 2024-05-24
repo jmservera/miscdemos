@@ -330,9 +330,6 @@ We hope you find this lab engaging and insightful. We encourage you to continue 
 
 Happy prompting!
 ![You are the Prompt Hero](./img/prompt%20hero%20badge.png)
-</div>
-</div>
-<div class="section" markdown="1">
 
 ### Additional Resources
 
@@ -341,6 +338,10 @@ If you want to learn more, here you have a few interesting resources to extend y
 * [Prompting Guide](https://www.promptingguide.ai): A comprehensive guide to prompting techniques for AI language models.
 * [OpenAI Prompt Engineering](https://platform.openai.com/docs/guides/prompt-engineering/prompt-engineering): A guide to prompt engineering by the GPT-4 creators.
 * [Prompt Engineering Techniques](https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/advanced-prompt-engineering): Tips and tricks for prompting with Azure OpenAI Service.
+
+</div>
+</div>
+<div class="section" markdown="1">
 
 ## Glossary  
 

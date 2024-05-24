@@ -28,13 +28,37 @@
   z-index: 1;
 }
 
-#sidebar-index .collapser{
-  position:absolute;
-  display: block;
-  margin-left: -1.5em;
-  margin-top: -4em;
-  padding: 0;
-  z-index: 1;
+// #sidebar-index .collapser{
+//   position:absolute;
+//   display: block;
+//   margin-left: -1.5em;
+//   margin-top: -4em;
+//   padding: 0;
+//   z-index: 1;
+// }
+
+li.uncollapsedMarker {
+  list-style-type: none;
+  position: relative;
+
+  &::before {
+    content: "-";
+    position: absolute;
+    left: -1.2em;
+    top: 0em;
+  }
+}
+
+li.collapsedMarker {
+  list-style-type: none;
+  position: relative;
+
+  &::before {
+    content: "+";
+    position: absolute;
+    left: -1.2em;
+    top: 0em;
+  }
 }
 
 #sidebar-index a {
