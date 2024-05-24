@@ -115,7 +115,13 @@ Text: I think the space is cool.
 Sentiment:
 ```
 
-This should give you a positive sentiment, but you can challenge the LLM to fix its answer if you feel it is not the right one:
+The LLM should tell you that this represents a positive sentiment, but maybe you want to use this value inside another software, so you can ask Copilot to give you the answer in a more structured way:
+
+```prompt
+Provide the result in json format.
+```
+
+ Or you can challenge the LLM to fix its answer if you feel it is not the right one:
 
 ```prompt
 Are you sure? What if the word cool was factual in this sentence?
@@ -129,6 +135,8 @@ Now Copilot must have given this a second thought and understood the nuances.
 ### Exercise 1 Conclusion
 
 Excellent job on completing the first exercise!
+
+In this exercise you learnt some basic prompting terms and techniques, such as seed text prompts, conditional prompts, multiple choice prompts, and zero-shot prompts. You also got a feel for how Copilot generates content based on different types of prompts and how you can guide the AI to produce the desired output.
 
 > Remember, there is no 'one-size-fits-all' approach to using AI. Feel free to experiment with different types of prompts to see what results you get. The more you experiment, the more you will understand how to guide Copilot effectively. If you need some more examples for each type of prompt, check the [example guide](#some-more-example-prompts) at the end of this document.
 
