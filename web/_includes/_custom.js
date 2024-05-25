@@ -1,4 +1,4 @@
-function hierarchyMenu(steps, changeIndex){
+function buildHierarchyMenu(){
     var hierarchy = [$('<ul>')];
     var currentLevel = 2;
   
@@ -9,29 +9,10 @@ function hierarchyMenu(steps, changeIndex){
       var text = $(heading).text();
       var link = $('<a>').attr('href', `#${id}`).text(text);
       
-      //TODO: manage hashchange at main level
-      $(window).on('hashchange', function(e){      
-        if(location.hash==`#${id}`){
-            var step;
-            if(level==2){
-              step=$($(heading).parents('.section')[0]).find('.step:first')[0];
-            }
-            else{
-              step=$(heading).parents('.step')[0];
-            }
-            let current=steps.index(step);
-            changeIndex(current);
-        }
-      });
-  
       var item = $('<li>').append(link);
   
       if (level > currentLevel) {
         var newLevel = $('<ul>');
-        // var button = $('<button>').attr('type','button').addClass('collapser').text('+').click(function() {
-        //   newLevel.toggle();
-        //   button.text(newLevel.is(':visible') ? '-' : '+');
-        // });
         hierarchy[hierarchy.length - 1].children().last().addClass('collapser').addClass('uncollapsedMarker');
         hierarchy[hierarchy.length - 1].children().last().append(newLevel);
         hierarchy.push(newLevel);
@@ -66,61 +47,100 @@ function hierarchyMenu(steps, changeIndex){
     });
   }
   
+function buildNavigation(){
+  var current;
+  var hashToStep={};
+  var steps = $('.step');
 
-  
-  function tutorial(){
-    let steps = $('.step');
-    let currentIndex = 0;
-  
-    // Show the first section
-    steps[currentIndex].classList.add('active');
-    $(steps[currentIndex]).parents('.section')[0].classList.add('active');
-  
-    let changeIndex= (index)=>{
-      $(steps[currentIndex]).parents('.section')[0].classList.remove('active');
-      steps[currentIndex].classList.remove('active');
-      currentIndex=index;
-      steps[currentIndex].classList.add('active');
-      $(steps[currentIndex]).parents('.section')[0].classList.add('active');
-      if(currentIndex>0){
-        $('button.prev').removeAttr('disabled');
-      }
-      else{
-        $('button.prev').attr('disabled','disabled');
-      }
-      if(currentIndex<steps.length-1){
-        $('button.next').removeAttr('disabled');
-      }
-      else{
-        $('button.next').attr('disabled','disabled');
-      }
-    };
-  
-    let movePrev=() => {
-      if (currentIndex > 0) {
-          changeIndex(currentIndex-1);
-      }
-    };
-    let moveNext= () => {
-      if (currentIndex < steps.length - 1) {
-          changeIndex(currentIndex+1);
-        }
-    }
-  
-    $('button.prev').each((i,btn)=>btn.addEventListener('click',movePrev,false));
-    $('button.next').each((i,btn)=>btn.addEventListener('click',moveNext,false));
-  
-    changeIndex(0);
-  
-    hierarchyMenu(steps,changeIndex);
-  }
-  
-  $(document).ready(function() {
-    tutorial();
-    //TODO: Fix the issue with the hashchange event
-    if(location.hash){
-      let oldLoc=location.href;
-      window.location=location+"&";
-      window.location=oldLoc;
+  $('button.prev').on('click', function(){
+    var currentIndex=steps.index(hashToStep[current]);
+    if(currentIndex>0){
+      location.hash=$(steps[currentIndex-1]).children('h2, h3, h4, h5, h6').first().attr('id') || $(steps[currentIndex-1]).siblings('h2, h3, h4, h5, h6').first().attr('id');
     }
   });
+  $('button.next').on('click', function(){
+    var currentIndex=steps.index(hashToStep[current]);
+    if(currentIndex<steps.length-1){
+      location.hash=$(steps[currentIndex+1]).children('h2, h3, h4, h5, h6').first().attr('id') || $(steps[currentIndex+1]).siblings('h2, h3, h4, h5, h6').first().attr('id');
+    }
+  });
+
+  function changeIndex(index)
+  {
+    if(current){
+      var c= hashToStep[current];
+      if(c){
+        $(c).parents('.section')[0].classList.remove('active');
+        c.classList.remove('active');
+      }
+    }
+
+    current=index;
+    if(current){
+      var c= hashToStep[current];
+      if(c){
+        c.classList.add('active');
+        $(c).parents('.section')[0].classList.add('active');
+      }
+    }
+    
+    var currentIndex=steps.index(hashToStep[index]);
+    if(currentIndex>0){
+      $('button.prev').removeAttr('disabled');
+    }
+    else{
+      $('button.prev').attr('disabled','disabled');
+    }
+    if(currentIndex<steps.length-1){
+      $('button.next').removeAttr('disabled');
+    }
+    else{
+      $('button.next').attr('disabled','disabled');
+    }
+  }
+
+  $('h2, h3, h4, h5, h6').each((i,heading)=>{
+    var id=$(heading).attr('id');
+    if(id){
+      // find closest step
+      var step=$(heading).siblings('.step');
+      if(!step.length){
+        step=$(heading).children('.step');
+        if(!step.length){
+          step=$(heading).parents('.step');
+        }
+      }
+      if(step.length){
+        hashToStep[id]=step[0];
+      }
+      else{
+        console.log('no step found for heading', heading);      
+      }
+    }
+  });
+
+  steps.each((i,step)=>{
+    $(step).children('h2, h3, h4, h5, h6').each((i,heading)=>{
+      var id=$(heading).attr('id');
+      hashToStep[id]=step;
+    });
+  });
+
+  $(window).on('hashchange', function(e){
+    if(location.hash){
+      changeIndex(location.hash.slice(1));
+    }
+  });
+  if(location.hash){
+    changeIndex(location.hash.slice(1));
+  }
+  else{
+    changeIndex($('h2:first').attr('id'));
+  }
+}
+  
+
+$(document).ready(function() {
+  buildNavigation();
+  buildHierarchyMenu();
+});
