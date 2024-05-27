@@ -190,15 +190,13 @@ To generate a name for your space startup, you can use a **few-shot prompt**, wh
 ```prompt
 I am looking on naming ideas for our startup that builds and sends human spaceships to Mars. 
 I want the names to reflect the special background of our CEO and contain a number.
+Format the response as Python array.
 
-Generate four names for our space startup:
+Q: Generate four names for our space startup:
+A: ["MarsChefX1", "AstroCuisine7", "OrbitGourmet9", "GalacticGourmet8"]
 
-- MarsChefX1
-- AstroCuisine7
-- OrbitGourmet9
-- GalacticGourmet8
-
-Generate four names for our space startup:
+Q: Generate four names for our space startup:
+A: 
 ```
 
 You can try different examples or add more details to the prompt, such as the type of service or product your startup offers, to get different results.
