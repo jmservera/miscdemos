@@ -164,9 +164,9 @@ In this exercise, you will use Copilot to generate various elements of your own 
 </div>
 <div class="step" markdown="1">
 
-### Step 1: Create your Assistant's persona
+### Step 1: Set up the context and create your Assistant's persona
 
-Usually, Large Language Model (LLM) chat apps use a **System Message** and templates to set the rules of the generation. These are usually hidden to the user. We cannot change the system message for Copilot, but we can provide a message to define our own context for the session, assigning a persona to our assistant. This is a good practice to keep the conversation focused and coherent, and lets your assistant use the right jargon and tone for the context.
+Usually, Large Language Model (LLM) chat apps use a **System Message** and templates to set the rules of the generation. These are usually hidden to the user. We cannot change the system message for Copilot, but we can provide a message to define our own context for the session and assign a persona to our assistant. This is a good practice to keep the conversation focused and coherent, and lets your assistant use the right jargon and tone for the context.
 
 In this exercise, we want you to be the CEO of a new spaceship startup, and Copilot will be your executive assistant, which will help you shape your ideas. Write a prompt like this to set the context, but remember to **tailor it to your own preferences** (i.e.: you do not need to be an awarded cook 😉):
 
