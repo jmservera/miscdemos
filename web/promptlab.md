@@ -51,7 +51,7 @@ For this exercise we are going to use Microsoft Copilot, your everyday AI compan
 Write the following prompt in the “Ask me anything…” textbox:
 
 ```prompt
-The space is
+The space is...
 ```
 
 This is the most basic prompt and is called a **seed text prompt**. A seed text prompt is a simple, open-ended statement or question that serves as a starting point for AI-generated content.
