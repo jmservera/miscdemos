@@ -191,14 +191,11 @@ To generate a name for your space startup, you can use a **few-shot prompt**, wh
 I am looking on naming ideas for our startup that builds and sends human spaceships to Mars. 
 I want the names to reflect the special background of our CEO and contain a number.
 
-Generate four names for our space startup:
-
-- MarsChefX1
-- AstroCuisine7
-- OrbitGourmet9
-- GalacticGourmet8
+My Favorite startupnames:
+Virgin Galactic, SpaceX, SpaceExplorers
 
 Generate four names for our space startup:
+ 
 ```
 
 You can try different examples or add more details to the prompt, such as the type of service or product your startup offers, to get different results.
