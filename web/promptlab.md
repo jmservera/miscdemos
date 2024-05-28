@@ -221,6 +221,12 @@ This part of the project is called Budget.
 
 Now that you have calculated the costs of the mission, you might want to experiment with different scenarios. What if the crew size changed? Or the distance to Mars varied? Feel free to play around with these variables and see how the costs change.
 
+You can also ask Copilot to generate a table that can be edited in Excel:
+
+```prompt
+Can you generate a table with the costs of the mission to Mars for different crew sizes?
+```
+
 </div>
 <div class="step" markdown="1">
 
