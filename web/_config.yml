@@ -15,12 +15,18 @@
 # in the templates via {{ site.myvariable }}.
 title: Demos and labs
 # email: your-email@example.com
-description: "Feedback: https://github.com/jmservera/miscdemos/issues"
+description: "©️ 2024 Juan Manuel Servera (MIT License)"
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 #twitter_username: jmservera
 #github_username:  jmservera
 
+# future for minima 3.0, and remove social.html from _includes
+minima:
+  social_links:
+    - platform: github
+      user_url: "https://github.com/jmservera/miscdemos/issues/new"
+      title: "💬 Feedback"
 
 # Build settings
 markdown: kramdown
