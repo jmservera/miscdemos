@@ -5,19 +5,22 @@ using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
+using Microsoft.SemanticKernel.Plugins.Web;
+using Microsoft.SemanticKernel.Plugins.Web.Bing;
 
 var builder = Kernel.CreateBuilder();
-builder.Services.AddLogging(b=>b.AddDebug().SetMinimumLevel(LogLevel.Trace).AddConsole().SetMinimumLevel(LogLevel.Trace));
-var kernel = builder.AddAzureOpenAIChatCompletion("gpt432",
+builder.Services.AddLogging(b=>b.AddDebug().SetMinimumLevel(LogLevel.Trace));//.AddConsole().SetMinimumLevel(LogLevel.Trace));
+var kernel = builder.AddAzureOpenAIChatCompletion(Environment.GetEnvironmentVariable("OpenAIModel"),
                                                       endpoint: Environment.GetEnvironmentVariable("OpenAIEndpoint"),
                                                       apiKey: Environment.GetEnvironmentVariable("OpenAIApiKey"))
                         .Build();
 
 kernel.ImportPluginFromType<Demographics>();
+kernel.ImportPluginFromObject(new WebSearchEnginePlugin(new BingConnector(Environment.GetEnvironmentVariable("BingApiKey"))));
 
 var settings = new OpenAIPromptExecutionSettings() { ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions };
 
-ChatHistory chat = new();
+ChatHistory chat = [];
 var chatSvc = kernel.GetRequiredService<IChatCompletionService>();
 
 while (true)
@@ -48,7 +51,7 @@ public class Demographics
         return age switch
         {
             < 18 => "young",
-            53 => "aged",
+            53 => "vintage",
             < 65 => "adult",
             _ => "senior"
         };
