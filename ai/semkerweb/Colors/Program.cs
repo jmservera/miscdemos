@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Builder;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddKernel();
-builder.Services.AddAzureOpenAIChatCompletion(Environment.GetEnvironmentVariable("OpenAIModel"),
-                                                      endpoint: Environment.GetEnvironmentVariable("OpenAIEndpoint"),
-                                                      apiKey: Environment.GetEnvironmentVariable("OpenAIApiKey"));
-builder.Services.AddAzureOpenAITextToImage(Environment.GetEnvironmentVariable("DallEModel"),
-                                           endpoint: Environment.GetEnvironmentVariable("OpenAIEndpoint"),
-                                           apiKey: Environment.GetEnvironmentVariable("OpenAIApiKey"));
+builder.Services.AddAzureOpenAIChatCompletion(Environment.GetEnvironmentVariable("OpenAIModel")!,
+                                                      endpoint: Environment.GetEnvironmentVariable("OpenAIEndpoint")!,
+                                                      apiKey: Environment.GetEnvironmentVariable("OpenAIApiKey")!);
+builder.Services.AddAzureOpenAITextToImage(Environment.GetEnvironmentVariable("DallEModel")!,
+                                           endpoint: Environment.GetEnvironmentVariable("OpenAIEndpoint")!,
+                                           apiKey: Environment.GetEnvironmentVariable("OpenAIApiKey")!);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -58,7 +58,7 @@ app.MapGet("/colorandpet", async (Kernel kernel) =>
 
     var summary = await kernel.InvokePromptAsync<string>($"Create a short description of a pet with the color RGB({r},{g},{b}). Include the type of animal, its breed, and a name for it. The pet can be any animal, including common domestic pets and fantastical creatures."); //summaries[c] //
     var dallE = kernel.GetRequiredService<ITextToImageService>();
-    var img = await dallE.GenerateImageAsync(summary, 1024, 1024, kernel);
+    var img = await dallE.GenerateImageAsync(summary!, 1024, 1024, kernel);
 
     return new ColorAndPet
         (
