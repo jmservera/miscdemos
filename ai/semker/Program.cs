@@ -7,7 +7,7 @@ using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 
 var builder = Kernel.CreateBuilder();
-builder.Services.AddLogging(b=>b.AddConsole().SetMinimumLevel(LogLevel.Trace));
+builder.Services.AddLogging(b=>b.AddDebug().SetMinimumLevel(LogLevel.Trace).AddConsole().SetMinimumLevel(LogLevel.Trace));
 var kernel = builder.AddAzureOpenAIChatCompletion("gpt432",
                                                       endpoint: Environment.GetEnvironmentVariable("OpenAIEndpoint"),
                                                       apiKey: Environment.GetEnvironmentVariable("OpenAIApiKey"))

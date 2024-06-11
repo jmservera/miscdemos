@@ -13,7 +13,7 @@
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
-            "console": "integratedTerminal",
+            "console": "externalTerminal",
             "envFile": "${workspaceFolder}/.env"
         }
 
