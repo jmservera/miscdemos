@@ -6,7 +6,8 @@ document.getElementById('myButton').addEventListener('click', function() {
         .then(data => {
             document.body.style.backgroundColor = data.rgb;
             document.getElementById('myImage').style.backgroundColor= "rgba(0, 0, 0, 0.5)";
-            document.getElementById('myImage').src = data.imageUrl;
+            if(data.imageUrl)
+                document.getElementById('myImage').src = data.imageUrl;
             document.getElementById('myText').textContent = data.summary;
             document.getElementById('overlay').style.display = 'none';
         })

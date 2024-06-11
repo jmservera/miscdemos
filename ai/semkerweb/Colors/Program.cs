@@ -51,27 +51,27 @@ var summaries = new[]
 
 app.MapGet("/colorandpet", async (Kernel kernel) =>
 {
-    var r=Random.Shared.Next(0, 255);
-    var g=Random.Shared.Next(0, 255);
-    var b=Random.Shared.Next(0, 255);
-    var c=(r+g+b)*10/(256*3);
-     
-    var summary=await kernel.InvokePromptAsync<string>($"Short description of a pet for the color rgb({r},{g},{b}). Generate animal, breed and name for it."); //summaries[c] //
-    var dallE = kernel.GetRequiredService<ITextToImageService>();
-    var img=await dallE.GenerateImageAsync(summary, 1024,1024,kernel);
+    var r = Random.Shared.Next(0, 255);
+    var g = Random.Shared.Next(0, 255);
+    var b = Random.Shared.Next(0, 255);
+    var c = (r + g + b) * 10 / (256 * 3);
 
-    return     new ColorAndPet
+    var summary = await kernel.InvokePromptAsync<string>($"Create a short description of a pet with the color RGB({r},{g},{b}). Include the type of animal, its breed, and a name for it. The pet can be any animal, including common domestic pets and fantastical creatures."); //summaries[c] //
+    var dallE = kernel.GetRequiredService<ITextToImageService>();
+    var img = await dallE.GenerateImageAsync(summary, 1024, 1024, kernel);
+
+    return new ColorAndPet
         (
             $"rgb({r},{g},{b})",
              summary,
              img
         );
-    
+
 })
 .WithName("ColorAndPet")
 .WithOpenApi();
 
 app.Run();
 
-record ColorAndPet( string rgb, string? Summary, string? ImageUrl=null);
+record ColorAndPet(string rgb, string? Summary, string? ImageUrl = null);
 
