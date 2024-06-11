@@ -1,4 +1,6 @@
 using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.TextToImage;
+using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +8,9 @@ builder.Services.AddKernel();
 builder.Services.AddAzureOpenAIChatCompletion(Environment.GetEnvironmentVariable("OpenAIModel"),
                                                       endpoint: Environment.GetEnvironmentVariable("OpenAIEndpoint"),
                                                       apiKey: Environment.GetEnvironmentVariable("OpenAIApiKey"));
+builder.Services.AddAzureOpenAITextToImage(Environment.GetEnvironmentVariable("DallEModel"),
+                                           endpoint: Environment.GetEnvironmentVariable("OpenAIEndpoint"),
+                                           apiKey: Environment.GetEnvironmentVariable("OpenAIApiKey"));
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -23,29 +28,50 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseStaticFiles();
+
+app.Map("/", (HttpContext context) =>
+{
+    context.Response.Redirect("/index.html");
+});
+
 var summaries = new[]
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+    "a fluffy puppy",
+    "a coloured duck",
+    "a stray cat",
+    "a playful kitten",
+    "a loyal dog",
+    "a graceful swan",
+    "a curious rabbit",
+    "a majestic horse",
+    "a friendly parrot",
+    "a cuddly hamster"
 };
 
-app.MapGet("/weatherforecast", async (Kernel kernel) =>
+app.MapGet("/colorandpet", async (Kernel kernel) =>
 {
-    var temp=Random.Shared.Next(-20, 55);
-    var forecast =  
-        new WeatherForecast
+    var r=Random.Shared.Next(0, 255);
+    var g=Random.Shared.Next(0, 255);
+    var b=Random.Shared.Next(0, 255);
+    var c=(r+g+b)*10/(256*3);
+     
+    var summary=await kernel.InvokePromptAsync<string>($"Short description of a pet for the color rgb({r},{g},{b}). Generate animal, breed and name for it."); //summaries[c] //
+    var dallE = kernel.GetRequiredService<ITextToImageService>();
+    var img=await dallE.GenerateImageAsync(summary, 1024,1024,kernel);
+
+    return     new ColorAndPet
         (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(1)),
-            temp,
-            await kernel.InvokePromptAsync<string>($"Short description of the weather at {temp} ºC")
+            $"rgb({r},{g},{b})",
+             summary,
+             img
         );
-    return forecast;
+    
 })
-.WithName("GetWeatherForecast")
+.WithName("ColorAndPet")
 .WithOpenApi();
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+record ColorAndPet( string rgb, string? Summary, string? ImageUrl=null);
+

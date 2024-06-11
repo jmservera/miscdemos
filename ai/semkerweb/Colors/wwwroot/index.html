@@ -1,0 +1,60 @@
+<!-- wwwroot/index.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Page</title>
+    <style>
+      .spinner {
+        border: 16px solid #f3f3f3;
+        border-top: 16px solid #3498db;
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      /* Add this CSS for the overlay */
+      .overlay {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>    
+    <button id="myButton">Generate Colored Pet</button>
+        <div >
+            <img
+                id="myImage"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADjQH8z+X8OwAAAABJRU5ErkJggg=="
+                alt="Generated image will appear here"
+                style="width: 400px; height: 400px; margin: 10px 0px -5px 0px;border-radius: 10px 10px 0px 0px;"
+            />
+            <p id="myText" style="width: 400px; background-color: white; padding: 1em; margin: 0px 0px 10px 0px; box-sizing: border-box; border-radius: 0px 0px 10px 10px;"></p>
+
+        </div>
+    <div id="overlay" class="overlay">
+      <div id="spinner" class="spinner"></div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

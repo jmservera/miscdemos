@@ -12,4 +12,7 @@
     <PackageReference Include="Microsoft.SemanticKernel" Version="1.14.1" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <NoWarn>SKEXP0010,SKEXP0001</NoWarn>
+  </PropertyGroup>
 </Project>
