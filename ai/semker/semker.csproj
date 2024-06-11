@@ -11,10 +11,12 @@
                                          <!-- #pragma warning disable SKEXP0050 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed. -->
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="JC.SemanticKernel.Connectors.Mistral" Version="1.5.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
     <PackageReference Include="Microsoft.SemanticKernel" Version="1.14.1" />
+    <PackageReference Include="Microsoft.SemanticKernel.Connectors.HuggingFace" Version="1.14.1-preview" />
     <PackageReference Include="Microsoft.SemanticKernel.Plugins.Web" Version="1.14.1-alpha" />
     <PackageReference Include="Microsoft.SemanticKernel.PromptTemplates.Handlebars" Version="1.14.1" />
   </ItemGroup>

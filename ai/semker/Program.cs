@@ -20,6 +20,7 @@ Kernel kernel = builder
     .Build();
 
 kernel.ImportPluginFromType<MyPlugin>();
+kernel.ImportPluginFromType<TimePlugin>();
 kernel.ImportPluginFromObject(new WebSearchEnginePlugin(new BingConnector(Environment.GetEnvironmentVariable("BingApiKey"))));
 
 var getIntent = kernel.CreateFunctionFromPrompt(
@@ -109,6 +110,12 @@ while (true)
 Console.WriteLine("Goodbye!");
 Console.ReadLine();
 
+class TimePlugin{
+    [KernelFunction, Description("Get the current time")]
+    public string GetTime(){
+        return DateTime.Now.ToString();
+    }
+}
 class MyPlugin
 {
 
