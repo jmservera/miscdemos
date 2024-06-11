@@ -1,18 +1,6 @@
 
-using System.Net.Http.Headers;
-using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.TextToImage;
-
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddKernel();
-builder.Services.AddAzureOpenAIChatCompletion(Environment.GetEnvironmentVariable("OpenAIModel")!,
-                                                      endpoint: Environment.GetEnvironmentVariable("OpenAIEndpoint")!,
-                                                      apiKey: Environment.GetEnvironmentVariable("OpenAIApiKey")!);
-
-builder.Services.AddAzureOpenAITextToImage(Environment.GetEnvironmentVariable("DallEModel")!,
-                                                      endpoint: Environment.GetEnvironmentVariable("OpenAIEndpoint")!,
-                                                      apiKey: Environment.GetEnvironmentVariable("OpenAIApiKey")!);
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -63,21 +51,20 @@ var pictures = new[]{
     "https://icons.iconarchive.com/icons/iconarchive/childrens-book-animals/256/Hamster-icon.png"  
 };
 
-app.MapGet("/colorandpet", async (Kernel kernel) =>
+app.MapGet("/colorandpet", _ =>
 {
     var r = Random.Shared.Next(0, 255);
     var g = Random.Shared.Next(0, 255);
     var b = Random.Shared.Next(0, 255);
-    var c = Random.Shared.Next(0,9);
+    var c = Random.Shared.Next(0, 9);
 
-    var summary = await kernel.InvokePromptAsync<string>($"Create a short description of a pet with the color RGB({r},{g},{b}). Include the type of animal, its breed, and a name for it. The pet can be any animal, including common domestic pets and fantastical creatures.");
-    var dalle=kernel.GetRequiredService<ITextToImageService>();
+    var summary = summaries[c];
 
     return new ColorAndPet
         (
             $"rgb({r},{g},{b})",
              summary,
-            await dalle.GenerateImageAsync(summary!,1024,1024)
+             pictures[c]
         );
 
 })
