@@ -1,0 +1,19 @@
+{
+    "schema_version": "v1",
+    "name_for_model": "contosorealestate",
+    "description_for_model": "Plugin for finding properties for sale. Use it whenever a user asks about real estate properties for sale on the market. This plugin can be used to search for properties in a particular city, and with a given number of bedrooms, bathrooms, and amenities.",
+    "name_for_human": "Contoso Real Estate",
+    "description_for_human": "Find up-to-date, detailed real estate properties for sale on the market",
+    "api": {
+      "type": "openapi",
+      "url": "http://localhost:8080/openapi.yaml",
+      "is_user_authenticated": false
+    },
+    "auth": {
+      "type": "none"
+    },
+    "logo_url": "http://localhost:8080/logo.png",
+    "contact_email": "contact@contoso.com",
+    "legal_info_url": "https://contoso.com/legal/",
+    "privacy_policy_url": "https://contoso.com/privacy-policy"
+  }
