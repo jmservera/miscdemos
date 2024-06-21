@@ -1,0 +1,59 @@
+{
+  "version": "devPreview",
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/vDevPreview/MicrosoftTeams.ResponseRenderingTemplate.schema.json",
+  "jsonPath": "$",
+  "responseLayout": "list",
+  "responseCardTemplate": {
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.5",
+    "body": [
+      {
+        "type": "Container",
+        "$data": "${$root}",
+        "items": [
+          {
+            "type": "TextBlock",
+            "text": "title: ${if(title, title, 'N/A')}",
+            "wrap": true
+          },
+          {
+            "type": "TextBlock",
+            "text": "city: ${if(city, city, 'N/A')}",
+            "wrap": true
+          },
+          {
+            "type": "TextBlock",
+            "text": "bedrooms: ${if(bedrooms, bedrooms, 'N/A')}",
+            "wrap": true
+          },
+          {
+            "type": "TextBlock",
+            "text": "bathrooms: ${if(bathrooms, bathrooms, 'N/A')}",
+            "wrap": true
+          },
+          {
+            "type": "Container",
+            "$data": "${amenities}",
+            "items": [
+              {
+                "type": "TextBlock",
+                "text": "amenities: ${$data}",
+                "wrap": true
+              }
+            ]
+          },
+          {
+            "type": "TextBlock",
+            "text": "description: ${if(description, description, 'N/A')}",
+            "wrap": true
+          }
+        ]
+      }
+    ]
+  },
+  "previewCardTemplate": {
+    "title": "${if(title, title, 'N/A')}",
+    "subtitle": "${if(description, description, 'N/A')}"
+  }
+}

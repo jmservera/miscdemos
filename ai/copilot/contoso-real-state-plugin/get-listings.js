@@ -4,6 +4,7 @@ import listings from "./listings.json" assert { type: "json" };
 const RESULT_LIMIT = 5;
 
 export default function getListings(city, bedrooms, bathrooms, amenities) {
+  
   return listings.filter(listing => {
     const cityMatch = city
       ? listing.city.toLowerCase() === city.toLowerCase()
@@ -17,8 +18,11 @@ export default function getListings(city, bedrooms, bathrooms, amenities) {
       ? listing.bathrooms === bathrooms
       : true;
 
+      
     const amenitiesMatch = amenities && amenities.length
+      ? Array.isArray(amenities)
       ? amenities.every(amenity => listing.amenities.includes(amenity))
+      : listing.amenities.includes(amenities)
       : true;
 
     return cityMatch && bedroomsMatch && bathroomsMatch && amenitiesMatch;
