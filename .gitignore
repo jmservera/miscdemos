@@ -1,2 +1,7 @@
 .env
 .fake
+ai/copilot/contoso-real-state-msg-extension/env/.env.dev
+ai/copilot/contoso-real-state-msg-extension/env/.env.dev.user
+ai/copilot/contoso-real-state-msg-extension/env/.env.local
+ai/copilot/contoso-real-state-msg-extension/env/.env.local.user
+ai/copilot/contoso-real-state-msg-extension/env/.env.testtool
