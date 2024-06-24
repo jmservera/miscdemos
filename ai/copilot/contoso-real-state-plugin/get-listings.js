@@ -3,8 +3,9 @@ import listings from "./listings.json" assert { type: "json" };
 // Return only the first 5 results.
 const RESULT_LIMIT = 5;
 
-export default function getListings(city, bedrooms, bathrooms, amenities) {
-  
+export default function getListings(city, bedrooms, bathrooms, amenities, question) {
+  console.log(`Original utterance: ${question}`);
+
   return listings.filter(listing => {
     const cityMatch = city
       ? listing.city.toLowerCase() === city.toLowerCase()

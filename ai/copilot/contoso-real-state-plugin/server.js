@@ -25,9 +25,12 @@ app.get("/get-listings", (req, res) => {
     const bedrooms = parseInt(req.query.bedrooms);
     const bathrooms = parseInt(req.query.bathrooms);
     const amenities = req.query.amenities;
+    const question = req.query.userInput;
+
+    console.log(`original request url: ${req.url}`);
 
     try {
-      const listings = getListings(city, bedrooms, bathrooms, amenities);
+      const listings = getListings(city, bedrooms, bathrooms, amenities, question);
       res.send(listings);
     } catch (e) {
       //log error
@@ -41,6 +44,7 @@ app.post("/reserve-property", (req, res) => {
   });
 
   app.get("/.well-known/ai-plugin.json", (req, res) => {
+    console.log(`Original body: ${JSON.stringify(req.body)}`);
   res.sendFile(path.resolve() + "/ai-plugin.json");
 });
 

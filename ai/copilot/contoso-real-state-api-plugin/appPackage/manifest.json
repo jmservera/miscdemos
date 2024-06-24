@@ -19,7 +19,7 @@
   },
   "description": {
     "short": "JM Real Estate API",
-    "full": "Finds up to date and detailed real estate properties for sale on the market"
+    "full": "Finds up to date and detailed real estate properties for sale on the market, including the latest listings, prices, and amenities."
   },
   "accentColor": "#FFFFFF",
   "composeExtensions": [
@@ -37,14 +37,60 @@
           "id": "getListings",
           "parameters": [
             {
+              "name": "userInput",
+              "title": "Original user input",
+              "description": "The user's original input, question or utterance in the chat",
+              "inputType": "text",
+              "isRequired": true
+            },
+            {
               "name": "city",
               "title": "City",
               "description": "The city to search in",
               "inputType": "text"
+            },
+            {
+              "name": "bedrooms",
+              "title": "Number of bedrooms",
+              "description": "The number of bedrooms",
+              "inputType": "number"
+            },
+            {
+              "name": "bathrooms",
+              "title": "Number of bathrooms",
+              "description": "The number of bathrooms",
+              "inputType": "number"
+            },
+            {
+              "name": "amenities",
+              "title": "Amenities",
+              "description": "A list of amenities",
+              "inputType": "text"
+            }            
+          ],
+          "description": "Returns a list of properties, optionally filtered by providing the city, number of bedrooms, number of bathrooms and amenities",
+          "apiResponseRenderingTemplateFile": "responseTemplates/getListings.json"
+        },
+        {
+          "context": [
+            "compose",
+            "commandBox"
+          ],
+          "type": "action",
+          "title": "Reserve a property",
+          "id": "reserveProperty",
+          "parameters": [
+            {
+              "name": "title",
+              "title": "Property Title",
+              "description": "The title of the property to reserve",
+              "inputType": "text",
+              "isRequired": true
             }
           ],
-          "description": "Returns a list of properties, optionally filtered by providing the city, number of bedrooms, number of bathrooms and a list of a",
-          "apiResponseRenderingTemplateFile": "responseTemplates/getListings.json"
+          "description": "Reserves a property by its title",
+          "apiResponseRenderingTemplateFile": "responseTemplates/reserveProperty.json"
+        
         }
       ]
     }

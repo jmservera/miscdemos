@@ -1,20 +1,23 @@
 openapi: 3.0.1
 info:
-  title: Contoso Real Estate API
+  title: JM Real Estate API
   description: Finds up to date and detailed real estate properties for sale on the market
   version: 0.1.0
 servers:
-  - url: https://2zx366dp-8080.euw.devtunnels.ms/
+  - url: https://rl9swzr7-8080.eun1.devtunnels.ms/
 paths:
   /get-listings:
     get:
       operationId: getListings
-      summary: Get a list of properties matching the specified criteria
-      description: >-
-        Returns a list of properties, optionally filtered by providing the city,
-        number of bedrooms, number of bathrooms and a list of amenities as query
-        parameters
+      summary: Get a list of properties matching the specified criteria and utterance
+      description: Returns a list of properties, optionally filtered by providing the city, number of bedrooms, number of bathrooms and a list of amenities as query parameters. The user's original question or utterance is also required as a query parameter.
       parameters:
+        - name: userInput
+          in: query
+          description: The user's original input, question or utternace in the chat
+          required: true
+          schema:
+            type: string            
         - name: city
           in: query
           description: The city to search in
@@ -48,6 +51,28 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Property'
+  /reserve-property:
+    post:
+      operationId: reserveProperty
+      summary: Reserve a property
+      description: Reserves a property by its title
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: The title of the property to reserve
+      responses:
+        '200':
+          description: OK - Property reserved successfully
+        '404':
+          description: Not Found - Property not found
+        '409':
+          description: Conflict - Property already reserved
 components:
   schemas:
     AmenitiesEnum:
