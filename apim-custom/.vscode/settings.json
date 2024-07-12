@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/6564135d-97a9-407b-b366-552b4c89ef7b/resourceGroups/jmapim/providers/Microsoft.Web/sites/wapp-webapp-mgprxziwmupcg",
+    "appService.deploySubpath": "/api/OcppServer/bin/Release/net8.0/publish"
+}

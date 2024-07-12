@@ -19,3 +19,12 @@ module webPubSub './modules/webPubSub.bicep' = {
     serviceName: 'webpubsub-${uniqueString(resourceGroup().id)}'
   }
 }
+
+module webApp './modules/webapp.bicep' = {
+  name: 'webAppService'
+  params: {
+    webAppName: 'webapp-${uniqueString(resourceGroup().id)}'
+    sku: 'F1'
+    linuxFxVersion: 'DOTNETCORE|8.0'
+  }
+}

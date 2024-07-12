@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/OcppServer/bin/Debug/net8.0/OcppServer.dll",
+            "program": "${workspaceFolder}/api/OcppServer/bin/Debug/net8.0/OcppServer.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/OcppServer",
+            "cwd": "${workspaceFolder}/api/OcppServer",
             "stopAtEntry": false,
             // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
             "serverReadyAction": {
@@ -23,7 +23,7 @@
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },
             "sourceFileMap": {
-                "/Views": "${workspaceFolder}/Views"
+                "/Views": "${workspaceFolder}/api/Views"
             }
         },
         {
