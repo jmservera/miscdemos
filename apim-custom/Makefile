@@ -1,9 +1,9 @@
 build:
-	dotnet build
+	dotnet build api/api.sln
 clean:
-	dotnet clean
+	dotnet clean api/api.sln
 restore:
-	dotnet restore
+	dotnet restore api/api.sln
 watch:
 	dotnet watch --project api/OcppServer/OcppServer.csproj run
 start:

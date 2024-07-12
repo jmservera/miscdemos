@@ -4,6 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -16,6 +17,17 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+var webSocketOptions = new WebSocketOptions
+{
+    KeepAliveInterval = TimeSpan.FromMinutes(2)
+};
+
+app.UseWebSockets(webSocketOptions);
+app.UseDefaultFiles();
+app.UseStaticFiles();
+app.MapControllers();
+
+
 var summaries = new[]
 {
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -23,7 +35,7 @@ var summaries = new[]
 
 app.MapGet("/weatherforecast", () =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
+    var forecast = Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast
         (
             DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
@@ -37,6 +49,17 @@ app.MapGet("/weatherforecast", () =>
 .WithOpenApi();
 
 app.Run();
+
+/*
+async (context) =>
+{
+    using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
+    var socketFinishedTcs = new TaskCompletionSource<object>();
+
+    BackgroundSocketProcessor.AddSocket(webSocket, socketFinishedTcs);
+
+    await socketFinishedTcs.Task;
+}*/
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
