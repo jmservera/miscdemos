@@ -135,7 +135,7 @@
 
         connectButton.onclick = function () {
             stateLabel.innerHTML = "Connecting";
-            socket = new WebSocket(connectionUrl.value);
+            socket = new WebSocket(connectionUrl.value, "ocpp1.6");
             socket.onopen = function (event) {
                 updateState();
                 commsLog.innerHTML += '<tr>' +

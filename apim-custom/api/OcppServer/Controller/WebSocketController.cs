@@ -9,11 +9,21 @@ namespace OcppServer.Api
         private static readonly Dictionary<string, WebSocket> _sockets = [];
 
         [Route("/ws")]
-        public async Task Get()
+        // [ProducesResponseType(StatusCodes.Status101SwitchingProtocols)]
+        public async Task HandleWebSocketRequest()
         {
             if (HttpContext.WebSockets.IsWebSocketRequest)
             {
-                var socket = await HttpContext.WebSockets.AcceptWebSocketAsync();
+                foreach (var protocol in HttpContext.WebSockets.WebSocketRequestedProtocols)
+                {
+                    _logger.LogInformation("Requested protocol: {protocol}", protocol);
+                }
+                if (!HttpContext.WebSockets.WebSocketRequestedProtocols.Contains("ocpp1.6"))
+                {
+                    HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+                    return;
+                }
+                var socket = await HttpContext.WebSockets.AcceptWebSocketAsync("ocpp1.6");
                 var socketId = Guid.NewGuid().ToString();
                 _sockets.Add(socketId, socket);
                 try
