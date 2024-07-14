@@ -1,4 +1,5 @@
 using System.Net.WebSockets;
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
 
 namespace OcppServer.Api
@@ -8,8 +9,9 @@ namespace OcppServer.Api
         private readonly ILogger<WebSocketController> _logger = logger;
         private static readonly Dictionary<string, WebSocket> _sockets = [];
 
-        [Route("/ws")]
-        // [ProducesResponseType(StatusCodes.Status101SwitchingProtocols)]
+        [ProducesResponseType(StatusCodes.Status101SwitchingProtocols)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpGet("/ws")]
         public async Task HandleWebSocketRequest()
         {
             if (HttpContext.WebSockets.IsWebSocketRequest)
@@ -20,6 +22,8 @@ namespace OcppServer.Api
                 }
                 if (!HttpContext.WebSockets.WebSocketRequestedProtocols.Contains("ocpp1.6"))
                 {
+                    //HttpContext.Response.Headers.Append("Expected", "Ocpp1.6");
+                    _logger.LogError("Requested protocol is not supported. Ocpp1.6 expected.");
                     HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
                     return;
                 }
@@ -37,6 +41,7 @@ namespace OcppServer.Api
             }
             else
             {
+                //HttpContext.Response.Headers.Append("Expected", "Websocket connection");
                 HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
             }
         }
