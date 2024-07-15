@@ -42,3 +42,7 @@ resource webPubSub 'Microsoft.SignalRService/webPubSub@2021-10-01' = {
     tier: pricingTier
   }
 }
+
+output serviceId string = webPubSub.id
+output serviceName string = webPubSub.name
+output serviceEndpoint string = webPubSub.properties.hostName

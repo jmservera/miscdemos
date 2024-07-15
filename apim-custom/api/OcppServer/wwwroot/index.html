@@ -35,6 +35,11 @@
         <input id="protocol" value="ocpp1.6" />
         <label for="station">Station:</label>
         <input id="station" value="1" />
+        <label for="connection">Connection:</label>
+        <input id="connection" />
+        <button id="generateButton" type="submit">Generate</button>
+    </div>
+    <div>
         <button id="connectButton" type="submit">Connect</button>
     </div>
     <p></p>
@@ -60,7 +65,9 @@
 
     <script>
         var connectionUrl = document.getElementById("connectionUrl");
+        var connection = document.getElementById("connection");
         var connectButton = document.getElementById("connectButton");
+        var generateButton = document.getElementById("generateButton");
         var stateLabel = document.getElementById("stateLabel");
         var sendMessage = document.getElementById("sendMessage");
         var sendButton = document.getElementById("sendButton");
@@ -139,10 +146,14 @@
                 '<td class="commslog-data">' + htmlEscape(data) + '</td></tr>';
         };
 
+        generateButton.onclick = function () {
+            var stationId = station.value.length > 0 ? "?station=" + station.value : '';
+            connection.value = scheme + "://" + document.location.hostname + port + "/ws" + stationId;
+        };
+
         connectButton.onclick = function () {
             stateLabel.innerHTML = "Connecting";
-            var stationId = station.value.length > 0 ? "?station=" + station.value : '';
-            socket = new WebSocket(connectionUrl.value + stationId, subprotocol.value.length > 0 ? subprotocol.value : undefined);
+            socket = new WebSocket(connection.value, subprotocol.value.length > 0 ? subprotocol.value : undefined);
             socket.onopen = function (event) {
                 updateState();
                 commsLog.innerHTML += '<tr>' +

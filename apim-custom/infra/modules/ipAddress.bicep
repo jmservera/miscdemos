@@ -4,6 +4,7 @@ param sku string = 'Standard'
 param publicIpZones array = [1, 2, 3]
 param ipAddressVersion string = 'IPv4'
 param allocationMethod string = 'Static'
+param domainNameLabel string = ''
 
 resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2020-08-01' = {
   name: publicIpAddressName
@@ -15,6 +16,9 @@ resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2020-08-01' = {
   properties: {
     publicIPAddressVersion: ipAddressVersion
     publicIPAllocationMethod: allocationMethod
+    dnsSettings: {
+      domainNameLabel: domainNameLabel
+    }
   }
 }
 

@@ -31,5 +31,6 @@ module appGw './modules/appgw.bicep' = {
     appgwName: 'appgw-${uniqueString(resourceGroup().id)}'
     location: resourceGroup().location
     webSiteName: webApp.outputs.webSiteName
+    pubSubServiceName: webPubSub.outputs.serviceName
   }
 }
