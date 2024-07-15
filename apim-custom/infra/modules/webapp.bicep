@@ -50,3 +50,6 @@ resource appService 'Microsoft.Web/sites@2020-06-01' = {
     }
   }
 }
+
+output webSiteName string = appService.name
+output appServiceId string = appService.id
