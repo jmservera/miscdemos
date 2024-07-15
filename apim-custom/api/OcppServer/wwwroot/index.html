@@ -31,6 +31,10 @@
     <div>
         <label for="connectionUrl">WebSocket Server URL:</label>
         <input id="connectionUrl" />
+        <label for="protocol">Protocol:</label>
+        <input id="protocol" value="ocpp1.6" />
+        <label for="station">Station:</label>
+        <input id="station" value="1" />
         <button id="connectButton" type="submit">Connect</button>
     </div>
     <p></p>
@@ -62,6 +66,8 @@
         var sendButton = document.getElementById("sendButton");
         var commsLog = document.getElementById("commsLog");
         var closeButton = document.getElementById("closeButton");
+        var subprotocol = document.getElementById("protocol");
+        var station = document.getElementById("station");
         var socket;
 
         var scheme = document.location.protocol === "https:" ? "wss" : "ws";
@@ -135,7 +141,7 @@
 
         connectButton.onclick = function () {
             stateLabel.innerHTML = "Connecting";
-            socket = new WebSocket(connectionUrl.value, "ocpp1.6");
+            socket = new WebSocket(connectionUrl.value + "?station=" + station.value, subprotocol.value.length > 0 ? subprotocol.value : undefined);
             socket.onopen = function (event) {
                 updateState();
                 commsLog.innerHTML += '<tr>' +

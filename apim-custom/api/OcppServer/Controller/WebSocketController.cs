@@ -11,23 +11,38 @@ namespace OcppServer.Api
 
         [ProducesResponseType(StatusCodes.Status101SwitchingProtocols)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpGet("/ws")]
-        public async Task HandleWebSocketRequest()
+        [Route("/ws")]
+        [ApiExplorerSettings(IgnoreApi = true)] // Hide from Swagger because CONNECT is not supported
+        public async Task HandleWebSocketRequest(string station)
         {
+            _logger.LogInformation("Websocket request received for {station}.", station);
             if (HttpContext.WebSockets.IsWebSocketRequest)
             {
                 foreach (var protocol in HttpContext.WebSockets.WebSocketRequestedProtocols)
                 {
                     _logger.LogInformation("Requested protocol: {protocol}", protocol);
                 }
-                if (!HttpContext.WebSockets.WebSocketRequestedProtocols.Contains("ocpp1.6"))
+                WebSocket? socket;
+
+                if (HttpContext.WebSockets.WebSocketRequestedProtocols.Count == 0)
                 {
-                    //HttpContext.Response.Headers.Append("Expected", "Ocpp1.6");
-                    _logger.LogError("Requested protocol is not supported. Ocpp1.6 expected.");
-                    HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-                    return;
+                    socket = await HttpContext.WebSockets.AcceptWebSocketAsync();
                 }
-                var socket = await HttpContext.WebSockets.AcceptWebSocketAsync("ocpp1.6");
+                else
+                {
+                    if (HttpContext.WebSockets.WebSocketRequestedProtocols.Contains("ocpp1.6"))
+                    {
+                        socket = await HttpContext.WebSockets.AcceptWebSocketAsync("ocpp1.6");
+                        // //HttpContext.Response.Headers.Append("Expected", "Ocpp1.6");
+                    }
+                    else
+                    {
+                        _logger.LogError("Requested protocol is not supported. Ocpp1.6 expected.");
+                        HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+                        return;
+
+                    }
+                }
                 var socketId = Guid.NewGuid().ToString();
                 _sockets.Add(socketId, socket);
                 try
