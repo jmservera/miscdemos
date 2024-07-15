@@ -47,7 +47,7 @@ namespace OcppServer.Api
                 _sockets.Add(socketId, socket);
                 try
                 {
-                    await Echo(socket);
+                    await Echo(socket, station);
                 }
                 finally
                 {
@@ -61,18 +61,23 @@ namespace OcppServer.Api
             }
         }
 
-        private async Task Echo(WebSocket webSocket)
+        private async Task Echo(WebSocket webSocket, string? station)
         {
             var buffer = new byte[1024 * 4];
             var receiveResult = await webSocket.ReceiveAsync(
                 new ArraySegment<byte>(buffer), CancellationToken.None);
+
+            string message = Encoding.UTF8.GetString(buffer, 0, receiveResult.Count);
+            message = $"Station: {station}, Message: {message}";
+
+            var sendBuffer = new ReadOnlyMemory<byte>(Encoding.UTF8.GetBytes(message));
 
             while (!receiveResult.CloseStatus.HasValue)
             {
                 await Parallel.ForEachAsync(_sockets.Values, CancellationToken.None, async (socket, token) =>
                 {
                     await socket.SendAsync(
-                        new ArraySegment<byte>(buffer, 0, receiveResult.Count),
+                        sendBuffer,
                         receiveResult.MessageType,
                         receiveResult.EndOfMessage,
                         token);

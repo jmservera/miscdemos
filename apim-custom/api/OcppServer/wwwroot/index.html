@@ -141,7 +141,8 @@
 
         connectButton.onclick = function () {
             stateLabel.innerHTML = "Connecting";
-            socket = new WebSocket(connectionUrl.value + "?station=" + station.value, subprotocol.value.length > 0 ? subprotocol.value : undefined);
+            var stationId = station.value.length > 0 ? "?station=" + station.value : '';
+            socket = new WebSocket(connectionUrl.value + stationId, subprotocol.value.length > 0 ? subprotocol.value : undefined);
             socket.onopen = function (event) {
                 updateState();
                 commsLog.innerHTML += '<tr>' +
@@ -154,7 +155,12 @@
                     '<td colspan="3" class="commslog-data">Connection closed. Code: ' + htmlEscape(event.code) + '. Reason: ' + htmlEscape(event.reason) + '</td>' +
                     '</tr>';
             };
-            socket.onerror = updateState;
+            socket.onerror = function (event) {
+                commsLog.innerHTML += '<tr>' +
+                    '<td colspan="3" class="commslog-data">Error. Code: ' + htmlEscape(event.code) + '. Reason: ' + htmlEscape(event.reason) + '</td>' +
+                    '</tr>';
+                updateState();
+            }
             socket.onmessage = function (event) {
                 commsLog.innerHTML += '<tr>' +
                     '<td class="commslog-server">Server</td>' +
