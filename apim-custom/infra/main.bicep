@@ -18,7 +18,6 @@ module webPubSubPrivateEndpoint './modules/privateEndpoint.bicep' = {
     privateLinkResource: webPubSub.outputs.serviceId
     subnetId: virtualNetwork.outputs.privateSubnetId
     vnetId: virtualNetwork.outputs.vnetId
-    hostname: webPubSub.outputs.serviceEndpoint
   }
 }
 
