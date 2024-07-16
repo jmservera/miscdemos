@@ -3,6 +3,7 @@
 @maxLength(63)
 @minLength(3)
 param serviceName string = 'webpubsub-${uniqueString(resourceGroup().id)}'
+param hubName string = 'hubby'
 
 @description('The region in which to create the new instance, defaults to the same location as the resource group.')
 param location string = resourceGroup().location
@@ -40,6 +41,16 @@ resource webPubSub 'Microsoft.SignalRService/webPubSub@2021-10-01' = {
     capacity: unitCount
     name: sku
     tier: pricingTier
+  }
+}
+
+resource hub 'Microsoft.SignalRService/WebPubSub/hubs@2024-01-01-preview' = {
+  parent: webPubSub
+  name: hubName
+  properties: {
+    eventHandlers: []
+    eventListeners: []
+    anonymousConnectPolicy: 'allow'
   }
 }
 
