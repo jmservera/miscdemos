@@ -22,30 +22,55 @@
             background-color: green;
             color: white
         }
+
+        input {
+            width: 80ch;
+        }
     </style>
 </head>
 
 <body>
     <h1>WebSocket Sample Application</h1>
     <p id="stateLabel">Ready to connect...</p>
-    <div>
+    <div style="display:block;">
         <label for="connectionUrl">WebSocket Server URL:</label>
+        <br>
         <input id="connectionUrl" />
+    </div>
+    <div style="display:block;">
         <label for="protocol">Protocol:</label>
+        <br>
         <input id="protocol" value="ocpp1.6" />
+    </div>
+    <div style="display:block;">
         <label for="station">Station:</label>
-        <input id="station" value="1" />
-        <label for="connection">Connection:</label>
-        <input id="connection" />
+        <br>
+        <input id="station" value="Station1" />
+    </div>
+    <div style="display:block;">
+        <label for="token">Token:</label>
+        <br>
+        <input id="token" />
+    </div>
+    <div style="display:block;">
         <button id="generateButton" type="submit">Generate</button>
     </div>
+    <br />
+    <div style="display:block;">
+        <label for="connection">Connection:</label>
+        <br>
+        <input id="connection" />
+    </div>
+    <br />
     <div>
         <button id="connectButton" type="submit">Connect</button>
     </div>
     <p></p>
-    <div>
+    <div style="display: block;">
         <label for="sendMessage">Message to send:</label>
+        <br />
         <input id="sendMessage" disabled />
+        <br />
         <button id="sendButton" type="submit" disabled>Send</button>
         <button id="closeButton" disabled>Close Socket</button>
     </div>
@@ -80,7 +105,7 @@
         var scheme = document.location.protocol === "https:" ? "wss" : "ws";
         var port = document.location.port ? (":" + document.location.port) : "";
 
-        connectionUrl.value = scheme + "://" + document.location.hostname + port + "/ws";
+        connectionUrl.value = scheme + "://" + document.location.hostname + port;
 
         function updateState() {
             function disable() {
@@ -147,8 +172,7 @@
         };
 
         generateButton.onclick = function () {
-            var stationId = station.value.length > 0 ? "?station=" + station.value : '';
-            connection.value = scheme + "://" + document.location.hostname + port + "/ws" + stationId;
+            connection.value = connectionUrl.value + "/OCPP/" + station.value + "?OCPP_TOKEN=" + token.value;
         };
 
         connectButton.onclick = function () {
@@ -187,6 +211,16 @@
                 .replace(/'/g, '&#39;')
                 .replace(/</g, '&lt;')
                 .replace(/>/g, '&gt;');
+        }
+
+        function regexFind() {
+            var url = connection.value;
+            var queryString = extractQueryString(url);
+            // extract the variable OCPP_TOKEN from an url query string
+            // name should be exactly OCPP_TOKEN if there's any character
+            // before the name other than & it should be ignored, so either is
+            // at the beginning of the query or after & character
+
         }
     </script>
 </body>

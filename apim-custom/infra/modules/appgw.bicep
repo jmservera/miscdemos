@@ -169,7 +169,13 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
               conditions: [
                 {
                   variable: 'var_uri_path'
-                  pattern: '/ocpp/(.+)'
+                  pattern: '\\/ocpp\\/(.+)'
+                  ignoreCase: true
+                  negate: false
+                }
+                {
+                  variable: 'var_request_query'
+                  pattern: '(?:^|\\&)OCPP_TOKEN=([^&]+)'
                   ignoreCase: true
                   negate: false
                 }
@@ -186,7 +192,7 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
                 urlConfiguration: {
                   modifiedPath: '/client/hubs/hubby'
                   //TODO: This is a placeholder for the access token, retrieve it from the query headers
-                  modifiedQueryString: 'access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ3c3M6Ly93ZWJwdWJzdWItbG9vNjc2eHBxajVsdS53ZWJwdWJzdWIuYXp1cmUuY29tL2NsaWVudC9odWJzL2h1YmJ5IiwiaWF0IjoxNzIxMDgwNDE0LCJleHAiOjE3MjEwODQwMTR9.P9yzWg6c_Paz2OBEfXHM-b6q4fxOtM2vo858pB9Xwl4'
+                  modifiedQueryString: 'access_token={http_req_OCPP_TOKEN_1}'
                   reroute: false
                 }
               }

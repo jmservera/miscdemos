@@ -25,10 +25,6 @@ infra: $(wildcard infra/**/*.bicep) $(wildcard infra/**/*.parameters.json)
 	@echo "Deploying infra to Azure"
 	 az group create -n $(RG_NAME) -l $(RG_LOCATION)
 	az deployment group create -g $(RG_NAME) --template-file infra/main.bicep --parameters infra/main.parameters.json
-deploy:
-	@echo "Deploying all to Azure"
-	@$(MAKE) -f $(THIS_FILE) infra
-	@$(MAKE) -f $(THIS_FILE) publish
 publish: $(wildcard api/**/*.cs) $(wildcard api/**/wwwroot/*)
 	@echo "Creating publish files"
 	dotnet publish api/OcppServer/OcppServer.csproj -c Release
@@ -36,6 +32,9 @@ publish: $(wildcard api/**/*.cs) $(wildcard api/**/wwwroot/*)
 	cd api/OcppServer/bin/Release/net8.0/publish && zip -r /tmp/ocppserver.zip .
 	@echo "Publish files created"
 	az webapp deploy -g $(RG_NAME) -n $(WEBAPP_NAME) --src-path /tmp/ocppserver.zip
-
+deploy:
+	@echo "Deploying all to Azure"
+	@$(MAKE) -f $(THIS_FILE) infra
+	@$(MAKE) -f $(THIS_FILE) publish
 .PHONY: test clean watch start
 
