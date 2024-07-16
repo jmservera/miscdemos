@@ -3,34 +3,23 @@
 @minLength(3)
 param appgwName string = 'appgw-${uniqueString(resourceGroup().id)}'
 param location string = resourceGroup().location
-param webSiteName string
 param pubSubServiceName string
+param gwSubnetId string
 param zones array = [1, 2, 3]
 
 param skuSize string = 'Standard_v2'
 param skuTier string = 'Standard_v2'
 param skuCapacity int = 1
 
-resource appService 'Microsoft.Web/sites@2020-06-01' existing = {
-  name: webSiteName
-}
-
 resource webPubSub 'Microsoft.SignalRService/webPubSub@2021-10-01' existing = {
   name: pubSubServiceName
-}
-
-module virtualNetwork './virtualNetwork.bicep' = {
-  name: 'vNet'
-  params: {
-    virtualNetworkName: 'vnet-${uniqueString(resourceGroup().id)}'
-  }
 }
 
 module publicIpAddress './ipAddress.bicep' = {
   name: 'publicIpAddress'
   params: {
     publicIpAddressName: 'ip-${uniqueString(resourceGroup().id)}'
-    domainNameLabel: uniqueString(resourceGroup().id)
+    domainNameLabel: 'd${uniqueString(resourceGroup().id)}' // ensure domain name starts with a letter
   }
 }
 
@@ -49,7 +38,7 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
         name: 'appGatewayIpConfig'
         properties: {
           subnet: {
-            id: virtualNetwork.outputs.subnets[0].id
+            id: gwSubnetId
           }
         }
       }

@@ -25,14 +25,14 @@ param unitCount int = 1
   'Standard_S1'
   'Free_F1'
 ])
-param sku string = 'Free_F1'
+param sku string = 'Standard_S1'
 
 @description('Pricing tier')
 @allowed([
   'Free'
   'Standard'
 ])
-param pricingTier string = 'Free'
+param pricingTier string = 'Standard'
 
 resource webPubSub 'Microsoft.SignalRService/webPubSub@2021-10-01' = {
   name: serviceName
@@ -41,6 +41,9 @@ resource webPubSub 'Microsoft.SignalRService/webPubSub@2021-10-01' = {
     capacity: unitCount
     name: sku
     tier: pricingTier
+  }
+  properties: {
+    publicNetworkAccess: 'Disabled'
   }
 }
 

@@ -1,7 +1,24 @@
+module virtualNetwork './modules/virtualNetwork.bicep' = {
+  name: 'vNet'
+  params: {
+    virtualNetworkName: 'vnet-${uniqueString(resourceGroup().id)}'
+  }
+}
+
 module webPubSub './modules/webPubSub.bicep' = {
   name: 'webPubSubService'
   params: {
     serviceName: 'webpubsub-${uniqueString(resourceGroup().id)}'
+  }
+}
+
+module webPubSubPrivateEndpoint './modules/privateEndpoint.bicep' = {
+  name: 'webPubSubPrivateEndpoint'
+  params: {
+    privateLinkResource: webPubSub.outputs.serviceId
+    subnetId: virtualNetwork.outputs.privateSubnetId
+    vnetId: virtualNetwork.outputs.vnetId
+    hostname: webPubSub.outputs.serviceEndpoint
   }
 }
 
@@ -30,7 +47,7 @@ module appGw './modules/appgw.bicep' = {
   params: {
     appgwName: 'appgw-${uniqueString(resourceGroup().id)}'
     location: resourceGroup().location
-    webSiteName: webApp.outputs.webSiteName
     pubSubServiceName: webPubSub.outputs.serviceName
+    gwSubnetId: virtualNetwork.outputs.gwSubnetId
   }
 }
