@@ -3,7 +3,6 @@
 @minLength(3)
 param appgwName string = 'appgw-${uniqueString(resourceGroup().id)}'
 param location string = resourceGroup().location
-param pubSubServiceName string
 param gwSubnetId string
 param zones array = [1, 2, 3]
 
@@ -25,10 +24,6 @@ var pubsubListenerName = 'pubsubListener'
 var webBackendPoolName = 'webBackend'
 var webListenerName = 'webListener'
 var webBackendSettingsName = 'webBackendSettings'
-
-resource webPubSub 'Microsoft.SignalRService/webPubSub@2021-10-01' existing = {
-  name: pubSubServiceName
-}
 
 resource identity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
   name: keyVaultIdentityName
@@ -99,7 +94,7 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
         properties: {
           backendAddresses: [
             {
-              fqdn: webPubSub.properties.hostName
+              fqdn: pubsubHostName
             }
           ]
         }
@@ -109,7 +104,7 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
         properties: {
           backendAddresses: [
             {
-              fqdn: webPubSub.properties.hostName
+              fqdn: webHostName
             }
           ]
         }
@@ -120,7 +115,7 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
         name: pubsubProbeName
         properties: {
           protocol: 'Https'
-          host: webPubSub.properties.hostName
+          host: pubsubHostName
           path: '/client'
           interval: 30
           timeout: 30

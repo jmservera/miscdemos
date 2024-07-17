@@ -70,7 +70,6 @@ module appGw './modules/appgw.bicep' = {
   params: {
     appgwName: 'appgw-${uniqueString(resourceGroup().id)}'
     location: resourceGroup().location
-    pubSubServiceName: webPubSub.outputs.serviceName
     gwSubnetId: virtualNetwork.outputs.gwSubnetId
     keyVaultSecretId: keyVaultSecretId
     webHostName: webHostName
