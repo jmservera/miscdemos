@@ -5,7 +5,16 @@ param vnetId string
 param subnetId string
 @description('The resource id of the resource to link with this private link.')
 param privateLinkResource string
-param targetSubResource array = ['webpubsub']
+@allowed([
+  'webpubsub'
+  'sites'
+])
+param targetSubResource string = 'webpubsub'
+
+var dnsByTarget = {
+  webpubsub: 'privatelink.webpubsub.azure.com'
+  sites: 'privatelink.azurewebsites.net'
+}
 
 resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
   location: location
@@ -20,7 +29,7 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
         name: endpointName
         properties: {
           privateLinkServiceId: privateLinkResource
-          groupIds: targetSubResource
+          groupIds: [targetSubResource]
         }
       }
     ]
@@ -30,7 +39,7 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
 resource privateDnsZone 'Microsoft.Network/privateDnsZones@2018-09-01' = {
   // it is important to set the right location
   // https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns
-  name: 'privatelink.webpubsub.azure.com'
+  name: dnsByTarget[targetSubResource]
   location: 'global'
 }
 

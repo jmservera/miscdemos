@@ -9,10 +9,13 @@ param keyVaultIdentityRG string = resourceGroup().name
 param customDnsZoneName string = 'jmservera.online'
 @description('A Record Name for the Web PubSub service endpoint, used as prefix of the DnsZoneName')
 param pubsubARecordName string = 'wss'
+@description('A Record Name for the Web service endpoint, used as prefix of the DnsZoneName')
+param webARecordName string = 'www'
 @description('Resource Group name where the DNS Zone was created')
 param dnsZoneRG string = 'domainnames'
 
 var pubsubHostName = '${pubsubARecordName}.${customDnsZoneName}'
+var webHostName = '${webARecordName}.${customDnsZoneName}'
 
 // Creates a VNet with 3 subnets: default, gateway and private endpoints
 module virtualNetwork './modules/virtualNetwork.bicep' = {
@@ -38,6 +41,7 @@ module webPubSubPrivateEndpoint './modules/privateEndpoint.bicep' = {
     privateLinkResource: webPubSub.outputs.serviceId
     subnetId: virtualNetwork.outputs.privateSubnetId
     vnetId: virtualNetwork.outputs.vnetId
+    endpointName: 'wssprivate${uniqueString(resourceGroup().id)}'
   }
 }
 
@@ -45,8 +49,19 @@ module webApp './modules/webapp.bicep' = {
   name: 'webAppService'
   params: {
     webAppName: 'webapp-${uniqueString(resourceGroup().id)}'
-    sku: 'F1'
+    sku: 'B1'
     linuxFxVersion: 'DOTNETCORE|8.0'
+  }
+}
+
+module webPrivateEndpoint './modules/privateEndpoint.bicep' = {
+  name: 'webPrivateEndpoint'
+  params: {
+    privateLinkResource: webApp.outputs.appServiceId
+    subnetId: virtualNetwork.outputs.privateSubnetId
+    vnetId: virtualNetwork.outputs.vnetId
+    targetSubResource: 'sites'
+    endpointName: 'wwwprivate${uniqueString(resourceGroup().id)}'
   }
 }
 
@@ -58,6 +73,7 @@ module appGw './modules/appgw.bicep' = {
     pubSubServiceName: webPubSub.outputs.serviceName
     gwSubnetId: virtualNetwork.outputs.gwSubnetId
     keyVaultSecretId: keyVaultSecretId
+    webHostName: webHostName
     pubsubHostName: pubsubHostName
     keyVaultIdentityName: keyVaultIdentityName
     keyVaultIdentityRG: keyVaultIdentityRG
@@ -65,12 +81,22 @@ module appGw './modules/appgw.bicep' = {
 }
 
 // update A record with appGW public IP
-module dns './modules/dns.bicep' = {
-  name: 'dnsService'
+module wssdns './modules/dns.bicep' = {
+  name: 'dnsServicePubSub'
   scope: resourceGroup(dnsZoneRG)
   params: {
     dnszoneName: customDnsZoneName
     aRecordName: pubsubARecordName
-    aRecordIpv4Address: appGw.outputs.publicIPAddress
+    ipTargetResourceId: appGw.outputs.publicIPAddressId
+  }
+}
+
+module wwwdns './modules/dns.bicep' = {
+  name: 'dnsServiceWeb'
+  scope: resourceGroup(dnsZoneRG)
+  params: {
+    dnszoneName: customDnsZoneName
+    aRecordName: webARecordName
+    ipTargetResourceId: appGw.outputs.publicIPAddressId
   }
 }

@@ -13,6 +13,7 @@ param skuCapacity int = 1
 @secure()
 param keyVaultSecretId string
 param pubsubHostName string
+param webHostName string
 param keyVaultIdentityName string
 param keyVaultIdentityRG string
 
@@ -21,6 +22,9 @@ var pubsubBackendPoolName = 'pubsubBackend'
 var pubsubBackendSettingsName = 'pubsubBackendSettings'
 var pubsubProbeName = 'pubsubProbe'
 var pubsubListenerName = 'pubsubListener'
+var webBackendPoolName = 'webBackend'
+var webListenerName = 'webListener'
+var webBackendSettingsName = 'webBackendSettings'
 
 resource webPubSub 'Microsoft.SignalRService/webPubSub@2021-10-01' existing = {
   name: pubSubServiceName
@@ -100,6 +104,16 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
           ]
         }
       }
+      {
+        name: webBackendPoolName
+        properties: {
+          backendAddresses: [
+            {
+              fqdn: webPubSub.properties.hostName
+            }
+          ]
+        }
+      }
     ]
     probes: [
       {
@@ -136,6 +150,16 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
           }
         }
       }
+      {
+        name: webBackendSettingsName
+        properties: {
+          port: 80
+          protocol: 'Http'
+          cookieBasedAffinity: 'Disabled'
+          pickHostNameFromBackendAddress: true
+          requestTimeout: 20
+        }
+      }
     ]
     sslCertificates: [
       {
@@ -164,6 +188,28 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
             id: resourceId('Microsoft.Network/applicationGateways/sslCertificates', appgwName, 'pubsubtls')
           }
           hostName: pubsubHostName
+          customErrorConfigurations: []
+          requireServerNameIndication: true
+        }
+      }
+      {
+        name: webListenerName
+        properties: {
+          frontendIPConfiguration: {
+            id: resourceId(
+              'Microsoft.Network/applicationGateways/frontendIPConfigurations',
+              appgwName,
+              'appGwPublicFrontendIPv4'
+            )
+          }
+          frontendPort: {
+            id: resourceId('Microsoft.Network/applicationGateways/frontendPorts', appgwName, 'port_443')
+          }
+          protocol: 'Https'
+          sslCertificate: {
+            id: resourceId('Microsoft.Network/applicationGateways/sslCertificates', appgwName, 'pubsubtls')
+          }
+          hostName: webHostName
           customErrorConfigurations: []
           requireServerNameIndication: true
         }
@@ -216,7 +262,7 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
         name: 'pubsubRequestRule'
         properties: {
           ruleType: 'Basic'
-          priority: 1
+          priority: 200
           httpListener: {
             id: resourceId('Microsoft.Network/applicationGateways/httpListeners', appgwName, pubsubListenerName)
           }
@@ -239,8 +285,29 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
           }
         }
       }
+      {
+        name: 'webRequestRule'
+        properties: {
+          ruleType: 'Basic'
+          priority: 100
+          httpListener: {
+            id: resourceId('Microsoft.Network/applicationGateways/httpListeners', appgwName, webListenerName)
+          }
+          backendAddressPool: {
+            id: resourceId('Microsoft.Network/applicationGateways/backendAddressPools', appgwName, webBackendPoolName)
+          }
+          backendHttpSettings: {
+            id: resourceId(
+              'Microsoft.Network/applicationGateways/backendHttpSettingsCollection',
+              appgwName,
+              webBackendSettingsName
+            )
+          }
+        }
+      }
     ]
   }
 }
 
 output publicIPAddress string = publicIpAddress.outputs.publicIpAddress
+output publicIPAddressId string = publicIpAddress.outputs.publicIpAddressId
