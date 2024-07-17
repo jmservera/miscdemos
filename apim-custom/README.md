@@ -23,14 +23,20 @@ Create a main.parameters.json file in the root of the project with the following
     "keyVaultSecretId": {
       "value": "<KEYVAULT SECRET ID FOR SSL Certificate>"
     },
-    "pubsubHostName": {
-      "value": "<URI FOR THE PUBSUB SERVICE IN THE APPP GATEWAY, EX: wss.mydomain.com, you need to create an entry for it in your DNS with the IP generated for the GW>"
-    },
     "keyVaultIdentityName": {
       "value": "<NAME OF THE Managed Identity that has cert read access rights in the KeyVault>"
     },
     "keyVaultIdentityRG": {
       "value": "<RESOURCE GROUP OF THE MANAGED IDENTITY>"
+    },
+    "customDnsZoneName": {
+      "value": "<BASE DOMAIN NAME FOR THE PUBSUB SERVICE IN THE APPP GATEWAY, EX: mydomain.com>"      
+    },
+    "pubsubARecordName": {
+      "value": "<SUBDOMAIN NAME USED FOR THE WEB PUBSUB SERVICE, EX: wss (for wss.mydomain.com)>"
+    },
+    "dnsZoneRG": {
+      "value": "<NAME OF THE RG WHERE THE DNS SERVICE>"
     }
   }
 }

@@ -2,13 +2,17 @@ param webAppName string = uniqueString(resourceGroup().id) // Generate unique St
 param sku string = 'F1' // The SKU of App Service Plan
 param linuxFxVersion string = 'DOTNETCORE|8.0' // The runtime stack of web app
 param location string = resourceGroup().location // Location for all resources
-param appInsightsName string = 'myAppInsights'
 var appServicePlanName = toLower('AppServicePlan-${webAppName}')
 var webSiteName = toLower('wapp-${webAppName}')
+var appInsightsName = 'appInsights-${uniqueString(resourceGroup().id)}'
 
-resource appInsights 'Microsoft.Insights/components@2020-02-02-preview' existing = {
+resource appInsights 'Microsoft.Insights/components@2020-02-02-preview' = {
   name: appInsightsName
-  scope: resourceGroup()
+  location: resourceGroup().location
+  kind: 'web'
+  properties: {
+    Application_Type: 'web'
+  }
 }
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2020-06-01' = {
