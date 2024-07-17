@@ -242,3 +242,5 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
     ]
   }
 }
+
+output publicIPAddress string = publicIpAddress.outputs.publicIpAddress

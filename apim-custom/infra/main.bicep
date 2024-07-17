@@ -59,3 +59,5 @@ module appGw './modules/appgw.bicep' = {
     keyVaultIdentityRG: keyVaultIdentityRG
   }
 }
+
+output appGatewayPublicIp string = appGw.outputs.publicIPAddress
