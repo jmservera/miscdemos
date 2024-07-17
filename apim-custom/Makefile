@@ -31,6 +31,7 @@ publish: $(wildcard api/**/*.cs) $(wildcard api/**/wwwroot/*)
 	@echo "Zip files"
 	cd api/OcppServer/bin/Release/net8.0/publish && zip -r /tmp/ocppserver.zip .
 	@echo "Publish files created"
+	# todo: use --src-url to avoid uploading the zip file
 	az webapp deploy -g $(RG_NAME) -n $(WEBAPP_NAME) --src-path /tmp/ocppserver.zip
 deploy:
 	@echo "Deploying all to Azure"
