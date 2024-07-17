@@ -10,9 +10,25 @@ param zones array = [1, 2, 3]
 param skuSize string = 'Standard_v2'
 param skuTier string = 'Standard_v2'
 param skuCapacity int = 1
+@secure()
+param keyVaultSecretId string
+param pubsubHostName string
+param keyVaultIdentityName string
+param keyVaultIdentityRG string
+
+var ocppRuleSetName = 'ocppRuleSet'
+var pubsubBackendPoolName = 'pubsubBackend'
+var pubsubBackendSettingsName = 'pubsubBackendSettings'
+var pubsubProbeName = 'pubsubProbe'
+var pubsubListenerName = 'pubsubListener'
 
 resource webPubSub 'Microsoft.SignalRService/webPubSub@2021-10-01' existing = {
   name: pubSubServiceName
+}
+
+resource identity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
+  name: keyVaultIdentityName
+  scope: resourceGroup(keyVaultIdentityRG)
 }
 
 module publicIpAddress './ipAddress.bicep' = {
@@ -27,6 +43,12 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
   name: appgwName
   location: location
   zones: zones
+  identity: {
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${identity.id}': {}
+    }
+  }
   properties: {
     sku: {
       name: skuSize
@@ -60,10 +82,16 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
           port: 80
         }
       }
+      {
+        name: 'port_443'
+        properties: {
+          port: 443
+        }
+      }
     ]
     backendAddressPools: [
       {
-        name: 'pubsub'
+        name: pubsubBackendPoolName
         properties: {
           backendAddresses: [
             {
@@ -75,7 +103,7 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
     ]
     probes: [
       {
-        name: 'pubSubClient'
+        name: pubsubProbeName
         properties: {
           protocol: 'Https'
           host: webPubSub.properties.hostName
@@ -96,7 +124,7 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
     ]
     backendHttpSettingsCollection: [
       {
-        name: 'pubsub'
+        name: pubsubBackendSettingsName
         properties: {
           port: 443
           protocol: 'Https'
@@ -104,14 +132,22 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
           pickHostNameFromBackendAddress: true
           requestTimeout: 20
           probe: {
-            id: resourceId('Microsoft.Network/applicationGateways/probes', appgwName, 'pubSubClient')
+            id: resourceId('Microsoft.Network/applicationGateways/probes', appgwName, pubsubProbeName)
           }
+        }
+      }
+    ]
+    sslCertificates: [
+      {
+        name: 'pubsubtls'
+        properties: {
+          keyVaultSecretId: keyVaultSecretId
         }
       }
     ]
     httpListeners: [
       {
-        name: 'websocket'
+        name: pubsubListenerName
         properties: {
           frontendIPConfiguration: {
             id: resourceId(
@@ -121,36 +157,21 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
             )
           }
           frontendPort: {
-            id: resourceId('Microsoft.Network/applicationGateways/frontendPorts', appgwName, 'port_80')
+            id: resourceId('Microsoft.Network/applicationGateways/frontendPorts', appgwName, 'port_443')
           }
-          protocol: 'Http'
-          sslCertificate: null
+          protocol: 'Https'
+          sslCertificate: {
+            id: resourceId('Microsoft.Network/applicationGateways/sslCertificates', appgwName, 'pubsubtls')
+          }
+          hostName: pubsubHostName
           customErrorConfigurations: []
-          requireServerNameIndication: false
-        }
-      }
-    ]
-    requestRoutingRules: [
-      {
-        name: 'websocketrule'
-        properties: {
-          ruleType: 'Basic'
-          priority: 1
-          httpListener: {
-            id: resourceId('Microsoft.Network/applicationGateways/httpListeners', appgwName, 'websocket')
-          }
-          backendAddressPool: {
-            id: resourceId('Microsoft.Network/applicationGateways/backendAddressPools', appgwName, 'pubsub')
-          }
-          backendHttpSettings: {
-            id: resourceId('Microsoft.Network/applicationGateways/backendHttpSettingsCollection', appgwName, 'pubsub')
-          }
+          requireServerNameIndication: true
         }
       }
     ]
     rewriteRuleSets: [
       {
-        name: 'ocpp'
+        name: ocppRuleSetName
         properties: {
           rewriteRules: [
             {
@@ -187,6 +208,35 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
               }
             }
           ]
+        }
+      }
+    ]
+    requestRoutingRules: [
+      {
+        name: 'pubsubRequestRule'
+        properties: {
+          ruleType: 'Basic'
+          priority: 1
+          httpListener: {
+            id: resourceId('Microsoft.Network/applicationGateways/httpListeners', appgwName, pubsubListenerName)
+          }
+          backendAddressPool: {
+            id: resourceId(
+              'Microsoft.Network/applicationGateways/backendAddressPools',
+              appgwName,
+              pubsubBackendPoolName
+            )
+          }
+          backendHttpSettings: {
+            id: resourceId(
+              'Microsoft.Network/applicationGateways/backendHttpSettingsCollection',
+              appgwName,
+              pubsubBackendSettingsName
+            )
+          }
+          rewriteRuleSet: {
+            id: resourceId('Microsoft.Network/applicationGateways/rewriteRuleSets', appgwName, ocppRuleSetName)
+          }
         }
       }
     ]

@@ -1,3 +1,8 @@
+@secure()
+param keyVaultSecretId string
+param keyVaultIdentityName string
+param pubsubHostName string
+param keyVaultIdentityRG string = resourceGroup().name
 module virtualNetwork './modules/virtualNetwork.bicep' = {
   name: 'vNet'
   params: {
@@ -48,5 +53,9 @@ module appGw './modules/appgw.bicep' = {
     location: resourceGroup().location
     pubSubServiceName: webPubSub.outputs.serviceName
     gwSubnetId: virtualNetwork.outputs.gwSubnetId
+    keyVaultSecretId: keyVaultSecretId
+    pubsubHostName: pubsubHostName
+    keyVaultIdentityName: keyVaultIdentityName
+    keyVaultIdentityRG: keyVaultIdentityRG
   }
 }
