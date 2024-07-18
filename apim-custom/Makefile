@@ -5,6 +5,7 @@ WEBAPP_NAME := $(shell az webapp list -g $(RG_NAME) --query "[0].name" -o tsv)
 STORAGE_NAME := $(shell az storage account list -g $(RG_NAME) --query "[?starts_with(name,'webdeploy')].name" -o tsv)
 EXPIRY := $(shell date -u -d "15 minutes" '+%Y-%m-%dT%H:%MZ')
 
+
 build: $(wildcard api/**/*.cs)
 	@echo "Building"
 	dotnet build api/api.sln
@@ -33,13 +34,14 @@ publish: $(wildcard api/**/*.cs) $(wildcard api/**/wwwroot/*)
 	@echo "Zip files"
 	cd api/OcppServer/bin/Release/net8.0/publish && zip -r /tmp/ocppserver.zip .
 	@echo "Publish files created"
-	# todo: use --src-url to avoid uploading the zip file
 	az storage blob upload --account-name $(STORAGE_NAME) -c default -f /tmp/ocppserver.zip -n ocppserver.zip --overwrite;
 	APP_URL='$(shell az storage blob generate-sas --full-uri --permissions r --expiry '$(EXPIRY)' --account-name $(STORAGE_NAME) -c default -n ocppserver.zip -o tsv)'; \
 	az webapp deploy -g $(RG_NAME) -n $(WEBAPP_NAME) --src-url $$APP_URL --type zip;
 deploy:
 	@echo "Deploying all to Azure"
 	@$(MAKE) -f $(THIS_FILE) infra
+	# wait a little bit for the infra to be ready, to avoid publish errors with the gateway.
+	sleep 60 
 	@$(MAKE) -f $(THIS_FILE) publish
 .PHONY: test clean watch start
 
