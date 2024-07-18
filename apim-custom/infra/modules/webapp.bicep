@@ -27,6 +27,13 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2020-06-01' = {
   kind: 'linux'
 }
 
+module storage 'storage.bicep' = {
+  name: 'storage'
+  params: {
+    name: 'webdeploy-${uniqueString(resourceGroup().id)}'
+  }
+}
+
 resource appService 'Microsoft.Web/sites@2020-06-01' = {
   name: webSiteName
   location: location
@@ -57,3 +64,4 @@ resource appService 'Microsoft.Web/sites@2020-06-01' = {
 
 output webSiteName string = appService.name
 output appServiceId string = appService.id
+output storageName string = storage.outputs.storageAccountName

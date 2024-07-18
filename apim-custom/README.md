@@ -21,7 +21,7 @@ Create a main.parameters.json file in the root of the project with the following
 {
   "parameters": {
     "keyVaultSecretId": {
-      "value": "<KEYVAULT SECRET ID FOR SSL Certificate>"
+      "value": "<Keyvault Secret Identifier (sid) for the SSL Certificate, you can omit the version number to get always the latest one>"
     },
     "keyVaultIdentityName": {
       "value": "<NAME OF THE Managed Identity that has cert read access rights in the KeyVault>"
