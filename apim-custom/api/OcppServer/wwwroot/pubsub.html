@@ -40,12 +40,17 @@
     <div style="display:block;">
         <label for="protocol">Protocol:</label>
         <br>
-        <input id="protocol" value="ocpp1.6" />
+        <input id="protocol" placeholder="ocpp1.6" />
     </div>
     <div style="display:block;">
         <label for="station">Station:</label>
         <br>
         <input id="station" value="Station1" />
+    </div>
+    <div style="display:block;">
+        <label for="token">Token:</label>
+        <br>
+        <input id="token" value="unauthenticated" />
     </div>
     <div style="display:block;">
         <button id="generateButton" type="submit">Generate</button>
@@ -100,7 +105,7 @@
         var scheme = document.location.protocol === "https:" ? "wss" : "ws";
         var port = document.location.port ? (":" + document.location.port) : "";
 
-        connectionUrl.value = scheme + "://" + document.location.hostname + port;
+        connectionUrl.value = scheme + "://wss" + document.location.hostname.split('.').splice(-2).join('.') + port;
 
         function updateState() {
             function disable() {
@@ -167,13 +172,12 @@
         };
 
         generateButton.onclick = function () {
-            connection.value = connectionUrl.value + "/ws?station=" + station.value;
+            connection.value = connectionUrl.value + "/OCPP/" + station.value + "?OCPP_TOKEN=" + token.value;
         };
 
         connectButton.onclick = function () {
             stateLabel.innerHTML = "Connecting";
             socket = new WebSocket(connection.value, subprotocol.value.length > 0 ? subprotocol.value : undefined);
-
             socket.onopen = function (event) {
                 updateState();
                 commsLog.innerHTML += '<tr>' +
@@ -195,10 +199,7 @@
             socket.onmessage = function (event) {
                 // check if the message is a websocket ping and respond with a pong
                 if (event.data === "ping") {
-
                     socket.send("pong");
-                    return;
-                } else if (event.data === "pong") {
                     return;
                 }
                 commsLog.innerHTML += '<tr>' +
@@ -220,6 +221,11 @@
         function regexFind() {
             var url = connection.value;
             var queryString = extractQueryString(url);
+            // extract the variable OCPP_TOKEN from an url query string
+            // name should be exactly OCPP_TOKEN if there's any character
+            // before the name other than & it should be ignored, so either is
+            // at the beginning of the query or after & character
+
         }
     </script>
 </body>

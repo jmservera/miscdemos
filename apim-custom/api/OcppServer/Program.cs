@@ -1,3 +1,5 @@
+using OcppServer.Api;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,6 +9,14 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 var app = builder.Build();
+
+app.Services.GetRequiredService<IHostApplicationLifetime>().ApplicationStopping.Register(
+    async () =>
+    {
+        app.Services.GetRequiredService<ILogger<WebSocketController>>().LogInformation("Stopping WebSockets");
+        await WebSocketController.StopAsync();
+    }
+);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -49,17 +59,6 @@ app.MapGet("/weatherforecast", () =>
 .WithOpenApi();
 
 app.Run();
-
-/*
-async (context) =>
-{
-    using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
-    var socketFinishedTcs = new TaskCompletionSource<object>();
-
-    BackgroundSocketProcessor.AddSocket(webSocket, socketFinishedTcs);
-
-    await socketFinishedTcs.Task;
-}*/
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
