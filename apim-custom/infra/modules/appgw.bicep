@@ -149,7 +149,7 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
           protocol: 'Https'
           cookieBasedAffinity: 'Disabled'
           pickHostNameFromBackendAddress: true
-          requestTimeout: 20
+          requestTimeout: 1240 //need a longer timeout so the websocket is not drained immediately
           probe: {
             id: resourceId('Microsoft.Network/applicationGateways/probes', appgwName, pubsubProbeName)
           }
