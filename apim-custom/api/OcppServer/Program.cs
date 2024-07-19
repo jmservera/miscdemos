@@ -27,12 +27,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var webSocketOptions = new WebSocketOptions
-{
-    KeepAliveInterval = TimeSpan.FromMinutes(2)
-};
+// var webSocketOptions = new WebSocketOptions
+// {
+//     KeepAliveInterval = TimeSpan.FromSeconds(5)
+// };
+//app.UseWebSockets(webSocketOptions);
 
-app.UseWebSockets(webSocketOptions);
+app.UseWebSockets();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.MapControllers();

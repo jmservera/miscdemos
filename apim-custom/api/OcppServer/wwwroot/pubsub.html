@@ -105,7 +105,7 @@
         var scheme = document.location.protocol === "https:" ? "wss" : "ws";
         var port = document.location.port ? (":" + document.location.port) : "";
 
-        connectionUrl.value = scheme + "://wss" + document.location.hostname.split('.').splice(-2).join('.') + port;
+        connectionUrl.value = scheme + "://wss." + document.location.hostname.split('.').splice(-2).join('.') + port;
 
         function updateState() {
             function disable() {

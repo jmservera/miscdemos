@@ -24,41 +24,13 @@ namespace OcppServer.Api
                     }
                     catch (Exception)
                     {
-                        // ignore
+                        // ignore, we are closing the server
                     }
                 }
             }
             _cts.Cancel();
         }
 
-        /// <summary>
-        /// Static constructor to start a background task to clean up the sockets and send keepalive messages
-        /// </summary>
-        static WebSocketController()
-        {
-            //TODO: use singleton instead of static constructor
-
-            // start a background task to clean up the sockets
-            Task.Run(async () =>
-            {
-                using Mutex mutex = new(true, "Global\\WebSocketControllerMutex", out bool createdNew);
-                if (!createdNew)
-                {
-                    return;
-                }
-                while (!_cts.Token.IsCancellationRequested)
-                {
-                    await Task.Delay(20 * 1000, _cts.Token);
-                    if (!_cts.Token.IsCancellationRequested)
-                    {
-                        foreach (var socket in _sockets.Values)
-                        {
-                            await KeepAliveAsync(socket, _cts.Token);
-                        }
-                    }
-                }
-            });
-        }
         private readonly ILogger<WebSocketController> _logger = logger;
         private static readonly Dictionary<string, WebSocket> _sockets = [];
 
@@ -86,7 +58,6 @@ namespace OcppServer.Api
                     if (HttpContext.WebSockets.WebSocketRequestedProtocols.Contains("ocpp1.6"))
                     {
                         socket = await HttpContext.WebSockets.AcceptWebSocketAsync("ocpp1.6");
-                        // //HttpContext.Response.Headers.Append("Expected", "Ocpp1.6");
                     }
                     else
                     {
@@ -123,24 +94,18 @@ namespace OcppServer.Api
             while (!receiveResult.CloseStatus.HasValue)
             {
                 string message = Encoding.UTF8.GetString(buffer, 0, receiveResult.Count);
-                if (message == "ping" || message == "pong")
-                {
-                    _logger.LogInformation("Received {message} from {station}.", message, station);
-                }
-                else
-                {
-                    message = $"Station: {station}, Message: {message}";
 
-                    var sendBuffer = new ReadOnlyMemory<byte>(Encoding.UTF8.GetBytes(message));
-                    await Parallel.ForEachAsync(_sockets.Values, _cts.Token, async (socket, token) =>
-                    {
-                        await socket.SendAsync(
-                            sendBuffer,
-                            receiveResult.MessageType,
-                            receiveResult.EndOfMessage,
-                            token);
-                    });
-                }
+                message = $"Station: {station}, Message: {message}";
+
+                var sendBuffer = new ReadOnlyMemory<byte>(Encoding.UTF8.GetBytes(message));
+                await Parallel.ForEachAsync(_sockets.Values, _cts.Token, async (socket, token) =>
+                {
+                    await socket.SendAsync(
+                        sendBuffer,
+                        receiveResult.MessageType,
+                        receiveResult.EndOfMessage,
+                        token);
+                });
 
                 receiveResult = await webSocket.ReceiveAsync(
                     new ArraySegment<byte>(buffer), _cts.Token);
@@ -151,27 +116,6 @@ namespace OcppServer.Api
                     receiveResult.CloseStatus.Value,
                     receiveResult.CloseStatusDescription,
                     _cts.Token);
-            }
-        }
-
-        /// <summary>
-        /// Ping pong keepalive functionality for websockets
-        /// </summary>
-        /// <param name="webSocket">destination ws to send ping</param>
-        /// <param name="token">Cancellation token</param>
-        /// <returns>awaitable Task</returns>
-        private async static Task KeepAliveAsync(WebSocket webSocket, CancellationToken token)
-        {
-            if (!token.IsCancellationRequested)
-            {
-                if (webSocket.State == WebSocketState.Open)
-                {
-                    await webSocket.SendAsync(
-                        new ArraySegment<byte>(Encoding.UTF8.GetBytes("ping")),
-                        WebSocketMessageType.Text,
-                        true,
-                        token);
-                }
             }
         }
     }

@@ -149,7 +149,7 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
           protocol: 'Https'
           cookieBasedAffinity: 'Disabled'
           pickHostNameFromBackendAddress: true
-          requestTimeout: 1240 //need a longer timeout so the websocket is not drained immediately
+          requestTimeout: 80 //default KeepAliveInterval in PubSub is 40 seconds, doubling to 80 seconds to ensure it doesn't timeout
           probe: {
             id: resourceId('Microsoft.Network/applicationGateways/probes', appgwName, pubsubProbeName)
           }
@@ -162,7 +162,7 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
           protocol: 'Http'
           cookieBasedAffinity: 'Disabled'
           pickHostNameFromBackendAddress: true
-          requestTimeout: 20
+          requestTimeout: 180 //default KeepAliveInterval for websockets is 2 minutes, setting 3 minutes for app gateway
         }
       }
     ]
