@@ -30,6 +30,7 @@ module webPubSub './modules/webPubSub.bicep' = {
   name: 'webPubSubService'
   params: {
     serviceName: 'webpubsub-${uniqueString(resourceGroup().id)}'
+    hubName: 'OcppService' // it should be the same name than the class implementing it in the asp.net core project
   }
 }
 
@@ -51,6 +52,7 @@ module webApp './modules/webapp.bicep' = {
     webAppName: 'webapp-${uniqueString(resourceGroup().id)}'
     sku: 'B1'
     linuxFxVersion: 'DOTNETCORE|8.0'
+    pubSubName: webPubSub.outputs.serviceName
   }
 }
 

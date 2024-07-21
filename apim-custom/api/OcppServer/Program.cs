@@ -1,4 +1,7 @@
+using Microsoft.Azure.WebPubSub.AspNetCore;
+using Microsoft.Extensions.Azure;
 using OcppServer.Api;
+using OcppServer.PubSub;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +11,19 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
+var pubSubConnectionString = builder.Configuration["WEBPUBSUB_SERVICE_CONNECTION_STRING"] ?? Environment.GetEnvironmentVariable("WEBPUBSUB_SERVICE_CONNECTION_STRING");
+
+builder.Services.AddWebPubSub(o => o.ServiceEndpoint = new WebPubSubServiceEndpoint(
+    pubSubConnectionString
+));
+
+builder.Services.AddWebPubSubServiceClient<OcppService>();
+
+
 var app = builder.Build();
+
+
+app.MapWebPubSubHub<OcppService>("/eventhandler/{*path}");
 
 app.Services.GetRequiredService<IHostApplicationLifetime>().ApplicationStopping.Register(
     async () =>

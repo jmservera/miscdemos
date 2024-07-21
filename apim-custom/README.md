@@ -42,6 +42,13 @@ You need:
   }
   ```
 
+* Configure dotnet secrets or provide the values in the parameters file:
+
+  ```bash
+  dotnet user-secrets init
+  dotnet user-secrets set "WEBPUBSUB_SERVICE_CONNECTION_STRING" "Endpoint=https://[servicename].webpubsub.azure.com;AccessKey=[accesskey];Version=1.0;
+  ```
+
 ## How to deploy this project into Azure
 
 You can run the `deploy` *make* recipe with the following optional parameters:

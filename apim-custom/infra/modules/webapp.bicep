@@ -2,6 +2,7 @@ param webAppName string = uniqueString(resourceGroup().id) // Generate unique St
 param sku string = 'B1' // The SKU of App Service Plan
 param linuxFxVersion string = 'DOTNETCORE|8.0' // The runtime stack of web app
 param location string = resourceGroup().location // Location for all resources
+param pubSubName string
 var appServicePlanName = toLower('AppServicePlan-${webAppName}')
 var webSiteName = toLower('wapp-${webAppName}')
 var appInsightsName = 'appInsights-${uniqueString(resourceGroup().id)}'
@@ -13,6 +14,10 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02-preview' = {
   properties: {
     Application_Type: 'web'
   }
+}
+
+resource pubSub 'Microsoft.SignalRService/webPubSub@2024-04-01-preview' existing = {
+  name: pubSubName
 }
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2020-06-01' = {
@@ -56,6 +61,10 @@ resource appService 'Microsoft.Web/sites@2020-06-01' = {
         {
           name: 'XDT_MicrosoftApplicationInsights_Mode'
           value: 'recommended'
+        }
+        {
+          name: 'WEBPUBSUB_SERVICE_CONNECTION_STRING'
+          value: pubSub.listKeys().primaryConnectionString
         }
       ]
     }

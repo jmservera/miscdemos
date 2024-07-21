@@ -3,7 +3,7 @@
 @maxLength(63)
 @minLength(3)
 param serviceName string = 'webpubsub-${uniqueString(resourceGroup().id)}'
-param hubName string = 'hubby'
+param hubName string = 'OcppService'
 
 @description('The region in which to create the new instance, defaults to the same location as the resource group.')
 param location string = resourceGroup().location
