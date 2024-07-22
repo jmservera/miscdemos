@@ -74,7 +74,7 @@ resource appService 'Microsoft.Web/sites@2020-06-01' = {
   }
 }
 
-resource vNet 'Microsoft.Network/virtualNetworks@2024-01-01' existing ={
+resource vNet 'Microsoft.Network/virtualNetworks@2024-01-01' existing = {
   name: vnetName
 }
 
@@ -83,12 +83,37 @@ resource subNet 'Microsoft.Network/virtualNetworks/subnets@2021-02-01' existing 
   parent: vNet
 }
 
-resource vnetconfig 'Microsoft.Web/sites/networkConfig@2022-09-01'={
+resource vnetconfig 'Microsoft.Web/sites/networkConfig@2022-09-01' = {
   name: 'virtualNetwork'
   parent: appService
-  properties:{
+  properties: {
     subnetResourceId: subNet.id
-    swiftSupported:true
+    swiftSupported: true
+  }
+}
+
+// enable ipSecurityRestrictions for the appService
+resource ipSecurityRestrictions 'Microsoft.Web/sites/config@2023-12-01' = {
+  name: 'web'
+  parent: appService
+  properties: {
+    publicNetworkAccess: 'Enabled'
+    ipSecurityRestrictions: [
+      {
+        ipAddress: 'AzureWebPubSub'
+        action: 'Allow'
+        tag: 'ServiceTag'
+        priority: 100
+        name: 'pubsub'
+      }
+      {
+        ipAddress: 'Any'
+        action: 'Deny'
+        priority: 2147483647
+        name: 'Deny all'
+        description: 'Deny all access'
+      }
+    ]
   }
 }
 
