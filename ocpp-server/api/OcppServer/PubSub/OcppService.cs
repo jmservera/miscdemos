@@ -14,16 +14,28 @@ public sealed class OcppService(WebPubSubServiceClient<OcppService> serviceClien
         _logger.LogInformation("[SYSTEM] new user connecting.");
         if (request.Query.TryGetValue("id", out var id))
         {
-            _logger.LogInformation("[SYSTEM] new user found {userId} connecting.",id);
+            _logger.LogInformation("[SYSTEM] new user found {userId} connecting.", id);
+            if (request.Subprotocols.Count > 0)
+            {
+                _logger.LogInformation("[SYSTEM] connecting with subprotocol {subprotocol}.", request.Subprotocols[0]);
+                if (request.Subprotocols[0] == "ocpp1.6")
+                    return new ValueTask<ConnectEventResponse>(request.CreateResponse(userId: id.FirstOrDefault(), null, request.Subprotocols[0], null));
+                else
+                {
+                    _logger.LogError("[SYSTEM] subprotocol not supported.");
+                    throw new HttpProtocolException(426, "Subprotocol not supported", null);
+                }
+            }
             return new ValueTask<ConnectEventResponse>(request.CreateResponse(userId: id.FirstOrDefault(), null, null, null));
         }
 
         // The SDK catches this exception and returns 401 to the caller
         throw new UnauthorizedAccessException("Request missing id");
     }
-    public override async Task OnConnectedAsync(ConnectedEventRequest request)
+    public override Task OnConnectedAsync(ConnectedEventRequest request)
     {
-        _logger.LogInformation("[SYSTEM] {userId} joined.",request.ConnectionContext.UserId);
+        _logger.LogInformation("[SYSTEM] {userId} joined.", request.ConnectionContext.UserId);
+        return Task.CompletedTask;
     }
 
     public override async ValueTask<UserEventResponse> OnMessageReceivedAsync(UserEventRequest request, CancellationToken cancellationToken)
@@ -40,8 +52,9 @@ public sealed class OcppService(WebPubSubServiceClient<OcppService> serviceClien
         return new UserEventResponse();
     }
 
-    public override async Task OnDisconnectedAsync(DisconnectedEventRequest request)
+    public override Task OnDisconnectedAsync(DisconnectedEventRequest request)
     {
-        _logger.LogInformation("[SYSTEM] {userId} left.",request.ConnectionContext.UserId);
+        _logger.LogInformation("[SYSTEM] {userId} left.", request.ConnectionContext.UserId);
+        return Task.CompletedTask;
     }
 }

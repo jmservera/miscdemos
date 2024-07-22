@@ -1,18 +1,14 @@
 # README
 
-## Add dev certs trust
-
-Remember to run this in the terminal to trust the dev certs. If you are in Windows, even if you run this command from WSL, you will need to run it in the Windows terminal too.
-
-```bash
-dotnet dev-certs https --trust
-```
+This is a PoC  to use the Azure Web PubSub service to act as a WebSocket proxy for an OCPP 1.6 server. It demonstrates the
+usage of a secured environment by using an Application Gateway connected to a private endpoint of the Web PubSub service, and
+a private endpoint for the Web App that hosts the OCPP server.
 
 ## Requirements
 
 You need:
 
-* An **Azure KeyVault** with a wildcard certificate for the domain you will assign to the Application Gateway. The App Gateway then uses it to publish the Web PubSub endpoint and the Web App.
+* An **Azure KeyVault** with a wildcard certificate for the domain you will assign to the Application Gateway. The App Gateway uses it to publish the Web PubSub endpoint and the Web App.
 * A **User Assigned Managed Identity** with read access to the KeyVault where the SSL certificate is stored.
 * A **Public DNS Zone in Azure**, where the script will create or update the A records for the Web PubSub service. Your user needs modify permissions to these DNS records, and they will be created with a resource reference.
 * A **main.parameters.json** file in the root of the project with the following content:
@@ -42,12 +38,14 @@ You need:
   }
   ```
 
-* Configure dotnet secrets or provide the values in the parameters file:
+## Project Structure
 
-  ```bash
-  dotnet user-secrets init
-  dotnet user-secrets set "WEBPUBSUB_SERVICE_CONNECTION_STRING" "Endpoint=https://[servicename].webpubsub.azure.com;AccessKey=[accesskey];Version=1.0;
-  ```
+The project is divided into two main parts:
+
+* Infra: Contains the Bicep templates to deploy the Azure resources.
+* Api: Contains the OCPP server implementation.
+
+All these parts are managed by a Makefile that orchestrates the deployment and the compilation of the OCPP server.
 
 ## How to deploy this project into Azure
 
