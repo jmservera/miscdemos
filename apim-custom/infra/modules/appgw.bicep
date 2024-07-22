@@ -17,6 +17,7 @@ param webHostName string
 param keyVaultIdentityName string
 param keyVaultIdentityRG string
 param webServiceName string
+param pubsubHubName string 
 
 var ocppRuleSetName = 'ocppRuleSet'
 var pubsubBackendPoolName = 'pubsubBackend'
@@ -241,7 +242,7 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
                   negate: false
                 }
               ]
-              name: 'ocpp to pubsub'
+              name: 'ocpp to pubsub with token'
               actionSet: {
                 requestHeaderConfigurations: [
                   {
@@ -251,9 +252,36 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
                 ]
                 responseHeaderConfigurations: []
                 urlConfiguration: {
-                  modifiedPath: '/client/hubs/hubby'
+                  modifiedPath: '/client/hubs/${pubsubHubName}'
                   //TODO: This is a placeholder for the access token, retrieve it from the query headers
-                  modifiedQueryString: 'access_token={http_req_OCPP_TOKEN_1}'
+                  modifiedQueryString: 'access_token={http_req_OCPP_TOKEN_1}&id={var_uri_path_1}'
+                  reroute: false
+                }
+              }
+            }
+            {
+              ruleSequence: 200
+              conditions: [
+                {
+                  variable: 'var_uri_path'
+                  pattern: '\\/ocpp\\/(.+)'
+                  ignoreCase: true
+                  negate: false
+                }
+              ]
+              name: 'ocpp to pubsub unauthenticated'
+              actionSet: {
+                requestHeaderConfigurations: [
+                  {
+                    headerName: 'device'
+                    headerValue: '{var_uri_path_1}'
+                  }
+                ]
+                responseHeaderConfigurations: []
+                urlConfiguration: {
+                  modifiedPath: '/client/hubs/${pubsubHubName}'
+                  //TODO: This is a placeholder for the access token, retrieve it from the query headers
+                  modifiedQueryString: 'id={var_uri_path_1}'
                   reroute: false
                 }
               }

@@ -13,6 +13,8 @@ param pubsubARecordName string = 'wss'
 param webARecordName string = 'www'
 @description('Resource Group name where the DNS Zone was created')
 param dnsZoneRG string = 'domainnames'
+@description('The name for your new Web PubSub Hub. It should be the same name than the class implementing it in the asp.net core project')
+param pubSubHubName string = 'OcppService'
 
 var pubsubHostName = '${pubsubARecordName}.${customDnsZoneName}'
 var webHostName = '${webARecordName}.${customDnsZoneName}'
@@ -30,7 +32,15 @@ module webPubSub './modules/webPubSub.bicep' = {
   name: 'webPubSubService'
   params: {
     serviceName: 'webpubsub-${uniqueString(resourceGroup().id)}'
-    hubName: 'OcppService' // it should be the same name than the class implementing it in the asp.net core project
+  }
+}
+
+module hub './modules/webPubSubHub.bicep' = {
+  name: 'webPubSubHub'
+  params: {
+    serviceName: webPubSub.outputs.serviceName
+    hubName: 'OcppService'
+    webAppName: webApp.outputs.webSiteName
   }
 }
 
@@ -80,6 +90,7 @@ module appGw './modules/appgw.bicep' = {
     keyVaultIdentityName: keyVaultIdentityName
     keyVaultIdentityRG: keyVaultIdentityRG
     webServiceName: webApp.outputs.webSiteName
+    pubsubHubName: pubSubHubName
   }
 }
 

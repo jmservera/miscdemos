@@ -172,7 +172,7 @@
         };
 
         generateButton.onclick = function () {
-            connection.value = connectionUrl.value + "/OCPP/" + station.value + "?OCPP_TOKEN=" + token.value;
+            connection.value = connectionUrl.value + "/OCPP/" + station.value + token.value===""?"":"?OCPP_TOKEN=" + token.value;
         };
 
         connectButton.onclick = function () {

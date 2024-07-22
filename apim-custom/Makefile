@@ -9,6 +9,8 @@ preparecli:
 	az upgrade
 	az extension add --name webpubsub
 	az bicep upgrade
+	npm install -g @azure/web-pubsub-tunnel-tool
+	@echo "Tools prepared, now you can start using the makefile"
 build: $(wildcard api/**/*.cs)
 	@echo "Building"
 	dotnet build api/api.sln
@@ -38,8 +40,8 @@ infra: $(wildcard infra/**/*.bicep) $(wildcard infra/**/*.parameters.json)
 	az group create -n $(RG_NAME) -l $(RG_LOCATION)
 	az deployment group create -g $(RG_NAME) --template-file infra/main.bicep --parameters infra/main.parameters.json
 	@echo "Setting up user secrets"
-	CONNECTION_STRING='$(shell az webpubsub list -g $(RG_NAME) --query "[0].name" -o tsv | az webpubsub key show -g $(RG_NAME) -n @- --query "primaryConnectionString" -o tsv)'; \	
-	dotnet user-secrets set 'WEBPUBSUB_SERVICE_CONNECTION_STRING' '$$CONNECTION_STRING' --project api/OcppServer/OcppServer.csproj	
+	CONNECTION_STRING='$(shell az webpubsub list -g $(RG_NAME) --query "[0].name" -o tsv | az webpubsub key show -g $(RG_NAME) -n @- --query "primaryConnectionString" -o tsv)'; \
+	dotnet user-secrets set 'WEBPUBSUB_SERVICE_CONNECTION_STRING' "$$CONNECTION_STRING" --project api/OcppServer/OcppServer.csproj	
 secrets:
 	CONNECTION_STRING='$(shell az webpubsub list -g $(RG_NAME) --query "[0].name" -o tsv | az webpubsub key show -g $(RG_NAME) -n @- --query "primaryConnectionString" -o tsv)'; \
 	dotnet user-secrets set 'WEBPUBSUB_SERVICE_CONNECTION_STRING' "$$CONNECTION_STRING" --project api/OcppServer/OcppServer.csproj	

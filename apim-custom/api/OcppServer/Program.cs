@@ -23,7 +23,23 @@ builder.Services.AddWebPubSubServiceClient<OcppService>();
 var app = builder.Build();
 
 
-app.MapWebPubSubHub<OcppService>("/eventhandler/{*path}");
+app.MapWebPubSubHub<OcppService>("/eventhandler/{*path}").AddEndpointFilter(async (context, next) =>
+{
+    var logger = app.Services.GetRequiredService<ILogger<OcppService>>();
+
+    try
+    {
+        logger.LogInformation("EndpointFilter called with context path: {context}", context.HttpContext.Request.Path);
+        if (!context.HttpContext.Response.Headers["WebHook-Allowed-Origin"].Contains("*"))
+            _ = context.HttpContext.Response.Headers["WebHook-Allowed-Origin"].Append("*");
+    }
+    catch (Exception ex)
+    {
+        logger.LogError("Error in EndpointFilter: {error}", ex.Message);
+    }
+    return await next(context);
+});
+
 
 app.Services.GetRequiredService<IHostApplicationLifetime>().ApplicationStopping.Register(
     async () =>
@@ -38,15 +54,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseHttpsRedirection();
 }
-
-app.UseHttpsRedirection();
-
-// var webSocketOptions = new WebSocketOptions
-// {
-//     KeepAliveInterval = TimeSpan.FromSeconds(5)
-// };
-//app.UseWebSockets(webSocketOptions);
 
 app.UseWebSockets();
 app.UseDefaultFiles();
