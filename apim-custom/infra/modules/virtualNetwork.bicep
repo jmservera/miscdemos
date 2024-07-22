@@ -20,6 +20,14 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2019-09-01' = {
         name: subnetName
         properties: {
           addressPrefix: subnetPrefix
+          delegations: [
+            {
+              name: 'Microsoft.Web/serverFarms'
+              properties: {
+                serviceName: 'Microsoft.Web/serverFarms'
+              }
+            }
+          ]      
         }
       }
       {
@@ -39,7 +47,9 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2019-09-01' = {
 }
 
 output vnetId string = virtualNetwork.id
+output vnetName string = virtualNetwork.name
 output subnets array = virtualNetwork.properties.subnets
 output gwSubnetId string = virtualNetwork.properties.subnets[2].id
 output privateSubnetId string = virtualNetwork.properties.subnets[1].id
 output defaultSubnetId string = virtualNetwork.properties.subnets[0].id
+output defaultSubnetName string = virtualNetwork.properties.subnets[0].name

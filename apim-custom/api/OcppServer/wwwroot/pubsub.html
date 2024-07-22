@@ -50,7 +50,7 @@
     <div style="display:block;">
         <label for="token">Token:</label>
         <br>
-        <input id="token" value="unauthenticated" />
+        <input id="token" value="" />
     </div>
     <div style="display:block;">
         <button id="generateButton" type="submit">Generate</button>
@@ -172,7 +172,7 @@
         };
 
         generateButton.onclick = function () {
-            connection.value = connectionUrl.value + "/OCPP/" + station.value + token.value===""?"":"?OCPP_TOKEN=" + token.value;
+            connection.value = connectionUrl.value + "/OCPP/" + station.value + (token.value===""?"":"?OCPP_TOKEN=" + token.value);
         };
 
         connectButton.onclick = function () {

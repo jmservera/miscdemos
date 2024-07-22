@@ -3,6 +3,9 @@ param sku string = 'B1' // The SKU of App Service Plan
 param linuxFxVersion string = 'DOTNETCORE|8.0' // The runtime stack of web app
 param location string = resourceGroup().location // Location for all resources
 param pubSubName string
+param subnetName string
+param vnetName string
+
 var appServicePlanName = toLower('AppServicePlan-${webAppName}')
 var webSiteName = toLower('wapp-${webAppName}')
 var appInsightsName = 'appInsights-${uniqueString(resourceGroup().id)}'
@@ -68,6 +71,24 @@ resource appService 'Microsoft.Web/sites@2020-06-01' = {
         }
       ]
     }
+  }
+}
+
+resource vNet 'Microsoft.Network/virtualNetworks@2024-01-01' existing ={
+  name: vnetName
+}
+
+resource subNet 'Microsoft.Network/virtualNetworks/subnets@2021-02-01' existing = {
+  name: subnetName
+  parent: vNet
+}
+
+resource vnetconfig 'Microsoft.Web/sites/networkConfig@2022-09-01'={
+  name: 'virtualNetwork'
+  parent: appService
+  properties:{
+    subnetResourceId: subNet.id
+    swiftSupported:true
   }
 }
 

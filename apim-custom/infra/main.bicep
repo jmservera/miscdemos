@@ -63,6 +63,8 @@ module webApp './modules/webapp.bicep' = {
     sku: 'B1'
     linuxFxVersion: 'DOTNETCORE|8.0'
     pubSubName: webPubSub.outputs.serviceName
+    vnetName: virtualNetwork.outputs.vnetName
+    subnetName: virtualNetwork.outputs.defaultSubnetName
   }
 }
 
