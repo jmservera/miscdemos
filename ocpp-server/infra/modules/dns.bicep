@@ -1,4 +1,4 @@
-param dnszoneName string = 'jmservera.online'
+param dnszoneName string
 param aRecordName string = 'wss'
 param ipTargetResourceId string
 
