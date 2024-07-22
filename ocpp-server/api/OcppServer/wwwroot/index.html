@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        table {
+            border: 0
+        }
+
+        .commslog-data {
+            font-family: Consolas, Courier New, Courier, monospace;
+        }
+
+        .commslog-server {
+            background-color: red;
+            color: white
+        }
+
+        .commslog-client {
+            background-color: green;
+            color: white
+        }
+
+        input {
+            width: 80ch;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>WebSocket Sample Application</h1>
+    <p id="stateLabel">Ready to connect...</p>
+    <div style="display:block;">
+        <label for="connectionUrl">WebSocket Server URL:</label>
+        <br>
+        <input id="connectionUrl" />
+    </div>
+    <div style="display:block;">
+        <label for="protocol">Protocol:</label>
+        <br>
+        <input id="protocol" placeholder="ocpp1.6" />
+    </div>
+    <div style="display:block;">
+        <label for="station">Station:</label>
+        <br>
+        <input id="station" value="Station1" />
+    </div>
+    <div style="display:block;">
+        <label for="token">Token:</label>
+        <br>
+        <input id="token" value="" />
+    </div>
+    <div style="display:block;">
+        <button id="generateButton" type="submit">Generate</button>
+    </div>
+    <br />
+    <div style="display:block;">
+        <label for="connection">Connection:</label>
+        <br>
+        <input id="connection" />
+    </div>
+    <br />
+    <div>
+        <button id="connectButton" type="submit">Connect</button>
+    </div>
+    <p></p>
+    <div style="display: block;">
+        <label for="sendMessage">Message to send:</label>
+        <br />
+        <input id="sendMessage" disabled />
+        <br />
+        <button id="sendButton" type="submit" disabled>Send</button>
+        <button id="closeButton" disabled>Close Socket</button>
+    </div>
+
+    <h2>Communication Log</h2>
+    <table style="width: 800px">
+        <thead>
+            <tr>
+                <td style="width: 100px">From</td>
+                <td style="width: 100px">To</td>
+                <td>Data</td>
+            </tr>
+        </thead>
+        <tbody id="commsLog">
+        </tbody>
+    </table>
+
+    <script>
+        var connectionUrl = document.getElementById("connectionUrl");
+        var connection = document.getElementById("connection");
+        var connectButton = document.getElementById("connectButton");
+        var generateButton = document.getElementById("generateButton");
+        var stateLabel = document.getElementById("stateLabel");
+        var sendMessage = document.getElementById("sendMessage");
+        var sendButton = document.getElementById("sendButton");
+        var commsLog = document.getElementById("commsLog");
+        var closeButton = document.getElementById("closeButton");
+        var subprotocol = document.getElementById("protocol");
+        var station = document.getElementById("station");
+        var socket;
+
+        var scheme = document.location.protocol === "https:" ? "wss" : "ws";
+        var port = document.location.port ? (":" + document.location.port) : "";
+
+        connectionUrl.value = scheme + "://wss." + document.location.hostname.split('.').splice(-2).join('.') + port;
+
+        function updateState() {
+            function disable() {
+                sendMessage.disabled = true;
+                sendButton.disabled = true;
+                closeButton.disabled = true;
+            }
+            function enable() {
+                sendMessage.disabled = false;
+                sendButton.disabled = false;
+                closeButton.disabled = false;
+            }
+
+            connectionUrl.disabled = true;
+            connectButton.disabled = true;
+
+            if (!socket) {
+                disable();
+            } else {
+                switch (socket.readyState) {
+                    case WebSocket.CLOSED:
+                        stateLabel.innerHTML = "Closed";
+                        disable();
+                        connectionUrl.disabled = false;
+                        connectButton.disabled = false;
+                        break;
+                    case WebSocket.CLOSING:
+                        stateLabel.innerHTML = "Closing...";
+                        disable();
+                        break;
+                    case WebSocket.CONNECTING:
+                        stateLabel.innerHTML = "Connecting...";
+                        disable();
+                        break;
+                    case WebSocket.OPEN:
+                        stateLabel.innerHTML = "Open";
+                        enable();
+                        break;
+                    default:
+                        stateLabel.innerHTML = "Unknown WebSocket State: " + htmlEscape(socket.readyState);
+                        disable();
+                        break;
+                }
+            }
+        }
+
+        closeButton.onclick = function () {
+            if (!socket || socket.readyState !== WebSocket.OPEN) {
+                alert("socket not connected");
+            }
+            socket.close(1000, "Closing from client");
+        };
+
+        sendButton.onclick = function () {
+            if (!socket || socket.readyState !== WebSocket.OPEN) {
+                alert("socket not connected");
+            }
+            var data = sendMessage.value;
+            socket.send(data);
+            commsLog.innerHTML += '<tr>' +
+                '<td class="commslog-client">Client</td>' +
+                '<td class="commslog-server">Server</td>' +
+                '<td class="commslog-data">' + htmlEscape(data) + '</td></tr>';
+        };
+
+        generateButton.onclick = function () {
+            connection.value = connectionUrl.value + "/OCPP/" + station.value + (token.value===""?"":"?OCPP_TOKEN=" + token.value);
+        };
+
+        connectButton.onclick = function () {
+            stateLabel.innerHTML = "Connecting";
+            socket = new WebSocket(connection.value, subprotocol.value.length > 0 ? subprotocol.value : undefined);
+            socket.onopen = function (event) {
+                updateState();
+                commsLog.innerHTML += '<tr>' +
+                    '<td colspan="3" class="commslog-data">Connection opened</td>' +
+                    '</tr>';
+            };
+            socket.onclose = function (event) {
+                updateState();
+                commsLog.innerHTML += '<tr>' +
+                    '<td colspan="3" class="commslog-data">Connection closed. Code: ' + htmlEscape(event.code) + '. Reason: ' + htmlEscape(event.reason) + '</td>' +
+                    '</tr>';
+            };
+            socket.onerror = function (event) {
+                commsLog.innerHTML += '<tr>' +
+                    '<td colspan="3" class="commslog-data">Error. Code: ' + htmlEscape(event.code) + '. Reason: ' + htmlEscape(event.reason) + '</td>' +
+                    '</tr>';
+                updateState();
+            }
+            socket.onmessage = function (event) {
+                // check if the message is a websocket ping and respond with a pong
+                if (event.data === "ping") {
+                    socket.send("pong");
+                    return;
+                }
+                commsLog.innerHTML += '<tr>' +
+                    '<td class="commslog-server">Server</td>' +
+                    '<td class="commslog-client">Client</td>' +
+                    '<td class="commslog-data">' + htmlEscape(event.data) + '</td></tr>';
+            };
+        };
+
+        function htmlEscape(str) {
+            return str.toString()
+                .replace(/&/g, '&amp;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+        }
+
+        function regexFind() {
+            var url = connection.value;
+            var queryString = extractQueryString(url);
+            // extract the variable OCPP_TOKEN from an url query string
+            // name should be exactly OCPP_TOKEN if there's any character
+            // before the name other than & it should be ignored, so either is
+            // at the beginning of the query or after & character
+
+        }
+    </script>
+</body>
+
+</html>

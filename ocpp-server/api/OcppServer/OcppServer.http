@@ -1,0 +1,6 @@
+@OcppServer_HostAddress = http://localhost:5110
+
+GET {{OcppServer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
