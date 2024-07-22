@@ -40,7 +40,7 @@ namespace OcppServer.Api
         [ApiExplorerSettings(IgnoreApi = true)] // Hide from Swagger because CONNECT is not supported
         public async Task HandleWebSocketRequest(string station)
         {
-            _logger.LogInformation("Websocket request received for {station}.", station);
+            _logger.LogInformation("Websocket request received for {station}.", station.Replace(Environment.NewLine, ""));
             if (HttpContext.WebSockets.IsWebSocketRequest)
             {
                 foreach (var protocol in HttpContext.WebSockets.WebSocketRequestedProtocols)

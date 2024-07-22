@@ -29,7 +29,8 @@ app.MapWebPubSubHub<OcppService>("/eventhandler/{*path}").AddEndpointFilter(asyn
 
     try
     {
-        logger.LogInformation("EndpointFilter called with context path: {context}", context.HttpContext.Request.Path);
+        logger.LogInformation("EndpointFilter called with context path: {context}",
+            context.HttpContext.Request.Path.ToString().Replace(Environment.NewLine, ""));
         if (!context.HttpContext.Response.Headers["WebHook-Allowed-Origin"].Contains("*"))
             _ = context.HttpContext.Response.Headers["WebHook-Allowed-Origin"].Append("*");
     }
