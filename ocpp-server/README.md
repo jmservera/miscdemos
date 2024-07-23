@@ -58,3 +58,5 @@ make deploy [RG_NAME=<RESOURCE GROUP NAME>] [LOCATION=<LOCATION>] [APP_NAME=<APP
 This makefile recipe deploys the infra into your Azure subscription, compiles the OcppServer source code and publishes it into the created App Service via a private Storage Account. It doesn't use the direct zip upload method because the Web App is protected with a Private Endpoint, and the *az cli* cannot upload the zip file directly to the service.
 
 The App Service and Web Pub Sub endpoints are protected with Private Endpoints, and published through an Application Gateway.
+
+![Infra](./img/Architecture.svg)
