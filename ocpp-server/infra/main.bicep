@@ -53,6 +53,7 @@ module webPubSubPrivateEndpoint './modules/privateEndpoint.bicep' = {
     subnetId: virtualNetwork.outputs.privateSubnetId
     vnetId: virtualNetwork.outputs.vnetId
     endpointName: 'wssprivate${uniqueString(resourceGroup().id)}'
+    targetSubResource: 'webpubsub'
   }
 }
 

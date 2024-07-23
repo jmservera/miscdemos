@@ -9,7 +9,7 @@ param privateLinkResource string
   'webpubsub'
   'sites'
 ])
-param targetSubResource string = 'webpubsub'
+param targetSubResource string
 
 var dnsByTarget = {
   webpubsub: 'privatelink.webpubsub.azure.com'
