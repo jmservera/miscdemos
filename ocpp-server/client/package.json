@@ -1,0 +1,28 @@
+{
+  "name": "ocpp-client",
+  "version": "0.0.1-alpha",
+  "description": "A test OCPP protocol client",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/jmservera/miscdemos.git"
+  },
+  "keywords": [
+    "OCPP",
+    "Azure",
+    "Web",
+    "PubSub"
+  ],
+  "author": "jmservera",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jmservera/miscdemos/issues"
+  },
+  "homepage": "https://github.com/jmservera/miscdemos#readme",
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}

@@ -17,6 +17,12 @@ build: $(wildcard api/**/*.cs)
 test:
 	@echo "Testing"
 	dotnet test api/api.sln
+test-client:
+	@echo "Testing a simple node client"
+	node client/index.js wss://wss.jmservera.online station2 goodpwd
+test-client-badauth:
+	@echo "Testing a simple node client"
+	node client/index.js wss://wss.jmservera.online station1 badpwd
 clean:
 	@echo "Cleaning"
 	dotnet clean api/api.sln
@@ -61,4 +67,4 @@ deploy:
 	@echo "Waiting for infra to be ready"
 	sleep 60 
 	@$(MAKE) -f $(THIS_FILE) publish
-.PHONY: test clean watch start secrets
+.PHONY: test clean watch start secrets test-client

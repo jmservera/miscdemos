@@ -236,8 +236,8 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
                   negate: false
                 }
                 {
-                  variable: 'var_request_query'
-                  pattern: '(?:^|\\&)OCPP_TOKEN=([^&]+)'
+                  variable: 'http_req_Authorization'
+                  pattern: 'BASIC (.*)'
                   ignoreCase: true
                   negate: false
                 }
@@ -249,12 +249,14 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
                     headerName: 'device'
                     headerValue: '{var_uri_path_1}'
                   }
+                  {
+                    headerName: 'Authorization'
+                  }
                 ]
                 responseHeaderConfigurations: []
                 urlConfiguration: {
-                  modifiedPath: '/client/hubs/${pubsubHubName}'
-                  //TODO: This is a placeholder for the access token, retrieve it from the query headers
-                  modifiedQueryString: 'access_token={http_req_OCPP_TOKEN_1}&id={var_uri_path_1}'
+                  modifiedPath: '/client/hubs/OcppService'
+                  modifiedQueryString: 'auth={http_req_Authorization_1}&id={var_uri_path_1}'
                   reroute: false
                 }
               }
