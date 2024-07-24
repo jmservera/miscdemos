@@ -19,7 +19,7 @@ test:
 	dotnet test api/api.sln
 test-client:
 	@echo "Testing a simple node client"
-	node client/index.js wss://wss.jmservera.online station1 goodpwd
+	node client/index.js wss://wss.jmservera.online station2 goodpwd
 test-client-badauth:
 	@echo "Testing a simple node client"
 	node client/index.js wss://wss.jmservera.online station1 badpwd
