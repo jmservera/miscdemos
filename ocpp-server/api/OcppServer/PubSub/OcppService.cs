@@ -17,7 +17,7 @@ public sealed class OcppService(WebPubSubServiceClient<OcppService> serviceClien
         {
             if(request.Query.TryGetValue("auth", out var auth)){
                 _logger.LogInformation("[SYSTEM] new user found {userId} connecting with auth {auth}.", id, auth);
-                if(auth.FirstOrDefault()!="c3RhdGlvbjI6Z29vZHB3ZA==") //goodpwd
+                if(auth.FirstOrDefault()!="c3RhdGlvbjI6Z29vZHB3ZA==") //station2:goodpwd
                 {
                     _logger.LogError("[SYSTEM] auth failed.");
                     throw new UnauthorizedAccessException();
