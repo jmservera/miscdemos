@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Azure.Core;
 using Microsoft.Azure.WebPubSub.AspNetCore;
 using Microsoft.Azure.WebPubSub.Common;
@@ -14,7 +15,16 @@ public sealed class OcppService(WebPubSubServiceClient<OcppService> serviceClien
         _logger.LogInformation("[SYSTEM] new user connecting.");
         if (request.Query.TryGetValue("id", out var id))
         {
-            _logger.LogInformation("[SYSTEM] new user found {userId} connecting.", id);
+            if(request.Query.TryGetValue("auth", out var auth)){
+                _logger.LogInformation("[SYSTEM] new user found {userId} connecting with auth {auth}.", id, auth);
+                if(auth.FirstOrDefault()!="c3RhdGlvbjI6Z29vZHB3ZA==") //goodpwd
+                {
+                    _logger.LogError("[SYSTEM] auth failed.");
+                    throw new UnauthorizedAccessException();
+                }
+            } else {
+                _logger.LogInformation("[SYSTEM] new user found {userId} connecting without auth.", id);
+            }
             if (request.Subprotocols.Count > 0)
             {
                 _logger.LogInformation("[SYSTEM] connecting with subprotocol {subprotocol}.", request.Subprotocols[0]);
