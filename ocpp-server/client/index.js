@@ -27,7 +27,7 @@ const readline = require('readline').createInterface({
 ws.on('open', function open() {
   // send the station name and password to the server
   console.log("Connected to the server");
-  ws.send(JSON.stringify({ stationName, stationPassword }));
+  ws.send(`Hello! I'm ${stationName}.`);
 });
 
 // when the server sends a message
