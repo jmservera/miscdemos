@@ -11,32 +11,23 @@ You need:
 * An **Azure KeyVault** with a wildcard certificate for the domain you will assign to the Application Gateway. The App Gateway uses it to publish the Web PubSub endpoint and the Web App.
 * A **User Assigned Managed Identity** with read access to the KeyVault where the SSL certificate is stored.
 * A **Public DNS Zone in Azure**, where the script will create or update the A records for the Web PubSub service. Your user needs modify permissions to these DNS records, and they will be created with a resource reference.
-* A **main.parameters.json** file in the root of the project with the following content:
+* A **main.parameters.bicepparam** file in the root of the project with the following content:
 
-  ```json
-  {
-    "parameters": {
-      "keyVaultSecretId": {
-        "value": "<Keyvault Secret Identifier (sid) for the SSL Certificate, you can omit the version number to get always the latest one>"
-      },
-      "keyVaultIdentityName": {
-        "value": "<NAME OF THE Managed Identity that has cert read access rights in the KeyVault>"
-      },
-      "keyVaultIdentityRG": {
-        "value": "<RESOURCE GROUP OF THE MANAGED IDENTITY>"
-      },
-      "customDnsZoneName": {
-        "value": "<BASE DOMAIN NAME FOR THE PUBSUB SERVICE IN THE APPP GATEWAY, EX: mydomain.com>"      
-      },
-      "pubsubARecordName": {
-        "value": "<SUBDOMAIN NAME USED FOR THE WEB PUBSUB SERVICE, EX: wss (for wss.mydomain.com)>"
-      },
-      "dnsZoneRG": {
-        "value": "<NAME OF THE RG WHERE THE DNS SERVICE>"
-      }
-    }
-  }
-  ```
+```bicep
+using 'main.bicep'
+
+param pubsubKeyVaultCertName = '<KeyVault name of the SSL Certificate for the pub sub service>'
+param webKeyVaultCertName ='<KeyVault name of the SSL Certificate for the web test service, can be the same cert if you have a wildcard one>'
+param keyVaultName = '<Name of the KeyVault>'
+param keyVaultIdentityRG ='<NAME OF THE Managed Identity that has cert read access rights in the KeyVault>'
+param customDnsZoneName ='<RESOURCE GROUP OF THE MANAGED IDENTITY>'
+param pubsubARecordName ='<SUBDOMAIN NAME USED FOR THE WEB PUBSUB SERVICE, EX: wss (for wss.mydomain.com)>'
+param dnsZoneRG ='<NAME OF THE RG WHERE THE DNS SERVICE>'
+```
+
+## (Optional) Configure Let's encrypt with your KeyVault and Azure DNS
+
+If you don't have a certificate, you can use the Let's Encrypt service to generate a free certificate for your domain. [This amazing project](https://github.com/shibayan/keyvault-acmebot/wiki/Getting-Started) automates the process of generating the certificate and merging it into your KeyVault. Just follow the instructions, configure the permissions and create a certificate for your domain.
 
 ## Project Structure
 
@@ -60,3 +51,47 @@ This makefile recipe deploys the infra into your Azure subscription, compiles th
 The App Service and Web Pub Sub endpoints are protected with Private Endpoints, and published through an Application Gateway.
 
 ![Infra](./img/Architecture.svg)
+
+## FAQ
+
+## The client fails with UNABLE_TO_VERIFY_LEAF_SIGNATURE
+
+If you merged your certificate in KeyVault using a PEM or PFX format, you may need to create the CSR again, generate a new certificate and merge it in p7b format. Take a look to this FAQ section: [Create and merge a certificate signing request in Key Vault](https://learn.microsoft.com/en-us/azure/key-vault/certificates/create-certificate-signing-request?tabs=azure-portal#faqs)
+
+After renewing the certificate, you can deploy the infra again with the new certificate, or reconfigure the App Gateway to use the new certificate in the **Listeners TLS Certificates** section.
+
+Example error in the nodejs client:
+
+```js
+node:events:495
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: unable to verify the first certificate
+    at TLSSocket.onConnectSecure (node:_tls_wrap:1659:34)
+    at TLSSocket.emit (node:events:517:28)
+    at TLSSocket._finishInit (node:_tls_wrap:1070:8)
+    at ssl.onhandshakedone (node:_tls_wrap:856:12)
+Emitted 'error' event on WebSocket instance at:
+    at emitErrorAndClose (/home/jmservera/source/miscdemos/ocpp-server/client/node_modules/ws/lib/websocket.js:1041:13)
+    at ClientRequest.<anonymous> (/home/jmservera/source/miscdemos/ocpp-server/client/node_modules/ws/lib/websocket.js:881:5)
+    at ClientRequest.emit (node:events:517:28)
+    at TLSSocket.socketErrorListener (node:_http_client:501:9)
+    at TLSSocket.emit (node:events:517:28)
+    at emitErrorNT (node:internal/streams/destroy:151:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:116:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21) {
+  code: 'UNABLE_TO_VERIFY_LEAF_SIGNATURE'
+}
+```
+
+Example error with curl:
+
+```bash
+curl: (60) SSL certificate problem: unable to get local issuer certificate
+More details here: https://curl.se/docs/sslcerts.html
+
+curl failed to verify the legitimacy of the server and therefore could not
+establish a secure connection to it. To learn more about this situation and
+how to fix it, please visit the web page mentioned above.
+```

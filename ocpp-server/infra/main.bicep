@@ -1,18 +1,22 @@
 @secure()
-@description('Secret ID for the TLS Certificate stored in Key Vault')
-param keyVaultSecretId string
+@description('Name of the TLS Certificate stored in Key Vault for the pubsub service public endpoint')
+param pubsubKeyVaultCertName string
+@description('Name of the TLS Certificate stored in Key Vault for the web service public endpoint')
+param webKeyVaultCertName string
+@description('Name of the Key Vault where the certificates are stored')
+param keyVaultName string
 @description('User Assigned Managed Identity name with Get permissions fo the Key Vault Certificate')
 param keyVaultIdentityName string
 @description('Resource Group name where the User Assigned Managed Identity was created')
 param keyVaultIdentityRG string = resourceGroup().name
 @description('Custom DNS Zone Name used for publishing the Web PubSub service endpoint securely')
-param customDnsZoneName string = 'jmservera.online'
+param customDnsZoneName string
 @description('A Record Name for the Web PubSub service endpoint, used as prefix of the DnsZoneName')
 param pubsubARecordName string = 'wss'
 @description('A Record Name for the Web service endpoint, used as prefix of the DnsZoneName')
 param webARecordName string = 'www'
 @description('Resource Group name where the DNS Zone was created')
-param dnsZoneRG string = 'domainnames'
+param dnsZoneRG string
 @description('The name for your new Web PubSub Hub. It should be the same name than the class implementing it in the asp.net core project')
 param pubSubHubName string = 'OcppService'
 
@@ -39,7 +43,7 @@ module hub './modules/webPubSubHub.bicep' = {
   name: 'webPubSubHub'
   params: {
     serviceName: webPubSub.outputs.serviceName
-    hubName: 'OcppService'
+    hubName: pubSubHubName
     webAppName: webApp.outputs.webSiteName
   }
 }
@@ -87,9 +91,11 @@ module appGw './modules/appgw.bicep' = {
     location: resourceGroup().location
     pubSubServiceName: webPubSub.outputs.serviceName
     gwSubnetId: virtualNetwork.outputs.gwSubnetId
-    keyVaultSecretId: keyVaultSecretId
+    webKeyVaultCertName: webKeyVaultCertName
+    pubsubKeyVaultCertName: pubsubKeyVaultCertName
     webHostName: webHostName
     pubsubHostName: pubsubHostName
+    keyVaultName: keyVaultName
     keyVaultIdentityName: keyVaultIdentityName
     keyVaultIdentityRG: keyVaultIdentityRG
     webServiceName: webApp.outputs.webSiteName
@@ -98,7 +104,7 @@ module appGw './modules/appgw.bicep' = {
 }
 
 // update A record with appGW public IP
-module wssdns './modules/dns.bicep' = {
+module wssdns './modules/dns.bicep' = if (customDnsZoneName != '') {
   name: 'dnsServicePubSub'
   scope: resourceGroup(dnsZoneRG)
   params: {
@@ -108,7 +114,7 @@ module wssdns './modules/dns.bicep' = {
   }
 }
 
-module wwwdns './modules/dns.bicep' = {
+module wwwdns './modules/dns.bicep' = if (customDnsZoneName != '') {
   name: 'dnsServiceWeb'
   scope: resourceGroup(dnsZoneRG)
   params: {

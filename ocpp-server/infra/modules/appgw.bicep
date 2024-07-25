@@ -11,13 +11,15 @@ param skuSize string = 'Standard_v2'
 param skuTier string = 'Standard_v2'
 param skuCapacity int = 1
 @secure()
-param keyVaultSecretId string
 param pubsubHostName string
 param webHostName string
+param keyVaultName string
 param keyVaultIdentityName string
 param keyVaultIdentityRG string
 param webServiceName string
-param pubsubHubName string 
+param pubsubHubName string
+param webKeyVaultCertName string
+param pubsubKeyVaultCertName string
 
 var ocppRuleSetName = 'ocppRuleSet'
 var pubsubBackendPoolName = 'pubsubBackend'
@@ -27,6 +29,25 @@ var pubsubListenerName = 'pubsubListener'
 var webBackendPoolName = 'webBackend'
 var webListenerName = 'webListener'
 var webBackendSettingsName = 'webBackendSettings'
+var webtls = 'webtls'
+var pubsubtls = 'pubsubtls'
+
+var isWildcard = (webKeyVaultCertName == pubsubKeyVaultCertName)
+
+resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = {
+  name: keyVaultName
+  scope: resourceGroup(keyVaultIdentityRG)
+}
+
+resource pubsubKeyVaultCertificate 'Microsoft.KeyVault/vaults/secrets@2024-04-01-preview' existing = {
+  name: pubsubKeyVaultCertName
+  parent: keyVault
+}
+
+resource webKeyVaultCertificate 'Microsoft.KeyVault/vaults/secrets@2024-04-01-preview' existing = {
+  name: webKeyVaultCertName
+  parent: keyVault
+}
 
 resource webPubSub 'Microsoft.SignalRService/webPubSub@2021-10-01' existing = {
   name: pubSubServiceName
@@ -167,14 +188,29 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
         }
       }
     ]
-    sslCertificates: [
-      {
-        name: 'pubsubtls'
-        properties: {
-          keyVaultSecretId: keyVaultSecretId
-        }
-      }
-    ]
+    sslCertificates: isWildcard
+      ? [
+          {
+            name: pubsubtls
+            properties: {
+              keyVaultSecretId: pubsubKeyVaultCertificate.properties.secretUri
+            }
+          }
+        ]
+      : [
+          {
+            name: pubsubtls
+            properties: {
+              keyVaultSecretId: pubsubKeyVaultCertificate.properties.secretUri
+            }
+          }
+          {
+            name: webtls
+            properties: {
+              keyVaultSecretId: webKeyVaultCertificate.properties.secretUri
+            }
+          }
+        ]
     httpListeners: [
       {
         name: pubsubListenerName
@@ -191,7 +227,7 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
           }
           protocol: 'Https'
           sslCertificate: {
-            id: resourceId('Microsoft.Network/applicationGateways/sslCertificates', appgwName, 'pubsubtls')
+            id: resourceId('Microsoft.Network/applicationGateways/sslCertificates', appgwName, pubsubtls)
           }
           hostName: pubsubHostName
           customErrorConfigurations: []
@@ -213,7 +249,11 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
           }
           protocol: 'Https'
           sslCertificate: {
-            id: resourceId('Microsoft.Network/applicationGateways/sslCertificates', appgwName, 'pubsubtls')
+            id: resourceId(
+              'Microsoft.Network/applicationGateways/sslCertificates',
+              appgwName,
+              isWildcard ? pubsubtls : webtls
+            )
           }
           hostName: webHostName
           customErrorConfigurations: []
