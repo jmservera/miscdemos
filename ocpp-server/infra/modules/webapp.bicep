@@ -55,17 +55,6 @@ module storage 'storage.bicep' = {
   }
 }
 
-module storagePrivateEndpoint './privateEndpoint.bicep' = {
-  name: 'webStoragePrivateEndpoint'
-  params: {
-    privateLinkResource: storage.outputs.storageAccountId
-    subnetId: subNet.id
-    vnetId: vNet.id
-    endpointName: 'webStoragePrivate${uniqueString(resourceGroup().id)}'
-    targetSubResource: 'blob'
-  }
-}
-
 resource appService 'Microsoft.Web/sites@2020-06-01' = {
   name: webSiteName
   location: location
@@ -157,3 +146,4 @@ resource ipSecurityRestrictions 'Microsoft.Web/sites/config@2023-12-01' = {
 output webSiteName string = appService.name
 output appServiceId string = appService.id
 output storageName string = storage.outputs.storageAccountName
+output storageAccountId string = storage.outputs.storageAccountId

@@ -86,6 +86,17 @@ module webPrivateEndpoint './modules/privateEndpoint.bicep' = {
   }
 }
 
+module storagePrivateEndpoint './modules/privateEndpoint.bicep' = {
+  name: 'webStoragePrivateEndpoint'
+  params: {
+    privateLinkResource: webApp.outputs.storageAccountId
+    subnetId: virtualNetwork.outputs.privateSubnetId
+    vnetId: virtualNetwork.outputs.vnetId
+    targetSubResource: 'blob'
+    endpointName: 'webStoragePrivate${uniqueString(resourceGroup().id)}'
+  }
+}
+
 module appGw './modules/appgw.bicep' = {
   name: 'appGwService'
   params: {
