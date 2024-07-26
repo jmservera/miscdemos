@@ -1,4 +1,4 @@
-param name string =  'storage${uniqueString(resourceGroup().id)}'
+param name string = 'storage${uniqueString(resourceGroup().id)}'
 param location string = resourceGroup().location
 param sku string = 'Standard_LRS'
 param kind string = 'StorageV2'
@@ -35,5 +35,5 @@ resource blobContainer 'Microsoft.Storage/storageAccounts/blobServices/container
 }
 
 output storageAccountName string = storageAccount.name
+output storageAccountId string = storageAccount.id
 output blobContaineId string = blobContainer.id
-

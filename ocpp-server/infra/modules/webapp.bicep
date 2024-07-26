@@ -10,6 +10,21 @@ var appServicePlanName = toLower('AppServicePlan-${webAppName}')
 var webSiteName = toLower('wapp-${webAppName}')
 var appInsightsName = 'appInsights-${uniqueString(resourceGroup().id)}'
 
+// links to existing services
+resource pubSub 'Microsoft.SignalRService/webPubSub@2024-04-01-preview' existing = {
+  name: pubSubName
+}
+
+resource vNet 'Microsoft.Network/virtualNetworks@2024-01-01' existing = {
+  name: vnetName
+}
+
+resource subNet 'Microsoft.Network/virtualNetworks/subnets@2021-02-01' existing = {
+  name: subnetName
+  parent: vNet
+}
+
+// create an Application Insights resource
 resource appInsights 'Microsoft.Insights/components@2020-02-02-preview' = {
   name: appInsightsName
   location: resourceGroup().location
@@ -19,15 +34,12 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02-preview' = {
   }
 }
 
-resource pubSub 'Microsoft.SignalRService/webPubSub@2024-04-01-preview' existing = {
-  name: pubSubName
-}
-
+// create an App Service Plan
 resource appServicePlan 'Microsoft.Web/serverfarms@2020-06-01' = {
   name: appServicePlanName
   location: location
   properties: {
-    reserved: true
+    reserved: true //needed for Linux apps
   }
   sku: {
     name: sku
@@ -35,6 +47,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2020-06-01' = {
   kind: 'linux'
 }
 
+// create a storage account to deploy the app
 module storage 'storage.bicep' = {
   name: 'storage'
   params: {
@@ -47,7 +60,9 @@ resource appService 'Microsoft.Web/sites@2020-06-01' = {
   location: location
   properties: {
     serverFarmId: appServicePlan.id
+    httpsOnly: true // Enable HTTPS only for improved security    
     siteConfig: {
+      ftpsState: 'Disabled'
       linuxFxVersion: linuxFxVersion
       appSettings: [
         // Application Insights needs these three settings to be activated
@@ -74,15 +89,7 @@ resource appService 'Microsoft.Web/sites@2020-06-01' = {
   }
 }
 
-resource vNet 'Microsoft.Network/virtualNetworks@2024-01-01' existing = {
-  name: vnetName
-}
-
-resource subNet 'Microsoft.Network/virtualNetworks/subnets@2021-02-01' existing = {
-  name: subnetName
-  parent: vNet
-}
-
+// add vnet integration
 resource vnetconfig 'Microsoft.Web/sites/networkConfig@2022-09-01' = {
   name: 'virtualNetwork'
   parent: appService
@@ -92,7 +99,26 @@ resource vnetconfig 'Microsoft.Web/sites/networkConfig@2022-09-01' = {
   }
 }
 
-// enable ipSecurityRestrictions for the appService
+// disallow ftp basic publishing credentials for improved security
+resource ftpConfig 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2023-12-01' = {
+  name: 'ftp'
+  parent: appService
+  properties: {
+    allow: false
+  }
+}
+
+// disallow scm basic publishing credentials for improved security
+resource scmConfig 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2023-12-01' = {
+  name: 'scm'
+  parent: appService
+  properties: {
+    allow: false
+  }
+}
+
+// enable ipSecurityRestrictions for the appService, this will allow only the AzureWebPubSub service tag
+// because AzureWebPubSub does not still have vNet integration, so it still needs to use the public endpoint
 resource ipSecurityRestrictions 'Microsoft.Web/sites/config@2023-12-01' = {
   name: 'web'
   parent: appService
@@ -120,3 +146,4 @@ resource ipSecurityRestrictions 'Microsoft.Web/sites/config@2023-12-01' = {
 output webSiteName string = appService.name
 output appServiceId string = appService.id
 output storageName string = storage.outputs.storageAccountName
+output storageAccountId string = storage.outputs.storageAccountId

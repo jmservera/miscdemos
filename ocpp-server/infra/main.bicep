@@ -5,10 +5,12 @@ param pubsubKeyVaultCertName string
 param webKeyVaultCertName string
 @description('Name of the Key Vault where the certificates are stored')
 param keyVaultName string
+@description('Resource Group name where the Key Vault was created')
+param keyVaultRG string
 @description('User Assigned Managed Identity name with Get permissions fo the Key Vault Certificate')
 param keyVaultIdentityName string
 @description('Resource Group name where the User Assigned Managed Identity was created')
-param keyVaultIdentityRG string = resourceGroup().name
+param keyVaultIdentityRG string = keyVaultRG
 @description('Custom DNS Zone Name used for publishing the Web PubSub service endpoint securely')
 param customDnsZoneName string
 @description('A Record Name for the Web PubSub service endpoint, used as prefix of the DnsZoneName')
@@ -23,11 +25,20 @@ param pubSubHubName string = 'OcppService'
 var pubsubHostName = '${pubsubARecordName}.${customDnsZoneName}'
 var webHostName = '${webARecordName}.${customDnsZoneName}'
 
+// Add a Nat Gateway for outbound access
+module natgw './modules/natgw.bicep' = {
+  name: 'natGwService'
+  params: {
+    natGwName: 'natgw-${uniqueString(resourceGroup().id)}'
+    location: resourceGroup().location
+  }
+}
 // Creates a VNet with 3 subnets: default, gateway and private endpoints
 module virtualNetwork './modules/virtualNetwork.bicep' = {
   name: 'vNet'
   params: {
     virtualNetworkName: 'vnet-${uniqueString(resourceGroup().id)}'
+    natGatewayId: natgw.outputs.natGatewayId
   }
 }
 
@@ -84,6 +95,17 @@ module webPrivateEndpoint './modules/privateEndpoint.bicep' = {
   }
 }
 
+module storagePrivateEndpoint './modules/privateEndpoint.bicep' = {
+  name: 'webStoragePrivateEndpoint'
+  params: {
+    privateLinkResource: webApp.outputs.storageAccountId
+    subnetId: virtualNetwork.outputs.privateSubnetId
+    vnetId: virtualNetwork.outputs.vnetId
+    targetSubResource: 'blob'
+    endpointName: 'webStoragePrivate${uniqueString(resourceGroup().id)}'
+  }
+}
+
 module appGw './modules/appgw.bicep' = {
   name: 'appGwService'
   params: {
@@ -96,6 +118,7 @@ module appGw './modules/appgw.bicep' = {
     webHostName: webHostName
     pubsubHostName: pubsubHostName
     keyVaultName: keyVaultName
+    keyVaultRG: keyVaultRG
     keyVaultIdentityName: keyVaultIdentityName
     keyVaultIdentityRG: keyVaultIdentityRG
     webServiceName: webApp.outputs.webSiteName
@@ -121,5 +144,18 @@ module wwwdns './modules/dns.bicep' = if (customDnsZoneName != '') {
     dnszoneName: customDnsZoneName
     aRecordName: webARecordName
     ipTargetResourceId: appGw.outputs.publicIPAddressId
+  }
+}
+
+module customDomain 'modules/customWebName.bicep' = if (customDnsZoneName != '') {
+  name: 'customDomain'
+  params: {
+    dnszoneName: customDnsZoneName
+    dnsZoneRG: dnsZoneRG
+    subdomain: 'www'
+    webSiteName: webApp.outputs.webSiteName
+    keyVaultName: keyVaultName
+    keyVaultRG: keyVaultRG
+    webKeyVaultCertName: webKeyVaultCertName
   }
 }
