@@ -25,11 +25,20 @@ param pubSubHubName string = 'OcppService'
 var pubsubHostName = '${pubsubARecordName}.${customDnsZoneName}'
 var webHostName = '${webARecordName}.${customDnsZoneName}'
 
+// Add a Nat Gateway for outbound access
+module natgw './modules/natgw.bicep' = {
+  name: 'natGwService'
+  params: {
+    natGwName: 'natgw-${uniqueString(resourceGroup().id)}'
+    location: resourceGroup().location
+  }
+}
 // Creates a VNet with 3 subnets: default, gateway and private endpoints
 module virtualNetwork './modules/virtualNetwork.bicep' = {
   name: 'vNet'
   params: {
     virtualNetworkName: 'vnet-${uniqueString(resourceGroup().id)}'
+    natGatewayId: natgw.outputs.natGatewayId
   }
 }
 

@@ -7,6 +7,7 @@ param privateSubnetName string = 'private-endpoints'
 param privateSubnetPrefix string = '10.1.1.0/24'
 param gatewaySubnetName string = 'gateway'
 param gatewaySubnetPrefix string = '10.1.2.0/24'
+param natGatewayId string
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2019-09-01' = {
   name: virtualNetworkName
@@ -20,6 +21,9 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2019-09-01' = {
         name: subnetName
         properties: {
           addressPrefix: subnetPrefix
+          natGateway: {
+            id: natGatewayId
+          }
           delegations: [
             {
               name: 'Microsoft.Web/serverFarms'
@@ -27,18 +31,24 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2019-09-01' = {
                 serviceName: 'Microsoft.Web/serverFarms'
               }
             }
-          ]      
+          ]
         }
       }
       {
         name: privateSubnetName
         properties: {
+          natGateway: {
+            id: natGatewayId
+          }
           addressPrefix: privateSubnetPrefix
         }
       }
       {
         name: gatewaySubnetName
         properties: {
+          natGateway: {
+            id: natGatewayId
+          }
           addressPrefix: gatewaySubnetPrefix
         }
       }
