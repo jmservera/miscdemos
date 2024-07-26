@@ -27,7 +27,7 @@ var webHostName = '${webARecordName}.${customDnsZoneName}'
 
 // Add a Nat Gateway for outbound access
 module natgw './modules/natgw.bicep' = {
-  name: 'natGwService'
+  name: '${deployment().name}-natGwService'
   params: {
     natGwName: 'natgw-${uniqueString(resourceGroup().id)}'
     location: resourceGroup().location
@@ -35,7 +35,7 @@ module natgw './modules/natgw.bicep' = {
 }
 // Creates a VNet with 3 subnets: default, gateway and private endpoints
 module virtualNetwork './modules/virtualNetwork.bicep' = {
-  name: 'vNet'
+  name: '${deployment().name}-vNet'
   params: {
     virtualNetworkName: 'vnet-${uniqueString(resourceGroup().id)}'
     natGatewayId: natgw.outputs.natGatewayId
@@ -44,14 +44,14 @@ module virtualNetwork './modules/virtualNetwork.bicep' = {
 
 // creates a private web pub sub service
 module webPubSub './modules/webPubSub.bicep' = {
-  name: 'webPubSubService'
+  name: '${deployment().name}-webPubSubService'
   params: {
     serviceName: 'webpubsub-${uniqueString(resourceGroup().id)}'
   }
 }
 
 module hub './modules/webPubSubHub.bicep' = {
-  name: 'webPubSubHub'
+  name: '${deployment().name}-webPubSubHub'
   params: {
     serviceName: webPubSub.outputs.serviceName
     hubName: pubSubHubName
@@ -62,7 +62,7 @@ module hub './modules/webPubSubHub.bicep' = {
 // creates a private endpoint for the web pub sub service
 // to be used by the app gateway
 module webPubSubPrivateEndpoint './modules/privateEndpoint.bicep' = {
-  name: 'webPubSubPrivateEndpoint'
+  name: '${deployment().name}-webPubSubPrivateEndpoint'
   params: {
     privateLinkResource: webPubSub.outputs.serviceId
     subnetId: virtualNetwork.outputs.privateSubnetId
@@ -73,7 +73,7 @@ module webPubSubPrivateEndpoint './modules/privateEndpoint.bicep' = {
 }
 
 module webApp './modules/webapp.bicep' = {
-  name: 'webAppService'
+  name: '${deployment().name}-webAppService'
   params: {
     webAppName: 'webapp-${uniqueString(resourceGroup().id)}'
     sku: 'B1'
@@ -85,7 +85,7 @@ module webApp './modules/webapp.bicep' = {
 }
 
 module webPrivateEndpoint './modules/privateEndpoint.bicep' = {
-  name: 'webPrivateEndpoint'
+  name: '${deployment().name}-webPrivateEndpoint'
   params: {
     privateLinkResource: webApp.outputs.appServiceId
     subnetId: virtualNetwork.outputs.privateSubnetId
@@ -96,7 +96,7 @@ module webPrivateEndpoint './modules/privateEndpoint.bicep' = {
 }
 
 module storagePrivateEndpoint './modules/privateEndpoint.bicep' = {
-  name: 'webStoragePrivateEndpoint'
+  name: '${deployment().name}-webStoragePrivateEndpoint'
   params: {
     privateLinkResource: webApp.outputs.storageAccountId
     subnetId: virtualNetwork.outputs.privateSubnetId
@@ -107,7 +107,7 @@ module storagePrivateEndpoint './modules/privateEndpoint.bicep' = {
 }
 
 module appGw './modules/appgw.bicep' = {
-  name: 'appGwService'
+  name: '${deployment().name}-appGwService'
   params: {
     appgwName: 'appgw-${uniqueString(resourceGroup().id)}'
     location: resourceGroup().location
@@ -128,7 +128,7 @@ module appGw './modules/appgw.bicep' = {
 
 // update A record with appGW public IP
 module wssdns './modules/dns.bicep' = if (customDnsZoneName != '') {
-  name: 'dnsServicePubSub'
+  name: '${deployment().name}-dnsServicePubSub'
   scope: resourceGroup(dnsZoneRG)
   params: {
     dnszoneName: customDnsZoneName
@@ -138,7 +138,7 @@ module wssdns './modules/dns.bicep' = if (customDnsZoneName != '') {
 }
 
 module wwwdns './modules/dns.bicep' = if (customDnsZoneName != '') {
-  name: 'dnsServiceWeb'
+  name: '${deployment().name}-dnsServiceWeb'
   scope: resourceGroup(dnsZoneRG)
   params: {
     dnszoneName: customDnsZoneName
@@ -148,7 +148,7 @@ module wwwdns './modules/dns.bicep' = if (customDnsZoneName != '') {
 }
 
 module customDomain 'modules/customWebName.bicep' = if (customDnsZoneName != '') {
-  name: 'customDomain'
+  name: '${deployment().name}-customDomain'
   params: {
     dnszoneName: customDnsZoneName
     dnsZoneRG: dnsZoneRG

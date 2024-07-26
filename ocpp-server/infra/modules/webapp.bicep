@@ -49,7 +49,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2020-06-01' = {
 
 // create a storage account to deploy the app
 module storage 'storage.bicep' = {
-  name: 'storage'
+  name: '${deployment().name}-web-storage'
   params: {
     name: 'webdeploy-${uniqueString(resourceGroup().id)}'
   }

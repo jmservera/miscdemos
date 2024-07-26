@@ -65,7 +65,7 @@ resource identity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' 
 }
 
 module publicIpAddress './ipAddress.bicep' = {
-  name: 'publicIpAddress'
+  name: '${deployment().name}-appgw-publicIpAddress'
   params: {
     publicIpAddressName: 'ip-${uniqueString(resourceGroup().id)}'
     domainNameLabel: 'd${uniqueString(resourceGroup().id)}' // ensure domain name starts with a letter

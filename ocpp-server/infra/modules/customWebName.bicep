@@ -25,7 +25,7 @@ resource webKeyVaultCertificate 'Microsoft.KeyVault/vaults/secrets@2024-04-01-pr
 
 // Add a TXT record to the DNS zone to verify the custom domain
 module verification 'dnstxt.bicep' = {
-  name: 'dnsServiceWebTxt'
+  name: '${deployment().name}-dnsServiceWebTxt'
   scope: resourceGroup(dnsZoneRG)
   params: {
     dnszoneName: dnszoneName
