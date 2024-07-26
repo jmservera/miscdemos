@@ -5,10 +5,12 @@ param pubsubKeyVaultCertName string
 param webKeyVaultCertName string
 @description('Name of the Key Vault where the certificates are stored')
 param keyVaultName string
+@description('Resource Group name where the Key Vault was created')
+param keyVaultRG string
 @description('User Assigned Managed Identity name with Get permissions fo the Key Vault Certificate')
 param keyVaultIdentityName string
 @description('Resource Group name where the User Assigned Managed Identity was created')
-param keyVaultIdentityRG string = resourceGroup().name
+param keyVaultIdentityRG string = keyVaultRG
 @description('Custom DNS Zone Name used for publishing the Web PubSub service endpoint securely')
 param customDnsZoneName string
 @description('A Record Name for the Web PubSub service endpoint, used as prefix of the DnsZoneName')
@@ -96,6 +98,7 @@ module appGw './modules/appgw.bicep' = {
     webHostName: webHostName
     pubsubHostName: pubsubHostName
     keyVaultName: keyVaultName
+    keyVaultRG: keyVaultRG
     keyVaultIdentityName: keyVaultIdentityName
     keyVaultIdentityRG: keyVaultIdentityRG
     webServiceName: webApp.outputs.webSiteName
@@ -121,5 +124,19 @@ module wwwdns './modules/dns.bicep' = if (customDnsZoneName != '') {
     dnszoneName: customDnsZoneName
     aRecordName: webARecordName
     ipTargetResourceId: appGw.outputs.publicIPAddressId
+  }
+}
+
+module customDomain 'modules/customWebName.bicep' = if (customDnsZoneName != '') {
+  name: 'customDomain'
+  params: {
+    dnszoneName: customDnsZoneName
+    dnsZoneRG: dnsZoneRG
+    subdomain: 'www'
+    customDomainVerificationId: webApp.outputs.customDomainVerificationId
+    webSiteName: webApp.outputs.webSiteName
+    keyVaultName: keyVaultName
+    keyVaultRG: keyVaultRG
+    webKeyVaultCertName: webKeyVaultCertName
   }
 }

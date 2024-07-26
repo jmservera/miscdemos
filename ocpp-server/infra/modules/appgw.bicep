@@ -14,6 +14,7 @@ param skuCapacity int = 1
 param pubsubHostName string
 param webHostName string
 param keyVaultName string
+param keyVaultRG string
 param keyVaultIdentityName string
 param keyVaultIdentityRG string
 param webServiceName string
@@ -25,6 +26,7 @@ var ocppRuleSetName = 'ocppRuleSet'
 var pubsubBackendPoolName = 'pubsubBackend'
 var pubsubBackendSettingsName = 'pubsubBackendSettings'
 var pubsubProbeName = 'pubsubProbe'
+var webProbeName = 'webProbe'
 var pubsubListenerName = 'pubsubListener'
 var webBackendPoolName = 'webBackend'
 var webListenerName = 'webListener'
@@ -36,7 +38,7 @@ var isWildcard = (webKeyVaultCertName == pubsubKeyVaultCertName)
 
 resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = {
   name: keyVaultName
-  scope: resourceGroup(keyVaultIdentityRG)
+  scope: resourceGroup(keyVaultRG)
 }
 
 resource pubsubKeyVaultCertificate 'Microsoft.KeyVault/vaults/secrets@2024-04-01-preview' existing = {
@@ -162,6 +164,18 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
           }
         }
       }
+      {
+        name: webProbeName
+        properties: {
+          protocol: 'Https'
+          host: webHostName
+          path: '/'
+          interval: 30
+          timeout: 30
+          unhealthyThreshold: 3
+          pickHostNameFromBackendHttpSettings: false
+        }
+      }
     ]
     backendHttpSettingsCollection: [
       {
@@ -180,11 +194,13 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
       {
         name: webBackendSettingsName
         properties: {
-          port: 80
-          protocol: 'Http'
+          port: 443
+          protocol: 'Https'
           cookieBasedAffinity: 'Disabled'
-          pickHostNameFromBackendAddress: true
-          requestTimeout: 180 //default KeepAliveInterval for websockets is 2 minutes, setting 3 minutes for app gateway
+          pickHostNameFromBackendAddress: false
+          probe: {
+            id: resourceId('Microsoft.Network/applicationGateways/probes', appgwName, webProbeName)
+          }
         }
       }
     ]

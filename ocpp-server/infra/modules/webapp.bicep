@@ -47,6 +47,7 @@ resource appService 'Microsoft.Web/sites@2020-06-01' = {
   location: location
   properties: {
     serverFarmId: appServicePlan.id
+    httpsOnly: true // Enable HTTPS only for improved security    
     siteConfig: {
       linuxFxVersion: linuxFxVersion
       appSettings: [
@@ -120,3 +121,4 @@ resource ipSecurityRestrictions 'Microsoft.Web/sites/config@2023-12-01' = {
 output webSiteName string = appService.name
 output appServiceId string = appService.id
 output storageName string = storage.outputs.storageAccountName
+output customDomainVerificationId string = appService.properties.customDomainVerificationId
