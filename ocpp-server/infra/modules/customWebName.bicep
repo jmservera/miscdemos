@@ -1,7 +1,6 @@
 param dnszoneName string
 param dnsZoneRG string
 param subdomain string = 'www'
-param customDomainVerificationId string
 param webSiteName string
 param keyVaultName string
 param keyVaultRG string
@@ -24,19 +23,20 @@ resource webKeyVaultCertificate 'Microsoft.KeyVault/vaults/secrets@2024-04-01-pr
   parent: keyVault
 }
 
+// Add a TXT record to the DNS zone to verify the custom domain
 module verification 'dnstxt.bicep' = {
   name: 'dnsServiceWebTxt'
   scope: resourceGroup(dnsZoneRG)
   params: {
     dnszoneName: dnszoneName
     subdomain: 'asuid.${fqdn}'
-    value: customDomainVerificationId
+    value: site.properties.customDomainVerificationId
   }
 }
 
 // Enabling Managed certificate for a webapp requires 3 steps
 // 1. Add custom domain to webapp with SSL in disabled state
-// 2. Generate certificate for the domain
+// 2. Upload certificate for the domain
 // 3. enable SSL
 //
 // The last step requires deploying again Microsoft.Web/sites/hostNameBindings - and ARM template forbids this in one deplyment, therefore we need to use modules to chain this.

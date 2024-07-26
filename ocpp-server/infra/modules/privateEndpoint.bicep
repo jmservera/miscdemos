@@ -8,12 +8,14 @@ param privateLinkResource string
 @allowed([
   'webpubsub'
   'sites'
+  'blob'
 ])
 param targetSubResource string
 
 var dnsByTarget = {
   webpubsub: 'privatelink.webpubsub.azure.com'
   sites: 'privatelink.azurewebsites.net'
+  blob: 'privatelink.blob.${environment().suffixes.storage}'
 }
 
 resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
