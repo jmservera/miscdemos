@@ -29,7 +29,7 @@ module verification 'dnstxt.bicep' = {
   scope: resourceGroup(dnsZoneRG)
   params: {
     dnszoneName: dnszoneName
-    subdomain: 'asuid.${fqdn}'
+    subdomain: 'asuid.${subdomain}'
     value: site.properties.customDomainVerificationId
   }
 }

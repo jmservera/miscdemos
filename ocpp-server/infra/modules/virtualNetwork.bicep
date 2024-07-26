@@ -46,9 +46,6 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2019-09-01' = {
       {
         name: gatewaySubnetName
         properties: {
-          natGateway: {
-            id: natGatewayId
-          }
           addressPrefix: gatewaySubnetPrefix
         }
       }
