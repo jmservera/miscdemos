@@ -152,7 +152,7 @@ module customDomain 'modules/customWebName.bicep' = if (customDnsZoneName != '')
   params: {
     dnszoneName: customDnsZoneName
     dnsZoneRG: dnsZoneRG
-    subdomain: 'www'
+    subdomain: webARecordName
     webSiteName: webApp.outputs.webSiteName
     keyVaultName: keyVaultName
     keyVaultRG: keyVaultRG
