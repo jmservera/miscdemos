@@ -5,7 +5,10 @@ BICEP_PARAMS := main.parameters.bicepparam
 WEBAPP_NAME := $(shell az webapp list -g $(RG_NAME) --query "[0].name" -o tsv)
 STORAGE_NAME := $(shell az storage account list -g $(RG_NAME) --query "[?starts_with(name,'webdeploy')].name" -o tsv)
 EXPIRY := $(shell date -u -d "15 minutes" '+%Y-%m-%dT%H:%MZ')
-TEST_SERVER := wss.jmservera.online
+BASE_URI := $(shell cd infra && grep -Po "customDnsZoneName.*\K'(.+)'" $(BICEP_PARAMS) | grep -Po "[^']*")
+WSSSUBDOMAIN := $(shell cd infra && grep -Po "pubsubARecordName.*\K'(.+)'" $(BICEP_PARAMS) | grep -Po "[^']*")
+TEST_SERVER := $(WSSSUBDOMAIN).$(BASE_URI)
+WEB_SERVER := www.$(BASE_URI)
 
 preparecli:
 	az upgrade
@@ -58,6 +61,7 @@ secrets:
 	CONNECTION_STRING='$(shell az webpubsub list -g $(RG_NAME) --query "[0].name" -o tsv | az webpubsub key show -g $(RG_NAME) -n @- --query "primaryConnectionString" -o tsv)'; \
 	dotnet user-secrets set 'WEBPUBSUB_SERVICE_CONNECTION_STRING' "$$CONNECTION_STRING" --project api/OcppServer/OcppServer.csproj	
 publish: $(wildcard api/**/*.cs) $(wildcard api/**/wwwroot/*)
+	az webapp show -g $(RG_NAME) -n $(WEBAPP_NAME)
 	@echo "Creating publish files"
 	dotnet publish api/OcppServer/OcppServer.csproj -c Release
 	@echo "Zip files"
@@ -65,12 +69,13 @@ publish: $(wildcard api/**/*.cs) $(wildcard api/**/wwwroot/*)
 	@echo "Publish files created"
 	az storage blob upload --account-name $(STORAGE_NAME) -c default -f /tmp/ocppserver.zip -n ocppserver.zip --overwrite;
 	APP_URL='$(shell az storage blob generate-sas --full-uri --permissions r --expiry '$(EXPIRY)' --account-name $(STORAGE_NAME) -c default -n ocppserver.zip -o tsv)'; \
-	az webapp deploy -g $(RG_NAME) -n $(WEBAPP_NAME) --src-url $$APP_URL --type zip;
+	az webapp deploy -g $(RG_NAME) -n $(WEBAPP_NAME) --src-url $$APP_URL --type zip --track-status true;
+	@echo "Waiting for webapp to be ready"
+	until [ $$(curl -s -o /dev/null -w "%{http_code}" https://$(WEB_SERVER)) -eq 200 ]; do echo -n . && sleep 5; done
 deploy:
 	@echo "Deploying all to Azure"
-	@$(MAKE) -f $(THIS_FILE) infra
-	# wait a little bit for the infra to be ready, to avoid publish errors with the gateway.
-	@echo "Waiting for infra to be ready"
-	sleep 60 
+	@$(MAKE) -f $(THIS_FILE) infra	
+	@echo "Waiting for webapp to be ready"
+	until [ $$(curl -s -o /dev/null -w "%{http_code}" https://$(WEB_SERVER)) -eq 200 ]; do echo -n . && sleep 5; done
 	@$(MAKE) -f $(THIS_FILE) publish
 .PHONY: test clean watch start secrets test-client infra

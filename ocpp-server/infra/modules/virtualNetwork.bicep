@@ -19,29 +19,45 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2019-09-01' = {
     subnets: [
       {
         name: subnetName
-        properties: {
-          addressPrefix: subnetPrefix
-          natGateway: {
-            id: natGatewayId
-          }
-          delegations: [
-            {
-              name: 'Microsoft.Web/serverFarms'
-              properties: {
-                serviceName: 'Microsoft.Web/serverFarms'
+        properties: (natGatewayId != '')
+          ? {
+              addressPrefix: subnetPrefix
+              natGateway: {
+                id: natGatewayId
               }
+              delegations: [
+                {
+                  name: 'Microsoft.Web/serverFarms'
+                  properties: {
+                    serviceName: 'Microsoft.Web/serverFarms'
+                  }
+                }
+              ]
             }
-          ]
-        }
+          : {
+              addressPrefix: subnetPrefix
+              delegations: [
+                {
+                  name: 'Microsoft.Web/serverFarms'
+                  properties: {
+                    serviceName: 'Microsoft.Web/serverFarms'
+                  }
+                }
+              ]
+            }
       }
       {
         name: privateSubnetName
-        properties: {
-          natGateway: {
-            id: natGatewayId
-          }
-          addressPrefix: privateSubnetPrefix
-        }
+        properties: (natGatewayId != '')
+          ? {
+              natGateway: {
+                id: natGatewayId
+              }
+              addressPrefix: privateSubnetPrefix
+            }
+          : {
+              addressPrefix: privateSubnetPrefix
+            }
       }
       {
         name: gatewaySubnetName

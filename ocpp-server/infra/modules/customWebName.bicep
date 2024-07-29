@@ -40,7 +40,6 @@ module verification 'dnstxt.bicep' = {
 // 3. enable SSL
 //
 // The last step requires deploying again Microsoft.Web/sites/hostNameBindings - and ARM template forbids this in one deplyment, therefore we need to use modules to chain this.
-
 resource appCustomHost 'Microsoft.Web/sites/hostNameBindings@2020-06-01' = {
   name: fqdn
   parent: site

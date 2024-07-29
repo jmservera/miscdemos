@@ -27,12 +27,16 @@ var pubsubBackendPoolName = 'pubsubBackend'
 var pubsubBackendSettingsName = 'pubsubBackendSettings'
 var pubsubProbeName = 'pubsubProbe'
 var webProbeName = 'webProbe'
+var port80ListenerName = 'port80Listener'
 var pubsubListenerName = 'pubsubListener'
 var webBackendPoolName = 'webBackend'
 var webListenerName = 'webListener'
 var webBackendSettingsName = 'webBackendSettings'
 var webtls = 'webtls'
 var pubsubtls = 'pubsubtls'
+var port80 = 'port_80'
+var port443 = 'port_443'
+var redirectConfigName = 'redirect80to443'
 
 var isWildcard = (webKeyVaultCertName == pubsubKeyVaultCertName)
 
@@ -110,13 +114,13 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
     ]
     frontendPorts: [
       {
-        name: 'port_80'
+        name: port80
         properties: {
           port: 80
         }
       }
       {
-        name: 'port_443'
+        name: port443
         properties: {
           port: 443
         }
@@ -229,6 +233,23 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
         ]
     httpListeners: [
       {
+        name: port80ListenerName
+        properties: {
+          frontendIPConfiguration: {
+            id: resourceId(
+              'Microsoft.Network/applicationGateways/frontendIPConfigurations',
+              appgwName,
+              'appGwPublicFrontendIPv4'
+            )
+          }
+          frontendPort: {
+            id: resourceId('Microsoft.Network/applicationGateways/frontendPorts', appgwName, port80)
+          }
+          protocol: 'Http'
+          hostName: webHostName
+        }
+      }
+      {
         name: pubsubListenerName
         properties: {
           frontendIPConfiguration: {
@@ -239,14 +260,13 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
             )
           }
           frontendPort: {
-            id: resourceId('Microsoft.Network/applicationGateways/frontendPorts', appgwName, 'port_443')
+            id: resourceId('Microsoft.Network/applicationGateways/frontendPorts', appgwName, port443)
           }
           protocol: 'Https'
           sslCertificate: {
             id: resourceId('Microsoft.Network/applicationGateways/sslCertificates', appgwName, pubsubtls)
           }
           hostName: pubsubHostName
-          customErrorConfigurations: []
           requireServerNameIndication: true
         }
       }
@@ -261,7 +281,7 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
             )
           }
           frontendPort: {
-            id: resourceId('Microsoft.Network/applicationGateways/frontendPorts', appgwName, 'port_443')
+            id: resourceId('Microsoft.Network/applicationGateways/frontendPorts', appgwName, port443)
           }
           protocol: 'Https'
           sslCertificate: {
@@ -272,7 +292,6 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
             )
           }
           hostName: webHostName
-          customErrorConfigurations: []
           requireServerNameIndication: true
         }
       }
@@ -338,7 +357,6 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
                 responseHeaderConfigurations: []
                 urlConfiguration: {
                   modifiedPath: '/client/hubs/${pubsubHubName}'
-                  //TODO: This is a placeholder for the access token, retrieve it from the query headers
                   modifiedQueryString: 'id={var_uri_path_1}'
                   reroute: false
                 }
@@ -348,7 +366,37 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
         }
       }
     ]
+    redirectConfigurations: [
+      {
+        name: redirectConfigName
+        properties: {
+          redirectType: 'Permanent'
+          targetListener: {
+            id: resourceId('Microsoft.Network/applicationGateways/httpListeners', appgwName, webListenerName)
+          }
+          includePath: true
+          includeQueryString: true
+        }
+      }
+    ]
     requestRoutingRules: [
+      {
+        name: 'port80RequestRule'
+        properties: {
+          ruleType: 'Basic'
+          priority: 50
+          httpListener: {
+            id: resourceId('Microsoft.Network/applicationGateways/httpListeners', appgwName, port80ListenerName)
+          }
+          redirectConfiguration: {
+            id: resourceId(
+              'Microsoft.Network/applicationGateways/redirectConfigurations',
+              appgwName,
+              redirectConfigName
+            )
+          }
+        }
+      }
       {
         name: 'pubsubRequestRule'
         properties: {

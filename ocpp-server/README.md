@@ -52,7 +52,11 @@ This makefile recipe deploys the infra into your Azure subscription, compiles th
 
 The App Service and Web Pub Sub endpoints are protected with Private Endpoints, and published through an Application Gateway.
 
+<div style="background-color:white">
+
 ![Infra](./img/Architecture.svg)
+
+</div>
 
 ## FAQ
 

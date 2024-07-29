@@ -14,9 +14,6 @@ resource publicIpPrefixes 'Microsoft.Network/publicIPPrefixes@2023-11-01' = {
   properties: {
     prefixLength: 28
     publicIPAddressVersion: 'IPv4'
-    natGateway: {
-      id: natGateway.id
-    }
   }
 }
 
@@ -28,6 +25,11 @@ resource natGateway 'Microsoft.Network/natGateways@2023-11-01' = {
   }
   properties: {
     idleTimeoutInMinutes: idleTimeoutInMinutes
+    publicIpPrefixes: [
+      {
+        id: publicIpPrefixes.id
+      }
+    ]
   }
 }
 
