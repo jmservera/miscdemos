@@ -69,7 +69,12 @@ publish: $(wildcard api/**/*.cs) $(wildcard api/**/wwwroot/*)
 	@echo "Publish files created"
 	az storage blob upload --account-name $(STORAGE_NAME) -c default -f /tmp/ocppserver.zip -n ocppserver.zip --overwrite;
 	APP_URL='$(shell az storage blob generate-sas --full-uri --permissions r --expiry '$(EXPIRY)' --account-name $(STORAGE_NAME) -c default -n ocppserver.zip -o tsv)'; \
-	az webapp deploy -g $(RG_NAME) -n $(WEBAPP_NAME) --src-url $$APP_URL --type zip;
+	if az webapp deploy -g $(RG_NAME) -n $(WEBAPP_NAME) --src-url $$APP_URL --type zip; then \
+		echo "Deployed to Azure"; \
+	else \
+		echo "Retry deployment, first time can fail with gateway error"; \
+		az webapp deploy -g $(RG_NAME) -n $(WEBAPP_NAME) --src-url $$APP_URL --type zip; \
+	fi
 	@echo "Waiting for webapp to be ready"
 	until [ $$(curl -s -o /dev/null -w "%{http_code}" https://$(WEB_SERVER)/health) -eq 200 ]; do echo -n . && sleep 5; done
 	@echo 
