@@ -1,5 +1,5 @@
 param webAppName string = uniqueString(resourceGroup().id) // Generate unique String for web app name
-param sku string = 'B1' // The SKU of App Service Plan
+param sku string = 'S1' // The SKU of App Service Plan, use at least P1v2 for production
 param linuxFxVersion string = 'DOTNETCORE|8.0' // The runtime stack of web app
 param location string = resourceGroup().location // Location for all resources
 param pubSubName string

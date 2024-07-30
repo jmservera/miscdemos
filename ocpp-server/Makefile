@@ -55,8 +55,9 @@ infra: $(wildcard infra/**/*.bicep) $(wildcard infra/*.parameters.bicepparam)
 	az group create -n $(RG_NAME) -l $(RG_LOCATION)
 	az deployment group create -g $(RG_NAME) --template-file infra/main.bicep --parameters infra/$(BICEP_PARAMS)
 	@echo "Setting up user secrets"
-	CONNECTION_STRING='$(shell az webpubsub list -g $(RG_NAME) --query "[0].name" -o tsv | az webpubsub key show -g $(RG_NAME) -n @- --query "primaryConnectionString" -o tsv)'; \
-	dotnet user-secrets set 'WEBPUBSUB_SERVICE_CONNECTION_STRING' "$$CONNECTION_STRING" --project api/OcppServer/OcppServer.csproj	
+	@$(MAKE) -f $(THIS_FILE) secrets
+clean-infra:
+	az group delete -n $(RG_NAME)
 secrets:
 	CONNECTION_STRING='$(shell az webpubsub list -g $(RG_NAME) --query "[0].name" -o tsv | az webpubsub key show -g $(RG_NAME) -n @- --query "primaryConnectionString" -o tsv)'; \
 	dotnet user-secrets set 'WEBPUBSUB_SERVICE_CONNECTION_STRING' "$$CONNECTION_STRING" --project api/OcppServer/OcppServer.csproj	
@@ -72,10 +73,17 @@ publish: $(wildcard api/**/*.cs) $(wildcard api/**/wwwroot/*)
 	@echo "Waiting for webapp to be ready"
 	until [ $$(curl -s -o /dev/null -w "%{http_code}" https://$(WEB_SERVER)/health) -eq 200 ]; do echo -n . && sleep 5; done
 	@echo 
+restart:
+	az webapp stop -g $(RG_NAME) -n $(WEBAPP_NAME)
+	sleep 5
+	az webapp start -g $(RG_NAME) -n $(WEBAPP_NAME)
 deploy:
 	@echo "Deploying all to Azure"
 	@$(MAKE) -f $(THIS_FILE) infra	
-	@echo "Waiting for webapp to be ready"
-	until [ $$(curl -s -o /dev/null -w "%{http_code}" https://$(WEB_SERVER)) -eq 200 ]; do echo -n . && sleep 5; done
+	@echo "Waiting for gateway to be ready"
+	# until [ $$(curl -s -o /dev/null -w "%{http_code}" https://$(WEB_SERVER)) -eq 502 ] || [ $$(curl -s -o /dev/null -w "%{http_code}" https://$(WEB_SERVER)) -eq 200 ]; do echo -n . && sleep 5; done
+	# @echo
+	@$(MAKE) -f $(THIS_FILE) restart
+	sleep 120
 	@$(MAKE) -f $(THIS_FILE) publish
-.PHONY: test clean watch start secrets test-client infra
+.PHONY: test clean watch start secrets test-client infra clean-infra
