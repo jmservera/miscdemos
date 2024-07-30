@@ -64,6 +64,7 @@ resource appService 'Microsoft.Web/sites@2020-06-01' = {
     siteConfig: {
       ftpsState: 'Disabled'
       linuxFxVersion: linuxFxVersion
+      healthCheckPath: '/health'
       appSettings: [
         // Application Insights needs these three settings to be activated
         // APPLICATIONINSIGHTS_CONNECTION_STRING, ApplicationInsightsAgent_EXTENSION_VERSION
@@ -80,6 +81,7 @@ resource appService 'Microsoft.Web/sites@2020-06-01' = {
           name: 'XDT_MicrosoftApplicationInsights_Mode'
           value: 'recommended'
         }
+        // Add the connection string to the AzureWebPubSub service
         {
           name: 'WEBPUBSUB_SERVICE_CONNECTION_STRING'
           value: pubSub.listKeys().primaryConnectionString

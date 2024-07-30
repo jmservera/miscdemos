@@ -173,7 +173,7 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
         properties: {
           protocol: 'Https'
           host: webHostName
-          path: '/'
+          path: '/health'
           interval: 30
           timeout: 30
           unhealthyThreshold: 3

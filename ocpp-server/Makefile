@@ -61,7 +61,6 @@ secrets:
 	CONNECTION_STRING='$(shell az webpubsub list -g $(RG_NAME) --query "[0].name" -o tsv | az webpubsub key show -g $(RG_NAME) -n @- --query "primaryConnectionString" -o tsv)'; \
 	dotnet user-secrets set 'WEBPUBSUB_SERVICE_CONNECTION_STRING' "$$CONNECTION_STRING" --project api/OcppServer/OcppServer.csproj	
 publish: $(wildcard api/**/*.cs) $(wildcard api/**/wwwroot/*)
-	az webapp show -g $(RG_NAME) -n $(WEBAPP_NAME)
 	@echo "Creating publish files"
 	dotnet publish api/OcppServer/OcppServer.csproj -c Release
 	@echo "Zip files"
@@ -69,9 +68,10 @@ publish: $(wildcard api/**/*.cs) $(wildcard api/**/wwwroot/*)
 	@echo "Publish files created"
 	az storage blob upload --account-name $(STORAGE_NAME) -c default -f /tmp/ocppserver.zip -n ocppserver.zip --overwrite;
 	APP_URL='$(shell az storage blob generate-sas --full-uri --permissions r --expiry '$(EXPIRY)' --account-name $(STORAGE_NAME) -c default -n ocppserver.zip -o tsv)'; \
-	az webapp deploy -g $(RG_NAME) -n $(WEBAPP_NAME) --src-url $$APP_URL --type zip --track-status true;
+	az webapp deploy -g $(RG_NAME) -n $(WEBAPP_NAME) --src-url $$APP_URL --type zip;
 	@echo "Waiting for webapp to be ready"
-	until [ $$(curl -s -o /dev/null -w "%{http_code}" https://$(WEB_SERVER)) -eq 200 ]; do echo -n . && sleep 5; done
+	until [ $$(curl -s -o /dev/null -w "%{http_code}" https://$(WEB_SERVER)/health) -eq 200 ]; do echo -n . && sleep 5; done
+	@echo 
 deploy:
 	@echo "Deploying all to Azure"
 	@$(MAKE) -f $(THIS_FILE) infra	
