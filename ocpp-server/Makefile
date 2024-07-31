@@ -99,6 +99,5 @@ deploy:
 	# until [ $$(curl -s -o /dev/null -w "%{http_code}" https://$(WEB_SERVER)) -eq 502 ] || [ $$(curl -s -o /dev/null -w "%{http_code}" https://$(WEB_SERVER)) -eq 200 ]; do echo -n . && sleep 5; done
 	# @echo
 	@$(MAKE) -f $(THIS_FILE) restart
-	sleep 120
 	@$(MAKE) -f $(THIS_FILE) publish
 .PHONY: test clean watch start secrets test-client infra clean-infra
