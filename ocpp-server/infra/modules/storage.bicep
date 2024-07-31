@@ -7,7 +7,7 @@ param accessTier string = 'Hot'
 var storageAccountName = replace(toLower(name), '-', '')
 var storageAccountName24 = substring(storageAccountName, 0, min(24, length(storageAccountName)))
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
   name: storageAccountName24
   location: location
   sku: {
@@ -20,14 +20,14 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' = {
 }
 
 // add a blob services
-resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2021-04-01' = {
-  name: 'default'
+resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2023-05-01' = {
+  name: 'default' // needs to be named default
   parent: storageAccount
 }
 
 // add a blob container
-resource blobContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-04-01' = {
-  name: 'default'
+resource blobContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-05-01' = {
+  name: 'deployments'
   parent: blobService
   properties: {
     publicAccess: 'None'

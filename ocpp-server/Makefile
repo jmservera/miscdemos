@@ -35,6 +35,14 @@ test-client-badauth:
 clean:
 	@echo "Cleaning"
 	dotnet clean api/api.sln
+clean-all:
+	@echo "Cleaning all"
+	dotnet clean api/api.sln
+	rm -rf client/node_modules
+	rm -rf api/OcppServer/bin
+	rm -rf api/OcppServer/obj
+	rm -rf /tmp/ocppserver.zip
+	@$(MAKE) -f $(THIS_FILE) clean-infra
 restore:
 	@echo "Restoring packages"
 	dotnet restore api/api.sln
@@ -67,12 +75,14 @@ publish: $(wildcard api/**/*.cs) $(wildcard api/**/wwwroot/*)
 	@echo "Zip files"
 	cd api/OcppServer/bin/Release/net8.0/publish && zip -r /tmp/ocppserver.zip .
 	@echo "Publish files created"
-	az storage blob upload --account-name $(STORAGE_NAME) -c default -f /tmp/ocppserver.zip -n ocppserver.zip --overwrite;
-	APP_URL='$(shell az storage blob generate-sas --full-uri --permissions r --expiry '$(EXPIRY)' --account-name $(STORAGE_NAME) -c default -n ocppserver.zip -o tsv)'; \
+	az storage blob upload --account-name $(STORAGE_NAME) -c deployments -f /tmp/ocppserver.zip -n ocppserver.zip --overwrite;
+	APP_URL='$(shell az storage blob generate-sas --full-uri --permissions r --expiry '$(EXPIRY)' --account-name $(STORAGE_NAME) -c deployments -n ocppserver.zip -o tsv)'; \
 	if az webapp deploy -g $(RG_NAME) -n $(WEBAPP_NAME) --src-url $$APP_URL --type zip; then \
 		echo "Deployed to Azure"; \
 	else \
-		echo "Retry deployment, first time can fail with gateway error"; \
+		# todo: check status with the rest api https://management.azure.com/subscriptions/$$(az account show --query id -o tsv)/resourceGroups/RESOURCEGROUP/providers/Microsoft.Web/sites/WEBAPPNAME/deployments?api-version=2023-12-01 \
+		echo "Retry deployment, first time can fail with Gateway Timeout"; \
+		sleep 10; \
 		az webapp deploy -g $(RG_NAME) -n $(WEBAPP_NAME) --src-url $$APP_URL --type zip; \
 	fi
 	@echo "Waiting for webapp to be ready"
