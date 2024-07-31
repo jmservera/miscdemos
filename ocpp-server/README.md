@@ -9,7 +9,7 @@ a private endpoint for the Web App that hosts the OCPP server.
 You need:
 
 * An **Azure KeyVault** with a wildcard certificate for the domain you will assign to the Application Gateway. The App Gateway uses it to publish the Web PubSub endpoint and the Web App.
-* A **User Assigned Managed Identity** with read access to the KeyVault where the SSL certificate is stored.
+* A **User Assigned Managed Identity** with read access to the KeyVault where the SSL certificate is stored. You can set Get and List certificate permissions in the certificate access policy.
 * A **Public DNS Zone in Azure**, where the script will create or update the A records for the Web PubSub service. Your user needs modify permissions to these DNS records, and they will be created with a resource reference.
 * A **main.parameters.bicepparam** file in the root of the project with the following content:
 
