@@ -40,6 +40,22 @@ The project is divided into two main parts:
 
 All these parts are managed by a Makefile that orchestrates the deployment and the compilation of the OCPP server.
 
+### Infra
+
+The [main.bicep](./infra/main.bicep) file orchestrates the deployment of several resources for an OCPP server infrastructure. Here is a summary of what each module deploys:
+
+* [NAT Gateway](./infra/modules/natgw.bicep): Deploys a NAT Gateway if useNATGateway is set to true.
+* [Virtual Network](./infra/modules/virtualNetwork.bicep): Creates a virtual network with three subnets (default, gateway, and private endpoints).
+* [Web PubSub Service](./infra/modules/webPubSub.bicep): Deploys a Web PubSub service.
+* [Private Endpoint for Web PubSub](./infra/modules/privateEndpoint.bicep): Creates a private endpoint for the Web PubSub service.
+* [Web PubSub Hub](./infra/modules/webPubSubHub.bicep): Creates the Web PubSub Hub.
+* [Web App Service](./infra/modules/webapp.bicep): Deploys the web app service.
+* [Custom Web Domain](./infra/modules/customWebName.bicep): Assigns a custom domain to the web app.
+* [Private Endpoint for Web App](./infra/modules/privateEndpoint.bicep): Creates a private endpoint for the web app.
+* [Private Endpoint for Storage](./infra/modules/privateEndpoint.bicep): Creates a private endpoint for the web app's storage account.
+* [Application Gateway](./infra/modules/appgw.bicep): Creates an Application Gateway to serve the web app and Web PubSub service endpoints.
+* [DNS Records](./infra/modules/dns.bicep): Updates the DNS A records with the Application Gateway's public IP for both the Web PubSub and the web app.
+
 ## How to deploy this project into Azure
 
 You can run the `deploy` *make* recipe with the following optional parameters:
