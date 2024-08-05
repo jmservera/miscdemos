@@ -177,7 +177,7 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
         name: webProbeName
         properties: {
           protocol: 'Https'
-          host: webHostName
+          host: isSecure ? webHostName : webApp.properties.defaultHostName
           path: '/health'
           interval: 30
           timeout: 30
@@ -319,7 +319,6 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
                 id: resourceId('Microsoft.Network/applicationGateways/frontendPorts', appgwName, port80)
               }
               protocol: 'Http'
-              hostName: pubsubHostName
               requireServerNameIndication: false
             }
           }
