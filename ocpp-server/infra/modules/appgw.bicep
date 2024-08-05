@@ -39,18 +39,19 @@ var port443 = 'port_443'
 var redirectConfigName = 'redirect80to443'
 
 var isWildcard = (webKeyVaultCertName == pubsubKeyVaultCertName)
+var isSecure = (webKeyVaultCertName != '' && pubsubKeyVaultCertName != '')
 
-resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = {
+resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = if (isSecure) {
   name: keyVaultName
   scope: resourceGroup(keyVaultRG)
 }
 
-resource pubsubKeyVaultCertificate 'Microsoft.KeyVault/vaults/secrets@2024-04-01-preview' existing = {
+resource pubsubKeyVaultCertificate 'Microsoft.KeyVault/vaults/secrets@2024-04-01-preview' existing = if (isSecure) {
   name: pubsubKeyVaultCertName
   parent: keyVault
 }
 
-resource webKeyVaultCertificate 'Microsoft.KeyVault/vaults/secrets@2024-04-01-preview' existing = {
+resource webKeyVaultCertificate 'Microsoft.KeyVault/vaults/secrets@2024-04-01-preview' existing = if (isSecure) {
   name: webKeyVaultCertName
   parent: keyVault
 }
@@ -63,7 +64,7 @@ resource webApp 'Microsoft.Web/sites@2021-02-01' existing = {
   name: webServiceName
 }
 
-resource identity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
+resource identity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = if (isSecure) {
   name: keyVaultIdentityName
   scope: resourceGroup(keyVaultIdentityRG)
 }
@@ -80,12 +81,16 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
   name: appgwName
   location: location
   zones: zones
-  identity: {
-    type: 'UserAssigned'
-    userAssignedIdentities: {
-      '${identity.id}': {}
-    }
-  }
+  identity: isSecure
+    ? {
+        type: 'UserAssigned'
+        userAssignedIdentities: {
+          '${identity.id}': {}
+        }
+      }
+    : {
+        type: 'None'
+      }
   properties: {
     sku: {
       name: skuSize
@@ -208,94 +213,117 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
         }
       }
     ]
-    sslCertificates: isWildcard
+    sslCertificates: isSecure
+      ? isWildcard
+          ? [
+              {
+                name: pubsubtls
+                properties: {
+                  keyVaultSecretId: pubsubKeyVaultCertificate.properties.secretUri
+                }
+              }
+            ]
+          : [
+              {
+                name: pubsubtls
+                properties: {
+                  keyVaultSecretId: pubsubKeyVaultCertificate.properties.secretUri
+                }
+              }
+              {
+                name: webtls
+                properties: {
+                  keyVaultSecretId: webKeyVaultCertificate.properties.secretUri
+                }
+              }
+            ]
+      : []
+    httpListeners: isSecure
       ? [
           {
-            name: pubsubtls
+            name: port80ListenerName
             properties: {
-              keyVaultSecretId: pubsubKeyVaultCertificate.properties.secretUri
+              frontendIPConfiguration: {
+                id: resourceId(
+                  'Microsoft.Network/applicationGateways/frontendIPConfigurations',
+                  appgwName,
+                  'appGwPublicFrontendIPv4'
+                )
+              }
+              frontendPort: {
+                id: resourceId('Microsoft.Network/applicationGateways/frontendPorts', appgwName, port80)
+              }
+              protocol: 'Http'
+              hostName: webHostName
+            }
+          }
+          {
+            name: pubsubListenerName
+            properties: {
+              frontendIPConfiguration: {
+                id: resourceId(
+                  'Microsoft.Network/applicationGateways/frontendIPConfigurations',
+                  appgwName,
+                  'appGwPublicFrontendIPv4'
+                )
+              }
+              frontendPort: {
+                id: resourceId('Microsoft.Network/applicationGateways/frontendPorts', appgwName, port443)
+              }
+              protocol: 'Https'
+              sslCertificate: {
+                id: resourceId('Microsoft.Network/applicationGateways/sslCertificates', appgwName, pubsubtls)
+              }
+              hostName: pubsubHostName
+              requireServerNameIndication: true
+            }
+          }
+          {
+            name: webListenerName
+            properties: {
+              frontendIPConfiguration: {
+                id: resourceId(
+                  'Microsoft.Network/applicationGateways/frontendIPConfigurations',
+                  appgwName,
+                  'appGwPublicFrontendIPv4'
+                )
+              }
+              frontendPort: {
+                id: resourceId('Microsoft.Network/applicationGateways/frontendPorts', appgwName, port443)
+              }
+              protocol: 'Https'
+              sslCertificate: {
+                id: resourceId(
+                  'Microsoft.Network/applicationGateways/sslCertificates',
+                  appgwName,
+                  isWildcard ? pubsubtls : webtls
+                )
+              }
+              hostName: webHostName
+              requireServerNameIndication: true
             }
           }
         ]
       : [
           {
-            name: pubsubtls
+            name: pubsubListenerName
             properties: {
-              keyVaultSecretId: pubsubKeyVaultCertificate.properties.secretUri
-            }
-          }
-          {
-            name: webtls
-            properties: {
-              keyVaultSecretId: webKeyVaultCertificate.properties.secretUri
+              frontendIPConfiguration: {
+                id: resourceId(
+                  'Microsoft.Network/applicationGateways/frontendIPConfigurations',
+                  appgwName,
+                  'appGwPublicFrontendIPv4'
+                )
+              }
+              frontendPort: {
+                id: resourceId('Microsoft.Network/applicationGateways/frontendPorts', appgwName, port80)
+              }
+              protocol: 'Http'
+              hostName: pubsubHostName
+              requireServerNameIndication: false
             }
           }
         ]
-    httpListeners: [
-      {
-        name: port80ListenerName
-        properties: {
-          frontendIPConfiguration: {
-            id: resourceId(
-              'Microsoft.Network/applicationGateways/frontendIPConfigurations',
-              appgwName,
-              'appGwPublicFrontendIPv4'
-            )
-          }
-          frontendPort: {
-            id: resourceId('Microsoft.Network/applicationGateways/frontendPorts', appgwName, port80)
-          }
-          protocol: 'Http'
-          hostName: webHostName
-        }
-      }
-      {
-        name: pubsubListenerName
-        properties: {
-          frontendIPConfiguration: {
-            id: resourceId(
-              'Microsoft.Network/applicationGateways/frontendIPConfigurations',
-              appgwName,
-              'appGwPublicFrontendIPv4'
-            )
-          }
-          frontendPort: {
-            id: resourceId('Microsoft.Network/applicationGateways/frontendPorts', appgwName, port443)
-          }
-          protocol: 'Https'
-          sslCertificate: {
-            id: resourceId('Microsoft.Network/applicationGateways/sslCertificates', appgwName, pubsubtls)
-          }
-          hostName: pubsubHostName
-          requireServerNameIndication: true
-        }
-      }
-      {
-        name: webListenerName
-        properties: {
-          frontendIPConfiguration: {
-            id: resourceId(
-              'Microsoft.Network/applicationGateways/frontendIPConfigurations',
-              appgwName,
-              'appGwPublicFrontendIPv4'
-            )
-          }
-          frontendPort: {
-            id: resourceId('Microsoft.Network/applicationGateways/frontendPorts', appgwName, port443)
-          }
-          protocol: 'Https'
-          sslCertificate: {
-            id: resourceId(
-              'Microsoft.Network/applicationGateways/sslCertificates',
-              appgwName,
-              isWildcard ? pubsubtls : webtls
-            )
-          }
-          hostName: webHostName
-          requireServerNameIndication: true
-        }
-      }
-    ]
     rewriteRuleSets: [
       {
         name: ocppRuleSetName
@@ -366,85 +394,121 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
         }
       }
     ]
-    redirectConfigurations: [
-      {
-        name: redirectConfigName
-        properties: {
-          redirectType: 'Permanent'
-          targetListener: {
-            id: resourceId('Microsoft.Network/applicationGateways/httpListeners', appgwName, webListenerName)
+    redirectConfigurations: isSecure
+      ? [
+          {
+            name: redirectConfigName
+            properties: {
+              redirectType: 'Permanent'
+              targetListener: {
+                id: resourceId('Microsoft.Network/applicationGateways/httpListeners', appgwName, webListenerName)
+              }
+              includePath: true
+              includeQueryString: true
+            }
           }
-          includePath: true
-          includeQueryString: true
-        }
-      }
-    ]
-    requestRoutingRules: [
-      {
-        name: 'port80RequestRule'
-        properties: {
-          ruleType: 'Basic'
-          priority: 50
-          httpListener: {
-            id: resourceId('Microsoft.Network/applicationGateways/httpListeners', appgwName, port80ListenerName)
+        ]
+      : []
+    requestRoutingRules: isSecure
+      ? [
+          {
+            name: 'port80RequestRule'
+            properties: {
+              ruleType: 'Basic'
+              priority: 50
+              httpListener: {
+                id: resourceId('Microsoft.Network/applicationGateways/httpListeners', appgwName, port80ListenerName)
+              }
+              redirectConfiguration: {
+                id: resourceId(
+                  'Microsoft.Network/applicationGateways/redirectConfigurations',
+                  appgwName,
+                  redirectConfigName
+                )
+              }
+            }
           }
-          redirectConfiguration: {
-            id: resourceId(
-              'Microsoft.Network/applicationGateways/redirectConfigurations',
-              appgwName,
-              redirectConfigName
-            )
+          {
+            name: 'pubsubRequestRule'
+            properties: {
+              ruleType: 'Basic'
+              priority: 200
+              httpListener: {
+                id: resourceId('Microsoft.Network/applicationGateways/httpListeners', appgwName, pubsubListenerName)
+              }
+              backendAddressPool: {
+                id: resourceId(
+                  'Microsoft.Network/applicationGateways/backendAddressPools',
+                  appgwName,
+                  pubsubBackendPoolName
+                )
+              }
+              backendHttpSettings: {
+                id: resourceId(
+                  'Microsoft.Network/applicationGateways/backendHttpSettingsCollection',
+                  appgwName,
+                  pubsubBackendSettingsName
+                )
+              }
+              rewriteRuleSet: {
+                id: resourceId('Microsoft.Network/applicationGateways/rewriteRuleSets', appgwName, ocppRuleSetName)
+              }
+            }
           }
-        }
-      }
-      {
-        name: 'pubsubRequestRule'
-        properties: {
-          ruleType: 'Basic'
-          priority: 200
-          httpListener: {
-            id: resourceId('Microsoft.Network/applicationGateways/httpListeners', appgwName, pubsubListenerName)
+          {
+            name: 'webRequestRule'
+            properties: {
+              ruleType: 'Basic'
+              priority: 100
+              httpListener: {
+                id: resourceId('Microsoft.Network/applicationGateways/httpListeners', appgwName, webListenerName)
+              }
+              backendAddressPool: {
+                id: resourceId(
+                  'Microsoft.Network/applicationGateways/backendAddressPools',
+                  appgwName,
+                  webBackendPoolName
+                )
+              }
+              backendHttpSettings: {
+                id: resourceId(
+                  'Microsoft.Network/applicationGateways/backendHttpSettingsCollection',
+                  appgwName,
+                  webBackendSettingsName
+                )
+              }
+            }
           }
-          backendAddressPool: {
-            id: resourceId(
-              'Microsoft.Network/applicationGateways/backendAddressPools',
-              appgwName,
-              pubsubBackendPoolName
-            )
+        ]
+      : [
+          {
+            name: 'pubsubRequestRule'
+            properties: {
+              ruleType: 'Basic'
+              priority: 200
+              httpListener: {
+                id: resourceId('Microsoft.Network/applicationGateways/httpListeners', appgwName, pubsubListenerName)
+              }
+              backendAddressPool: {
+                id: resourceId(
+                  'Microsoft.Network/applicationGateways/backendAddressPools',
+                  appgwName,
+                  pubsubBackendPoolName
+                )
+              }
+              backendHttpSettings: {
+                id: resourceId(
+                  'Microsoft.Network/applicationGateways/backendHttpSettingsCollection',
+                  appgwName,
+                  pubsubBackendSettingsName
+                )
+              }
+              rewriteRuleSet: {
+                id: resourceId('Microsoft.Network/applicationGateways/rewriteRuleSets', appgwName, ocppRuleSetName)
+              }
+            }
           }
-          backendHttpSettings: {
-            id: resourceId(
-              'Microsoft.Network/applicationGateways/backendHttpSettingsCollection',
-              appgwName,
-              pubsubBackendSettingsName
-            )
-          }
-          rewriteRuleSet: {
-            id: resourceId('Microsoft.Network/applicationGateways/rewriteRuleSets', appgwName, ocppRuleSetName)
-          }
-        }
-      }
-      {
-        name: 'webRequestRule'
-        properties: {
-          ruleType: 'Basic'
-          priority: 100
-          httpListener: {
-            id: resourceId('Microsoft.Network/applicationGateways/httpListeners', appgwName, webListenerName)
-          }
-          backendAddressPool: {
-            id: resourceId('Microsoft.Network/applicationGateways/backendAddressPools', appgwName, webBackendPoolName)
-          }
-          backendHttpSettings: {
-            id: resourceId(
-              'Microsoft.Network/applicationGateways/backendHttpSettingsCollection',
-              appgwName,
-              webBackendSettingsName
-            )
-          }
-        }
-      }
-    ]
+        ]
   }
 }
 
