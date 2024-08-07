@@ -72,7 +72,9 @@ resource appService 'Microsoft.Web/sites@2020-06-01' = {
           '${identity.id}': {}
         }
       }
-    : {}
+    : {
+        type: 'None'
+      }
   properties: {
     serverFarmId: appServicePlan.id
     httpsOnly: true // Enable HTTPS only for improved security    
