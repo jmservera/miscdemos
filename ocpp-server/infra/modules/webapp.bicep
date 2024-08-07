@@ -5,6 +5,8 @@ param location string = resourceGroup().location // Location for all resources
 param pubSubName string
 param subnetName string
 param vnetName string
+param keyVaultIdentityName string
+param keyVaultIdentityRG string
 
 var appServicePlanName = toLower('AppServicePlan-${webAppName}')
 var webSiteName = toLower(webAppName)
@@ -22,6 +24,11 @@ resource vNet 'Microsoft.Network/virtualNetworks@2024-01-01' existing = {
 resource subNet 'Microsoft.Network/virtualNetworks/subnets@2021-02-01' existing = {
   name: subnetName
   parent: vNet
+}
+
+resource identity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
+  name: keyVaultIdentityName
+  scope: resourceGroup(keyVaultIdentityRG)
 }
 
 // create an Application Insights resource
@@ -58,6 +65,12 @@ module storage 'storage.bicep' = {
 resource appService 'Microsoft.Web/sites@2020-06-01' = {
   name: webSiteName
   location: location
+  identity: {
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${identity.id}': {}
+    }
+  }
   properties: {
     serverFarmId: appServicePlan.id
     httpsOnly: true // Enable HTTPS only for improved security    
