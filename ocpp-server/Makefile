@@ -2,13 +2,10 @@ THIS_FILE := $(lastword $(MAKEFILE_LIST))
 RG_NAME := OCPP
 RG_LOCATION := switzerlandnorth
 BICEP_PARAMS := main.parameters.bicepparam
-WEBAPP_NAME := $(shell az webapp list -g $(RG_NAME) --query "[0].name" -o tsv)
-STORAGE_NAME := $(shell az storage account list -g $(RG_NAME) --query "[?starts_with(name,'webdeploy')].name" -o tsv)
-EXPIRY := $(shell date -u -d "15 minutes" '+%Y-%m-%dT%H:%MZ')
-BASE_URI := $(shell cd infra && grep -Po "customDnsZoneName.*\K'(.+)'" $(BICEP_PARAMS) | grep -Po "[^']*")
-WSSSUBDOMAIN := $(shell cd infra && grep -Po "pubsubARecordName.*\K'(.+)'" $(BICEP_PARAMS) | grep -Po "[^']*")
-TEST_SERVER := $(WSSSUBDOMAIN).$(BASE_URI)
-WEB_SERVER := www.$(BASE_URI)
+
+export RG_NAME
+export RG_LOCATION
+export BICEP_PARAMS
 
 preparecli:
 	az upgrade
@@ -27,11 +24,9 @@ test:
 	@echo "Testing"
 	dotnet test api/api.sln
 test-client:
-	@echo "Testing a simple node client"
-	node client/index.js wss://$(TEST_SERVER) station2 goodpwd
+	@$(MAKE) -f make/webapp.mk test-client
 test-client-badauth:
-	@echo "Testing a simple node client"
-	node client/index.js wss://$(TEST_SERVER) station1 badpwd
+	@$(MAKE) -f make/webapp.mk test-client-badauth
 clean:
 	@echo "Cleaning"
 	dotnet clean api/api.sln
@@ -70,34 +65,12 @@ secrets:
 	CONNECTION_STRING='$(shell az webpubsub list -g $(RG_NAME) --query "[0].name" -o tsv | az webpubsub key show -g $(RG_NAME) -n @- --query "primaryConnectionString" -o tsv)'; \
 	dotnet user-secrets set 'WEBPUBSUB_SERVICE_CONNECTION_STRING' "$$CONNECTION_STRING" --project api/OcppServer/OcppServer.csproj	
 publish: $(wildcard api/**/*.cs) $(wildcard api/**/wwwroot/*)
-	@echo "Creating publish files"
-	dotnet publish api/OcppServer/OcppServer.csproj -c Release
-	@echo "Zip files"
-	cd api/OcppServer/bin/Release/net8.0/publish && zip -r /tmp/ocppserver.zip .
-	@echo "Publish files created"
-	az storage blob upload --account-name $(STORAGE_NAME) -c deployments -f /tmp/ocppserver.zip -n ocppserver.zip --overwrite;
-	APP_URL='$(shell az storage blob generate-sas --full-uri --permissions r --expiry '$(EXPIRY)' --account-name $(STORAGE_NAME) -c deployments -n ocppserver.zip -o tsv)'; \
-	if az webapp deploy -g $(RG_NAME) -n $(WEBAPP_NAME) --src-url $$APP_URL --type zip; then \
-		echo "Deployed to Azure"; \
-	else \
-		# todo: check status with the rest api https://management.azure.com/subscriptions/$$(az account show --query id -o tsv)/resourceGroups/RESOURCEGROUP/providers/Microsoft.Web/sites/WEBAPPNAME/deployments?api-version=2023-12-01 \
-		echo "Retry deployment, first time can fail with Gateway Timeout"; \
-		sleep 10; \
-		az webapp deploy -g $(RG_NAME) -n $(WEBAPP_NAME) --src-url $$APP_URL --type zip; \
-	fi
-	@echo "Waiting for webapp to be ready"
-	until [ $$(curl -s -o /dev/null -w "%{http_code}" https://$(WEB_SERVER)/health) -eq 200 ]; do echo -n . && sleep 5; done
-	@echo 
+	@$(MAKE) -f make/webapp.mk publish
 restart:
-	az webapp stop -g $(RG_NAME) -n $(WEBAPP_NAME)
-	sleep 5
-	az webapp start -g $(RG_NAME) -n $(WEBAPP_NAME)
+	@$(MAKE) -f make/webapp.mk restart
 deploy:
 	@echo "Deploying all to Azure"
 	@$(MAKE) -f $(THIS_FILE) infra	
-	@echo "Waiting for gateway to be ready"
-	# until [ $$(curl -s -o /dev/null -w "%{http_code}" https://$(WEB_SERVER)) -eq 502 ] || [ $$(curl -s -o /dev/null -w "%{http_code}" https://$(WEB_SERVER)) -eq 200 ]; do echo -n . && sleep 5; done
-	# @echo
-	@$(MAKE) -f $(THIS_FILE) restart
-	@$(MAKE) -f $(THIS_FILE) publish
-.PHONY: test clean watch start secrets test-client infra clean-infra
+	@$(MAKE) -f make/webapp.mk restart
+	@$(MAKE) -f make/webapp.mk publish
+.PHONY: test clean watch start secrets test-client infra clean-infra restart
