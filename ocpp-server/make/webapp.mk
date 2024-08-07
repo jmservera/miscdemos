@@ -3,20 +3,28 @@ WEBAPP_NAME := $(shell az webapp list -g $(RG_NAME) --query "[0].name" -o tsv)
 EXPIRY := $(shell date -u -d "15 minutes" '+%Y-%m-%dT%H:%MZ')
 BASE_URI := $(shell cd infra && grep -Po "customDnsZoneName.*\K'(.+)'" $(BICEP_PARAMS) | grep -Po "[^']*")
 WSSSUBDOMAIN := $(shell cd infra && grep -Po "pubsubARecordName.*\K'(.+)'" $(BICEP_PARAMS) | grep -Po "[^']*")
-ifneq ($(BASE_URI),'')
+ifeq ($(BASE_URI),)
+	TEST_SERVER := $(shell az network public-ip list -g $(RG_NAME) --query "[0].dnsSettings.fqdn" -o tsv)
+	WEB_SERVER := 
+	PROTOCOL := ws
+else
 	TEST_SERVER := $(WSSSUBDOMAIN).$(BASE_URI)
 	WEB_SERVER := www.$(BASE_URI)
-else
-	TEST_SERVER := $(shell az network public-ip list -g $(RG_NAME) --query "[0].defaultHostName" -o tsv)
-	WEB_SERVER := ''
+	PROTOCOL := wss
 endif
 
+testvars:
+	@echo -e RG_NAME=\'$(RG_NAME)\'
+	@echo -e BASE_URI=\'$(BASE_URI)\'
+	@echo -e WSSSUBDOMAIN=\'$(WSSSUBDOMAIN)\'
+	@echo -e TEST_SERVER=\'$(TEST_SERVER)\'
+	@echo -e WEB_SERVER=\'$(WEB_SERVER)\'
 test-client:
 	@echo "Testing a simple node client"
-	node client/index.js wss://$(TEST_SERVER) station2 goodpwd
+	node client/index.js $(PROTOCOL)://$(TEST_SERVER) station2 goodpwd
 test-client-badauth:
 	@echo "Testing a simple node client"
-	node client/index.js wss://$(TEST_SERVER) station1 badpwd
+	node client/index.js $(PROTOCOL)://$(TEST_SERVER) station1 badpwd
 publish:
 	@echo "Creating publish files"
 	dotnet publish api/OcppServer/OcppServer.csproj -c Release
@@ -28,9 +36,10 @@ publish:
 	if az webapp deploy -g $(RG_NAME) -n $(WEBAPP_NAME) --src-url $$APP_URL --type zip; then \
 		echo "Deployed to Azure"; \
 	else \
+		echo "Check deployment, first time can fail with Gateway Timeout but still be successful"; \
+		sleep 20; \
 		if [ $$(curl -s -o /dev/null -w "%{http_code}" https://$(WEB_SERVER)/health) -eq 200 ]; then \
 			echo "Webapp is already deployed"; \
-			exit 0; \
 		else \
 			# todo: check status with the rest api https://management.azure.com/subscriptions/$$(az account show --query id -o tsv)/resourceGroups/RESOURCEGROUP/providers/Microsoft.Web/sites/WEBAPPNAME/deployments?api-version=2023-12-01 \
 			echo "Retry deployment, first time can fail with Gateway Timeout"; \
@@ -38,7 +47,7 @@ publish:
 			az webapp deploy -g $(RG_NAME) -n $(WEBAPP_NAME) --src-url $$APP_URL --type zip; \
 		fi; \
 	fi
-ifneq ($(WEB_SERVER),'')
+ifneq ($(WEB_SERVER),)
 	@echo "Waiting for webapp to be ready"
 	@sleep 5
 	until [ $$(curl -s -o /dev/null -w "%{http_code}" https://$(WEB_SERVER)/health) -eq 200 ]; do echo -n . && sleep 5; done
@@ -51,4 +60,4 @@ restart:
 	az webapp start -g $(RG_NAME) -n $(WEBAPP_NAME)
 	sleep 5
 
-.PHONY: publish restart test-client test-client-badauth
+.PHONY: publish restart test-client test-client-badauth testvars

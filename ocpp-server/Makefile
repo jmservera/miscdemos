@@ -73,4 +73,6 @@ deploy:
 	@$(MAKE) -f $(THIS_FILE) infra	
 	@$(MAKE) -f make/webapp.mk restart
 	@$(MAKE) -f make/webapp.mk publish
-.PHONY: test clean watch start secrets test-client infra clean-infra restart
+testvars:
+	@$(MAKE) -f make/webapp.mk testvars
+.PHONY: test clean watch start secrets test-client infra clean-infra restart testvars
