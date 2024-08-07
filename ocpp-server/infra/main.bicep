@@ -87,6 +87,8 @@ module webApp './modules/webapp.bicep' = {
     pubSubName: webPubSub.outputs.serviceName
     vnetName: virtualNetwork.outputs.vnetName
     subnetName: virtualNetwork.outputs.defaultSubnetName
+    keyVaultIdentityName: keyVaultIdentityName
+    keyVaultIdentityRG: keyVaultIdentityRG
   }
 }
 
