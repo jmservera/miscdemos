@@ -23,6 +23,8 @@ param dnsZoneRG string
 param pubSubHubName string = 'OcppService'
 @description('If you want to use a NAT Gateway for the outbound access of the vNet')
 param useNATGateway bool = false
+@description('Set it to false if you don\'t want to use the custom certificate and domain name in the internal web app. Useful for self-signed certificates.')
+param useCertificateInWebApp bool = true
 
 var pubsubHostName = '${pubsubARecordName}.${customDnsZoneName}'
 var webHostName = '${webARecordName}.${customDnsZoneName}'
@@ -95,7 +97,7 @@ module webApp './modules/webapp.bicep' = {
 // Assigns the custom web domain to the web app, this ensures
 // that the cookies are set with the custom domain and do not
 // have any issue with the Application Gateway cookie based affinity
-module customDomain 'modules/customWebName.bicep' = if (customDnsZoneName != '') {
+module customDomain 'modules/customWebName.bicep' = if (customDnsZoneName != '' && useCertificateInWebApp) {
   name: '${deployment().name}-customDomain'
   params: {
     dnszoneName: customDnsZoneName
