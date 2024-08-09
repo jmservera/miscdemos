@@ -152,6 +152,7 @@ module appGw './modules/appgw.bicep' = {
     keyVaultIdentityRG: keyVaultIdentityRG
     webServiceName: webApp.outputs.webSiteName
     pubsubHubName: pubSubHubName
+    useCertificateInWebApp: useCertificateInWebApp
   }
 }
 

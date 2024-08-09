@@ -21,6 +21,7 @@ param webServiceName string
 param pubsubHubName string
 param webKeyVaultCertName string
 param pubsubKeyVaultCertName string
+param useCertificateInWebApp bool
 
 var ocppRuleSetName = 'ocppRuleSet'
 var pubsubBackendPoolName = 'pubsubBackend'
@@ -172,12 +173,12 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
         name: webProbeName
         properties: {
           protocol: 'Https'
-          host: webHostName
+          host: useCertificateInWebApp ? webHostName : null
           path: '/health'
           interval: 30
           timeout: 30
           unhealthyThreshold: 3
-          pickHostNameFromBackendHttpSettings: false
+          pickHostNameFromBackendHttpSettings: !useCertificateInWebApp
         }
       }
     ]
@@ -201,7 +202,7 @@ resource appGw 'Microsoft.Network/applicationGateways@2023-02-01' = {
           port: 443
           protocol: 'Https'
           cookieBasedAffinity: 'Disabled'
-          pickHostNameFromBackendAddress: false
+          pickHostNameFromBackendAddress: !useCertificateInWebApp
           probe: {
             id: resourceId('Microsoft.Network/applicationGateways/probes', appgwName, webProbeName)
           }
