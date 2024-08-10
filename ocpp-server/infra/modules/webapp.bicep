@@ -26,7 +26,7 @@ resource subNet 'Microsoft.Network/virtualNetworks/subnets@2021-02-01' existing 
   parent: vNet
 }
 
-resource identity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
+resource identity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = if (keyVaultIdentityName != '') {
   name: keyVaultIdentityName
   scope: resourceGroup(keyVaultIdentityRG)
 }
@@ -65,12 +65,16 @@ module storage 'storage.bicep' = {
 resource appService 'Microsoft.Web/sites@2020-06-01' = {
   name: webSiteName
   location: location
-  identity: {
-    type: 'UserAssigned'
-    userAssignedIdentities: {
-      '${identity.id}': {}
-    }
-  }
+  identity: keyVaultIdentityName != ''
+    ? {
+        type: 'UserAssigned'
+        userAssignedIdentities: {
+          '${identity.id}': {}
+        }
+      }
+    : {
+        type: 'None'
+      }
   properties: {
     serverFarmId: appServicePlan.id
     httpsOnly: true // Enable HTTPS only for improved security    
