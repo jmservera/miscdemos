@@ -4,6 +4,7 @@ title: "Prompt Engineering Hands-on Lab"
 subtitle: "Microsoft Partner Consultant Training"
 authors: ["Juan Manuel Servera - Microsoft"]
 permalink: /prompt-engineering-partners
+draft: true
 ---
 
 <!-- The text I shared is a hands-on lab for learning prompt engineering. I want to transform it to adapt the use case to resolve a business problem. The user profile would be a consultant working at a Microsoft Partner, what we call a System Integrator. These people work with customers to build software solutions to their problems, and they typically have to do architecture design sessions, assess the complexity and effort of a customer project. I want that this lab teaches them how to use Microsoft Copilot to improve their daily work, like getting a summary of a customer before a meeting, or preparing a plan after talking with the customer about their project. We are going to do this in multiple steps. The first step is thinking on a fake customer and business case.
