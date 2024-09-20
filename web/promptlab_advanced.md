@@ -140,7 +140,7 @@ Let's refine our SWOT analysis further. Please ask specific questions about each
 Visual representations can aid in communicating your startup's vision. Use the LLM to generate simple HTML code for concept illustrations.
 
 **Prompt:**
-*Generating HTML code allows for easy integration of visual elements into presentations or websites.*
+Create a simple HTML snippet that visually represents our sustainable energy solution, incorporating elements like solar panels, wind turbines, and energy storage units.
 
 **Expected Output:**
 
