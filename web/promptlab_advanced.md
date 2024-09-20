@@ -8,18 +8,24 @@ permalink: /prompt-engineering-advanced
 
 <div class="section" markdown="1">
 By Florian Follonier - Cloud Solution Architect Data & AI - Microsoft
+
 & Juan Manuel Servera - Cloud Solution Architect App Innovation - Microsoft
 
 ## Introduction
 
 <div class="step" markdown="1">
-Welcome to the **Advanced Prompt Engineering Lab**!
+Welcome to the Advanced Prompt Engineering Lab. This guide will immerse you in mastering prompt engineering techniques, tailored to developing a startup using AI tools like Microsoft's Copilot.
 
-In this lab, we will dive deep into sophisticated prompt engineering techniques within the context of developing a startup. This guide is tailored for participants who already possess foundational knowledge of prompt engineering and are eager to explore advanced methodologies to enhance their skills.
+In this lab, we will dive deep into sophisticated prompt engineering techniques within the context of developing a startup. 
+This guide is tailored for participants who already possess foundational knowledge of prompt engineering and are eager to explore advanced methodologies to enhance their skills.
+
+Our goal is to bring your skills and understanding to effectively use AI tools to the next level.  
 
 ### Lab Overview
 
-Throughout this lab, you will embark on a journey to build a comprehensive startup plan using advanced prompt engineering techniques. You will leverage Large Language Models (LLMs) to:
+In this lab, you will follow a guided journey to create a startup plan using sophisticated prompt engineering methods, aligning technical precision with business strategy.
+
+You will leverage Large Language Models (LLMs) to:
 
 - Advise on business strategy topics.
 - Navigate complex decision-making processes.
@@ -45,18 +51,35 @@ Let’s get started by setting the foundation for our startup journey!
 
 <div class="section" markdown="1">
 
-## Exercise 1 – Establishing Your Startup Context
+## Exercise 1 – Open Microsoft Copilot
+
+<div class="step" markdown="1">
+For this exercise, we’ll be using **Microsoft Copilot**—your go-to AI companion for web-based AI-powered chat. Open Copilot at [bing.com/chat](https://www.bing.com/chat) and set the conversation style to "**More creative**." We're diving into an ideation session today, and as Linus Pauling once said:
+
+> *The best way to have a good idea is to have lots of ideas.*
+
+![Screenshot showing Copilot on the web.](./img/Copilot%20in%20desktop.png)
+
+*Note:* If you’re accessing this exercise on a mobile browser, you might encounter a different interface. In that case, you may be prompted to log in with your Microsoft account to proceed.
+
+> **Important:** This exercise builds on foundational prompt engineering concepts. If you’re new to prompt engineering, we recommend starting with the [entry-level tutorial](https://jmservera.github.io/miscdemos/prompt-engineering#exercise-1--warmup-with-basic-prompts) to familiarize yourself with the basics before moving on to advanced techniques.
+</div>
+
 
 <div class="step" markdown="1">
 
-> **Note:** This exercise assumes you have a basic understanding of prompt engineering. We will focus on setting up a robust context for your startup to enable advanced interactions with the LLM.
+### Step 2: Define Your Startup Persona
 
-### Step 1: Define Your Startup Persona
+Imagine you're the CEO of a startup specializing in sustainable energy. 
+Your mission is to lead strategic growth while ensuring innovation. 
+Alongside you is an AI-driven executive assistant that you can prompt to tackle this task.
 
 To begin, define the personas involved in your startup. This will help the LLM generate contextually relevant and coherent responses.
 
 **Prompt:**
-You are the CEO of a tech startup focused on sustainable energy solutions. Your role involves strategic planning, business development, and leading a team of experts in engineering and marketing. Your executive assistant is an experienced business strategist with a background in environmental science, tasked with supporting you in achieving the company's mission.
+I am the CEO of a startup specializing in sustainable energy tasked with the mission to lead strategic growth while ensuring innovation. 
+You are an experienced business strategist with a background in environmental science, tasked with supporting me in achieving the company's mission.
+
 *This **zero-shot prompt** sets the context and assigns roles without providing specific examples.*
 </div>
 
