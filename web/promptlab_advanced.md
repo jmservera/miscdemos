@@ -54,7 +54,10 @@ Let’s get started by setting the foundation for our startup journey!
 ## Exercise 1 – Open Microsoft Copilot
 
 <div class="step" markdown="1">
-For this exercise, we’ll be using **Microsoft Copilot**—your go-to AI companion for web-based AI-powered chat. Open Copilot at [bing.com/chat](https://www.bing.com/chat) and set the conversation style to "**More creative**." We're diving into an ideation session today, and as Linus Pauling once said:
+
+For this exercise, we’ll be using **Microsoft Copilot** —your go-to AI companion for web-based AI-powered chat. Open Copilot at [bing.com/chat](https://www.bing.com/chat) and set the conversation style to "**More creative**." We're diving into an ideation session today, and as Linus Pauling once said:
+
+Today, we’ll dive into brainstorming and strategic planning for EcoGen Solutions. Your tasks will include defining the company’s strengths and weaknesses, identifying opportunities in a growing market, and anticipating potential threats. As Linus Pauling once said:
 
 > *The best way to have a good idea is to have lots of ideas.*
 
@@ -70,38 +73,79 @@ For this exercise, we’ll be using **Microsoft Copilot**—your go-to AI compan
 
 ### Step 2: Define Your Startup Persona
 
-Imagine you're the CEO of a startup specializing in sustainable energy. 
+Imagine you're the CEO of a Carbonova - a leading company for Co2 storage.
+
 Your mission is to lead strategic growth while ensuring innovation. 
 Alongside you is an AI-driven executive assistant that you can prompt to tackle this task.
 
-To begin, define the personas involved in your startup. This will help the LLM generate contextually relevant and coherent responses.
+Carbonova, a leading innovator in direct air capture (DAC) technology, has established itself as a key player in the fight against climate change by developing advanced systems to capture CO₂ directly from the atmosphere. Backed by strategic partnerships with major corporations like Microsoft and strong financial support, the company is poised for growth. However, Carbonova faces challenges in scaling its operations and reducing the high costs associated with capturing carbon, which limits broader adoption. As global policies shift towards net-zero goals, the company has significant opportunities to benefit from government regulations and the growing carbon credits market. Nonetheless, emerging competition in the DAC space and potential economic fluctuations pose risks to its future expansion.
+
+
 
 **Prompt:**
-I am the CEO of a startup specializing in sustainable energy tasked with the mission to lead strategic growth while ensuring innovation. 
-You are an experienced business strategist with a background in environmental science, tasked with supporting me in achieving the company's mission.
+I am the CEO of Carbonova. You are tasked with the mission to lead strategic growth while ensuring innovation. 
+You are an experienced business strategist with a background in environmental science, tasked with supporting me in achieving the company's mission. 
+In the following you will help me with a series of tasks.
+
+Information about Carbonova:
+Carbonova, a leading innovator in direct air capture (DAC) technology, has established itself as a key player in the fight against climate change by developing advanced systems to capture CO₂ directly from the atmosphere. Backed by strategic partnerships with major corporations like Microsoft and strong financial support, the company is poised for growth. However, Carbonova faces challenges in scaling its operations and reducing the high costs associated with capturing carbon, which limits broader adoption. As global policies shift towards net-zero goals, the company has significant opportunities to benefit from government regulations and the growing carbon credits market. Nonetheless, emerging competition in the DAC space and potential economic fluctuations pose risks to its future expansion.
+
 
 *This **zero-shot prompt** sets the context and assigns roles without providing specific examples.*
 </div>
 
 <div class="step" markdown="1">
 
-### Step 2: Generate a Comprehensive SWOT Analysis
+### Step 3: Generate a Comprehensive SWOT Analysis
 
-A SWOT analysis is crucial for understanding your startup's strengths, weaknesses, opportunities, and threats. Use the LLM to create a detailed SWOT analysis by prompting it to ask clarifying questions to gather necessary information.
+A SWOT analysis can help with understanding your company's strengths, weaknesses, opportunities, and threats. 
+Use the LLM to create a detailed SWOT analysis by prompting it to ask clarifying questions to gather necessary information.
 
-**Prompt:**As my executive assistant, please help me create a comprehensive SWOT analysis for our sustainable energy startup. Start by asking me questions to gather relevant information for each of the four categories: Strengths, Weaknesses, Opportunities, and Threats.
-*This prompt leverages the LLM's ability to navigate complexity by initiating an interactive process.*
+**Prompt:**
+As my executive assistant, please help me create a SWOT analysis based on the information provided.
+
+*This prompt leverages the LLM's ability to structure and conceptualize complex information.*
 
 </div>
 
 <div class="step" markdown="1">
 
-### Step 3: Structuring the SWOT Analysis
+### Step 4: Structuring the SWOT Analysis
 
 Once the LLM gathers the necessary information, instruct it to present the SWOT analysis in a structured table format.
 
 **Prompt:**
-Based on the information we've discussed, please organize the SWOT analysis into a table with four columns: Strengths, Weaknesses, Opportunities, and Threats. Ensure each point is concise and clearly articulated.
+Based on the information we've discussed, please organize the SWOT analysis into a table with four columns: Strengths, Weaknesses, Opportunities, and Threats. Ensure each point is concise and clearly articulated. Return it as Table format.
+*Generating structured data helps in better visualization and analysis.*
+
+</div>
+
+
+<div class="step" markdown="1">
+
+### Step 4: Change the Format to JSON with Predefined Structure
+
+You want to hand the SWOT analysis over to a programmer to embedd it into an application, who wants it as a JSON file.
+
+**Prompt:**
+Please turn the SWOT analysis into JSON format with the following structure: 
+{
+  "SWOT_Analysis": {
+    "Strengths": [
+      ""
+    ],
+    "Weaknesses": [
+      ""
+    ],
+    "Opportunities": [
+      ""
+    ],
+    "Threats": [
+      ""
+    ]
+  }
+}
+
 *Generating structured data helps in better visualization and analysis.*
 
 </div>
@@ -120,6 +164,7 @@ Utilize the LLM to gain insights and advice on business strategy topics relevant
 
 **Prompt:**
 Given our SWOT analysis, what strategic initiatives should we prioritize to leverage our strengths and opportunities while addressing our weaknesses and mitigating threats? Provide a detailed plan with actionable steps.
+
 *This **conditional prompt** directs the LLM to generate specific strategic advice based on prior analysis.*
 
 </div>
