@@ -83,7 +83,7 @@ Based on the information we've discussed, please organize the SWOT analysis into
 
 </div>
 </div>
-</div>
+
 
 <div class="section" markdown="1">
 
@@ -259,7 +259,7 @@ Partner with suppliers who prioritize environmental responsibility.
 
 <div class="step" markdown="1">
 
-**Step 7: Optional Challenge – Comparing GPT-4o vs. OpenAI o1 Reasoning Models**
+### Step 7: Optional Challenge – Comparing GPT-4o vs. OpenAI o1 Reasoning Models
 Enhance your understanding of different LLM reasoning capabilities by comparing GPT-4o with the newer OpenAI o1 model.
 
 Instructions:
@@ -286,11 +286,11 @@ This challenge will help you understand the practical applications and optimal u
 
 </div>
 
-</div> </div> 
+</div> 
 
 <div class="section" markdown="1">
 
-Conclusion
+### Conclusion
 
 <div class="step" markdown="1">
 Congratulations on completing the Advanced Prompt Engineering Lab!
@@ -315,7 +315,8 @@ Prompt Engineering Techniques: Tips and tricks for prompting with Azure OpenAI S
 Mermaid.js Documentation: Learn how to create diagrams and visualizations using Mermaid.js.
 Chain-of-Thought Prompting: Research paper on chain-of-thought reasoning in LLMs.
 ReAct: Synergizing Reasoning and Acting in Language Models: Explore the ReAct framework for integrating reasoning and actions in LLMs.
-</div> </div> 
+</div> 
+</div> 
 
 <div class="section" markdown="1">
 
@@ -341,7 +342,8 @@ Glossary
 
 These definitions are specific to this lab guide and the usage of Microsoft's AI companion, Copilot. The definitions might vary slightly in different contexts or with different AI systems.
 
-</div> </div> 
+</div> 
+</div> 
 
 <div class="section" markdown="1">
 
@@ -373,4 +375,5 @@ Tree-of-Thought Prompting:
 Mermaid.js Prompt:
 "Create Mermaid.js code for a flowchart depicting our customer onboarding process, including steps like 'Sign Up', 'Verification', 'Welcome Package', and 'First Purchase'."
 
-</div> </div> 
+</div> 
+</div> 
