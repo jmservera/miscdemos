@@ -306,15 +306,17 @@ Remember: Advanced prompt engineering is about creativity, precision, and iterat
 
 We encourage you to apply these advanced techniques in your projects, whether for strategic planning, data analysis, or creative development. The skills you've honed here will empower you to harness the full potential of AI in driving your startup's success.
 
-Additional Resources
-To further enhance your knowledge and skills in prompt engineering and AI language models, explore the following resources:
+Happy prompting!
+![You are the Prompt Hero](./img/prompt%20hero%20badge%20advanced.png)
 
-Prompting Guide: A comprehensive guide to prompting techniques for AI language models.
-OpenAI Prompt Engineering: A guide to prompt engineering by the GPT-4 creators.
-Prompt Engineering Techniques: Tips and tricks for prompting with Azure OpenAI Service.
-Mermaid.js Documentation: Learn how to create diagrams and visualizations using Mermaid.js.
-Chain-of-Thought Prompting: Research paper on chain-of-thought reasoning in LLMs.
-ReAct: Synergizing Reasoning and Acting in Language Models: Explore the ReAct framework for integrating reasoning and actions in LLMs.
+### Additional Resources
+
+If you want to learn more, here you have a few interesting resources to extend your knowledge on prompt engineering and AI language models:
+
+* [Prompting Guide](https://www.promptingguide.ai): A comprehensive guide to prompting techniques for AI language models.
+* [OpenAI Prompt Engineering](https://platform.openai.com/docs/guides/prompt-engineering/prompt-engineering): A guide to prompt engineering by the GPT-4 creators.
+* [Prompt Engineering Techniques](https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/advanced-prompt-engineering): Tips and tricks for prompting with Azure OpenAI Service.
+
 </div> 
 </div> 
 
