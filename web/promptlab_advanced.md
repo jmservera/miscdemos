@@ -183,8 +183,10 @@ Visual representations can aid in communicating your startup's vision. Use the L
 ```html
 </div>
 
-To display the HTML create a file with HTML extension and copy to the code over to the file
-
+To display the HTML create a file with HTML extension, for example by pressing STRG + S in your browser.
+Then open the HTML file with an editor and copy the HTML code over to the file. 
+You can then open the file in Browser and view the result.
+![The mermaid code visualized.](./img/html_code.png)
 </div>
 
 <div class="step" markdown="1">
@@ -210,7 +212,8 @@ graph TD
     CEO --> Marketing
     CTO --> Engineering*
 
-You can view this diagram at Mermaid Live Editor.*
+You can view this diagram at Mermaid Live Editor (free version): https://www.mermaidflow.app/editor
+![The mermaid code visualized.](./img/mermaid_code.png)
 
 </div>
 
