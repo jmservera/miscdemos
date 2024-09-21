@@ -51,7 +51,7 @@ Let’s get started by setting the foundation for our startup journey!
 
 <div class="section" markdown="1">
 
-## Exercise 1 – Open Microsoft Copilot
+## Exercise 1 – Getting familiar with Microsoft Copilot
 
 <div class="step" markdown="1">
 
@@ -67,11 +67,17 @@ Today, we’ll dive into brainstorming and strategic planning for EcoGen Solutio
 
 > **Important:** This exercise builds on foundational prompt engineering concepts. If you’re new to prompt engineering, we recommend starting with the [entry-level tutorial](https://jmservera.github.io/miscdemos/prompt-engineering#exercise-1--warmup-with-basic-prompts) to familiarize yourself with the basics before moving on to advanced techniques.
 </div>
+</div>
 
+
+
+<div class="section" markdown="1">
+
+## Exercise 2 – Setting Goals and Getting Started
 
 <div class="step" markdown="1">
 
-### Step 2: Define Your Startup Persona
+### Step 1: Define Your Startup Persona
 
 Imagine you're the CEO of a Carbonova - a leading company for Co2 storage.
 
@@ -80,11 +86,8 @@ Alongside you is an AI-driven executive assistant that you can prompt to tackle 
 
 Carbonova, a leading innovator in direct air capture (DAC) technology, has established itself as a key player in the fight against climate change by developing advanced systems to capture CO₂ directly from the atmosphere. Backed by strategic partnerships with major corporations like Microsoft and strong financial support, the company is poised for growth. However, Carbonova faces challenges in scaling its operations and reducing the high costs associated with capturing carbon, which limits broader adoption. As global policies shift towards net-zero goals, the company has significant opportunities to benefit from government regulations and the growing carbon credits market. Nonetheless, emerging competition in the DAC space and potential economic fluctuations pose risks to its future expansion.
 
-
-
 **Prompt:**
-I am the CEO of Carbonova. You are tasked with the mission to lead strategic growth while ensuring innovation. 
-You are an experienced business strategist with a background in environmental science, tasked with supporting me in achieving the company's mission. 
+I am the CEO of Carbonova. You are an experienced business strategist with a background in environmental science. 
 In the following you will help me with a series of tasks.
 
 Information about Carbonova:
@@ -96,7 +99,57 @@ Carbonova, a leading innovator in direct air capture (DAC) technology, has estab
 
 <div class="step" markdown="1">
 
-### Step 3: Generate a Comprehensive SWOT Analysis
+### Step 2: Setting Goals
+
+The first step in planning a project enhanced with prompt engineering and ChatGPT is to clearly define your project goals. This foundational step helps shape your vision, ensuring that your prompt strategy aligns seamlessly with your objectives.
+
+Why Identify Your Goals?
+Clearly outlining your goals serves multiple purposes:
+
+Use the following questions to comprehensively define the goals of your project:
+
+What is the problem you are solving or the goal that you are trying to achieve?
+Why do you need to solve this problem?
+Who is the stakeholder/end-user of the solution?
+How does the solution impact them?
+Where is your data stored and where will the solution be hosted?
+When does it need to be ready?
+
+**Prompt:**
+Please help me creating an outline for a presentation targeted at potential investors. 
+I want you to make the outline not more than 10 slides. Be brief and use bulletpoints.
+The objective is to effectively communicate our company's mission to become the leading provider of CO₂ air capturing technology. 
+My goal is that after the presentation, everybody in the room is excited and inspired and wants to invest into my company.
+Additional requirements: 
+- Use simple language. 
+- Catchy slide titles. 
+- Clear call to action at the end.
+
+</div>
+
+<div class="step" markdown="1">
+
+### Step 3: Recusrive Prompting
+
+**Follow Up Prompt:**
+Based on this presentation, put yourself into the shoes if the investors and think about 10 questions that sceptic investors might ask during the presentation. Be creative and extra critical.
+
+**Follow Up Prompt:**
+For each question, please also provide a good answer. 
+
+**Follow Up Prompt:**
+Please, give me the result as a table with columns "question" and "answer"
+
+</div>
+
+
+<div class="section" markdown="1">
+
+## Exercise 3 – Generating Different Output Formats
+
+<div class="step" markdown="1">
+
+### Step 1: Generate a SWOT Analysis
 
 A SWOT analysis can help with understanding your company's strengths, weaknesses, opportunities, and threats. 
 Use the LLM to create a detailed SWOT analysis by prompting it to ask clarifying questions to gather necessary information.
@@ -110,7 +163,7 @@ As my executive assistant, please help me create a SWOT analysis based on the in
 
 <div class="step" markdown="1">
 
-### Step 4: Structuring the SWOT Analysis
+### Step 2: Structuring the SWOT Analysis
 
 Once the LLM gathers the necessary information, instruct it to present the SWOT analysis in a structured table format.
 
@@ -121,9 +174,10 @@ Based on the information we've discussed, please organize the SWOT analysis into
 </div>
 
 
+
 <div class="step" markdown="1">
 
-### Step 4: Change the Format to JSON with Predefined Structure
+### Step 3: Change the Format to JSON with Predefined Structure
 
 You want to hand the SWOT analysis over to a programmer to embedd it into an application, who wants it as a JSON file.
 
@@ -154,7 +208,7 @@ Please turn the SWOT analysis into JSON format with the following structure:
 
 <div class="section" markdown="1">
 
-## Exercise 2 – Strategic Business Planning with Advanced Prompts
+## Exercise 3 – Strategic Business Planning with Advanced Prompts
 
 <div class="step" markdown="1">
 
@@ -178,14 +232,6 @@ When faced with strategic decisions, use the LLM to create a pros and cons table
 **Prompt:**
 We are considering expanding our product line to include solar-powered batteries. Please create a table outlining the pros and cons of this expansion.
 *Structured outputs like tables facilitate clearer decision-making.*
-
-**Expected Output:**
-
-| Pros                                      | Cons                                    |
-|-------------------------------------------|-----------------------------------------|
-| Diversifies product offerings             | High initial investment costs          |
-| Meets increasing demand for renewable tech| Potential market saturation             |
-| Enhances brand reputation in sustainability| Requires new supply chain logistics     |
 
 </div>
 
