@@ -94,10 +94,11 @@ Expected Outcome:
 Copilot should provide a basic SWOT analysis outlining potential strengths, weaknesses, opportunities, and threats for EcoVerse Solutions.
 
 </div>
+</div>
 
 <div class="section" markdown="1">
 
-## Exercise 1 – In-Context Learning and Setting Goals with Task-Specific Prompting
+## Exercise 2 – In-Context Learning and Setting Goals with Task-Specific Prompting
 
 Objective
 
@@ -107,7 +108,7 @@ Enhance the AI's responses by providing context and setting clear goals, using i
 
 ### Step 1: Setting Goals
 
-The first step in planning a project enhanced with prompt engineering and ChatGPT is to clearly define your project goals. This foundational step helps shape your vision, ensuring that your prompt strategy aligns seamlessly with your objectives.
+The first step in planning a project enhanced with prompt engineering is to clearly define your project goals. This foundational step helps shape your vision, ensuring that your prompt strategy aligns seamlessly with your objectives.
 
 Why Identify Your Goals?
 Clearly outlining your goals serves multiple purposes:
@@ -142,11 +143,13 @@ Using reference texts when crafting prompts for language models can significantl
 
 By directing the model to use the provided text, the likelihood of fabricating responses (hallucinations) is reduced, promoting more reliable and verifiable outputs.
 
-**Prompt:**
+```prompt
 What are the benefits of the OpenAI o1 model?
+```
 
-**Prompt:**
+```prompt
 What are the benefits of the OpenAI o1 model?
+```
 
 """<insert document here>"""
 
