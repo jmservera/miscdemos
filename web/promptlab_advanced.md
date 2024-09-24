@@ -45,7 +45,7 @@ Let’s get started by setting the foundation for our startup journey!
 
 ## Exercise 1 – Getting familiar with Microsoft Copilot
 
-### Objective
+Objective
 
 In this exercise, you'll become acquainted with Microsoft Copilot and practice zero-shot prompting by initiating a SWOT analysis for your startup.
 
@@ -99,7 +99,7 @@ Copilot should provide a basic SWOT analysis outlining potential strengths, weak
 
 ## Exercise 1 – In-Context Learning and Setting Goals with Task-Specific Prompting
 
-### Objective
+Objective
 
 Enhance the AI's responses by providing context and setting clear goals, using in-context learning and task-specific prompting.
 
