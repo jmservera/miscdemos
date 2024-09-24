@@ -162,7 +162,7 @@ Expected Outcome:
 Copilot should generate a structured presentation outline that meets the specified requirements, demonstrating how providing clear goals and context improves the quality of the AI's output.
 
 </div>
-
+</div>
 
 <div class="section" markdown="1">
 
