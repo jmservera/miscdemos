@@ -45,9 +45,13 @@ Let’s get started by setting the foundation for our startup journey!
 
 ## Exercise 1 – Getting familiar with Microsoft Copilot
 
-Objective
+<div class="step" markdown="1">
+
+### Objective
 
 In this exercise, you'll become acquainted with Microsoft Copilot and practice zero-shot prompting by initiating a SWOT analysis for your startup.
+
+</div>
 
 <div class="step" markdown="1">
 
@@ -100,15 +104,37 @@ Copilot should provide a basic SWOT analysis outlining potential strengths, weak
 
 ## Exercise 2 – In-Context Learning and Setting Goals with Task-Specific Prompting
 
-Objective
+<div class="step" markdown="1">
+
+### Objective
 
 Enhance the AI's responses by providing context and setting clear goals, using in-context learning and task-specific prompting.
 
+</div>
+
 <div class="step" markdown="1">
 
-### Step 1: Setting Goals
+### Step 1: Define Your Startup Persona
 
-The first step in planning a project enhanced with prompt engineering is to clearly define your project goals. This foundational step helps shape your vision, ensuring that your prompt strategy aligns seamlessly with your objectives.
+In-context learning provides the AI with specific information within the prompt to guide its response.
+
+Scenario:
+
+You are the CEO of EcoVerse Solutions. Your mission is to lead strategic growth while ensuring innovation in renewable energy.
+
+```prompt
+I am the CEO of EcoVerse Solutions. You are an experienced business strategist with a background in renewable energy. Assist me with a series of tasks based on the following information about my company:
+```
+
+This prompt provides context, setting roles and background information to guide the AI's response more effectively.
+
+</div>
+
+<div class="step" markdown="1">
+
+### Step 2: Setting Goals with Task-Specific Prompting
+
+Task-specific prompting focuses the AI's output on desired deliverables.
 
 Why Identify Your Goals?
 Clearly outlining your goals serves multiple purposes:
@@ -123,33 +149,54 @@ Where is your data stored and where will the solution be hosted?
 When does it need to be ready?
 
 ```prompt
-Please help me creating an outline for a presentation targeted at potential investors. 
-I want you to make the outline not more than 10 slides. Be brief and use bulletpoints.
-The objective is to effectively communicate our company's mission to become the leading provider of CO₂ air capturing technology. 
-My goal is that after the presentation, everybody in the room is excited and inspired and wants to invest into my company.
-Additional requirements: 
-- Use simple language. 
-- Catchy slide titles. 
-- Clear call to action at the end.
+Please help me create an outline for a 10-slide presentation targeted at potential investors. The objective is to effectively communicate our mission to become the leading provider of affordable, high-efficiency solar panels. After the presentation, I want the investors to be excited and inspired to invest in my company. Additional requirements:
+
+Use simple language.
+Catchy slide titles.
+Clear call to action at the end.
+Present the outline in bullet points.
 ```
+
+Expected Outcome:
+
+Copilot should generate a structured presentation outline that meets the specified requirements, demonstrating how providing clear goals and context improves the quality of the AI's output.
+
+</div>
+
+
+<div class="section" markdown="1">
+
+## Exercise 3 – Refining Responses with Recursive Prompting and Task Splitting
+
+<div class="step" markdown="1">
+
+### Objective
+
+Learn how to refine AI responses through recursive prompting and improve task handling by splitting complex tasks into subtasks.
 
 </div>
 
 <div class="step" markdown="1">
 
-### Step 3: Providing References
+### Step 1: Recursive Prompting – Anticipating Investor Questions
 
-Using reference texts when crafting prompts for language models can significantly enhance the accuracy and relevance of the output, especially in fields that require precise information. This approach is akin to providing a student with notes during an exam; it guides the model to deliver responses based on factual information rather than making uninformed guesses, particularly in specialized or niche topics. 
+Recursive prompting involves using follow-up prompts to refine the AI's output.
 
-By directing the model to use the provided text, the likelihood of fabricating responses (hallucinations) is reduced, promoting more reliable and verifiable outputs.
-
-```prompt
-What are the benefits of the OpenAI o1 model?
+```Prompt:
+Based on the presentation outline, put yourself in the shoes of skeptical investors and think about 10 critical questions they might ask during the presentation. Be creative and extra critical.
 ```
 
-```prompt
-What are the benefits of the OpenAI o1 model?
+```Follow-Up Prompt:
+For each question, please provide a well-thought-out answer.
 ```
+
+```Follow-Up Prompt:
+Please present the results in a table with two columns: "Question" and "Answer".
+```
+
+Expected Outcome:
+
+Copilot should generate a table with critical investor questions and corresponding answers, demonstrating how recursive prompts can refine and expand the AI's responses.
 
 """<insert document here>"""
 
@@ -158,16 +205,17 @@ What are the benefits of the OpenAI o1 model?
 
 <div class="step" markdown="1">
 
-### Step 4: Recusrive Prompting
+### Step 2: Task Splitting – Breaking Down Complex Tasks
 
-**Follow Up Prompt:**
-Based on this presentation, put yourself into the shoes if the investors and think about 10 questions that sceptic investors might ask during the presentation. Be creative and extra critical.
+Task splitting involves dividing a complex task into simpler, manageable parts to improve accuracy.
 
-**Follow Up Prompt:**
-For each question, please also provide a good answer. 
+```Prompt:
+Let's improve our investor Q&A section. First, list common investor concerns in the renewable energy sector. Then, for each concern, explain how EcoVerse Solutions addresses it.
+```
 
-**Follow Up Prompt:**
-Please, give me the result as a table with columns "question" and "answer"
+Expected Outcome:
+
+By breaking down the task, Copilot can focus on listing concerns first and then addressing them, resulting in a more detailed and accurate output.
 
 </div>
 
