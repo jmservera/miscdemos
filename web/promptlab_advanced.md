@@ -367,6 +367,94 @@ Open the file in a web browser to interact with the onboarding process steps.
 </div>
 </div> 
 
+
+<div class="section" markdown="1">
+
+## Exercise 6 – Classifying Text with Zero-Shot and Few-Shot Sentiment Analysis
+
+<div class="step" markdown="1">
+
+### Objective
+
+Learn how to perform text classification, specifically sentiment analysis, using both zero-shot and few-shot prompting techniques. This exercise will enable you to analyze customer feedback effectively, enhancing your ability to understand and respond to customer sentiments.
+
+</div> 
+
+<div class="step" markdown="1">
+
+### Step 1: Zero-Shot Sentiment Classification
+Zero-shot prompting allows the AI to classify text based on the provided instructions without specific examples. This technique is useful when you want the AI to apply general knowledge to categorize sentiments.
+
+Scenario:
+
+EcoVerse Solutions has received various pieces of customer feedback. You need to classify the sentiment of each feedback to understand customer satisfaction levels.
+
+```Prompt:
+*Classify the following customer feedback into positive, negative, or neutral sentiment.*
+```
+
+Feedback: "The installation team was professional and efficient."
+
+Sentiment:
+Expected Outcome:
+
+Copilot should analyze the feedback and classify the sentiment appropriately.
+
+Example Response:
+
+Positive
+
+Instructions:
+
+Provide the Prompt: Use the prompt as shown above, replacing the feedback text as needed.
+Interpret the Response: The AI will classify the sentiment based on the content of the feedback.
+Benefits:
+
+Efficiency: Quickly categorize large volumes of feedback.
+Insight: Gain insights into overall customer satisfaction and areas needing improvement.
+
+</div> 
+
+<div class="step" markdown="1">
+
+### Step 2: Few-Shot Sentiment Classification
+
+Few-shot prompting involves providing the AI with a few examples of how to classify sentiments. This technique guides the AI to follow a specific pattern, improving accuracy and consistency in classification.
+
+Scenario:
+
+To enhance the accuracy of sentiment classification, provide the AI with example classifications.
+
+```Prompt:
+*Classify the following customer feedback into positive, negative, or neutral sentiment based on the examples below:*
+
+- "The installation team was professional and efficient." // Positive
+- "The product stopped working after a week." // Negative
+- "The service was okay, nothing exceptional." // Neutral
+
+Feedback: "I love the design of your solar panels, but the pricing is a bit high."
+
+Sentiment:
+```
+
+Expected Outcome:
+
+Copilot should classify the sentiment of the new feedback by following the pattern established in the examples.
+
+Example Response:
+
+Positive
+Instructions:
+
+Provide the Prompt: Use the prompt as shown above, ensuring to include clear examples.
+Interpret the Response: The AI will classify the sentiment based on the provided examples.
+Benefits:
+
+Improved Accuracy: The AI follows the demonstrated pattern, reducing misclassification.
+Consistency: Ensures that similar feedback is classified in a uniform manner.
+
+</div> 
+
 <div class="section" markdown="1">
 
 ### Conclusion
