@@ -45,7 +45,13 @@ Let’s get started by setting the foundation for our startup journey!
 
 ## Exercise 1 – Getting familiar with Microsoft Copilot
 
+### Objective
+
+In this exercise, you'll become acquainted with Microsoft Copilot and practice zero-shot prompting by initiating a SWOT analysis for your startup.
+
 <div class="step" markdown="1">
+
+### Step 1: Setting Up Microsoft Copilot
 
 For this exercise, we’ll be using **Microsoft Copilot** —your go-to AI companion for web-based AI-powered chat. Open Copilot at [bing.com/chat](https://www.bing.com/chat) and set the conversation style to "**More creative**." We're diving into an ideation session today, and as Linus Pauling once said:
 
@@ -59,16 +65,11 @@ Today, we’ll dive into brainstorming and strategic planning for EcoGen Solutio
 
 > **Important:** This exercise builds on foundational prompt engineering concepts. If you’re new to prompt engineering, we recommend starting with the [entry-level tutorial](https://jmservera.github.io/miscdemos/prompt-engineering#exercise-1--warmup-with-basic-prompts) to familiarize yourself with the basics before moving on to advanced techniques.
 </div>
-</div>
 
-
-<div class="section" markdown="1">
-
-## Exercise 2 – Zero-Shot Prompting
 
 <div class="step" markdown="1">
 
-### Step 1: Initiating a SWOT Analysis with Zero-Shot Prompting
+### Step 2: Initiating a SWOT Analysis with Zero-Shot Prompting
 
 Zero-shot prompting involves giving the AI a broad prompt without specific examples, allowing it to generate open-ended responses.
 
@@ -83,7 +84,6 @@ EcoVerse Solutions, a leading innovator in direct air capture (DAC) technology, 
 ```prompt
 As the founder of EcoVerse Solutions, I need to understand the current market landscape. Please provide a SWOT analysis for my company, considering the renewable energy sector.
 
-Information about EcoVerse Solutions:
 <insert the information from above here>
 ```
 
@@ -95,9 +95,17 @@ Copilot should provide a basic SWOT analysis outlining potential strengths, weak
 
 </div>
 
+<div class="section" markdown="1">
+
+## Exercise 1 – In-Context Learning and Setting Goals with Task-Specific Prompting
+
+### Objective
+
+Enhance the AI's responses by providing context and setting clear goals, using in-context learning and task-specific prompting.
+
 <div class="step" markdown="1">
 
-### Step 2: Setting Goals
+### Step 1: Setting Goals
 
 The first step in planning a project enhanced with prompt engineering and ChatGPT is to clearly define your project goals. This foundational step helps shape your vision, ensuring that your prompt strategy aligns seamlessly with your objectives.
 
