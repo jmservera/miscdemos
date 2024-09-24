@@ -25,9 +25,6 @@ Our goal is to bring your skills and understanding to effectively use AI tools t
 
 In this lab, you will follow a guided journey to create a startup plan using sophisticated prompt engineering methods.
 
-
-## Learning Objectives
-
 Overview:
 
 - Exercise 1: Getting Familiar with Microsoft Copilot and Zero-Shot Prompting
