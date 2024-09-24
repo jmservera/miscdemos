@@ -422,7 +422,6 @@ Instructions:
 Copy the generated HTML code into an .html file.
 Open the file in a web browser to interact with the onboarding process steps.
 
-
 </div>
 </div> 
 
