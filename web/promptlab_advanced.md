@@ -30,11 +30,11 @@ In this lab, you will follow a guided journey to create a startup plan using sop
 
 Overview:
 
-Exercise 1: Getting Familiar with Microsoft Copilot and Zero-Shot Prompting
-Exercise 2: In-Context Learning and Setting Goals with Task-Specific Prompting
-Exercise 3: Refining Responses with Recursive Prompting and Task Splitting
-Exercise 4: Enhancing Reasoning with Chain-of-Thought and Tree-of-Thought Prompting
-Exercise 5: Generating Structured Outputs and Visualizations with Advanced Techniques
+- Exercise 1: Getting Familiar with Microsoft Copilot and Zero-Shot Prompting
+- Exercise 2: In-Context Learning and Setting Goals with Task-Specific Prompting
+- Exercise 3: Refining Responses with Recursive Prompting and Task Splitting
+- Exercise 4: Enhancing Reasoning with Chain-of-Thought and Tree-of-Thought Prompting
+- Exercise 5: Generating Structured Outputs and Visualizations with Advanced Techniques
 
 Let’s get started by setting the foundation for our startup journey!
 
@@ -64,25 +64,26 @@ Today, we’ll dive into brainstorming and strategic planning for EcoGen Solutio
 
 <div class="section" markdown="1">
 
-## Exercise 2 – In-context Learning
+## Exercise 2 – Zero-Shot Prompting
 
 <div class="step" markdown="1">
 
-### Step 1: Define Your Startup Persona
+### Step 1: Initiating a SWOT Analysis with Zero-Shot Prompting
 
-In-context learning, also known as few-shot learning is a technique where an LLM is given instructions or examples within the input prompt to guide its response. This method leverages the model's ability to understand adapt to patterns presented in the immediate context of the query. 
+Zero-shot prompting involves giving the AI a broad prompt without specific examples, allowing it to generate open-ended responses.
 
-Imagine you're the CEO of a Carbonova - a leading company for Co2 storage.
+Imagine you're the CEO of a EcoVerse Solutions - a leading company for Co2 storage.
 
 Your mission is to lead strategic growth while ensuring innovation. 
 Alongside you is an AI-driven executive assistant that you can prompt to tackle this task.
 
-EcoVerse Solutions, a leading innovator in direct air capture (DAC) technology, has established itself as a key player in the fight against climate change by developing advanced systems to capture CO₂ directly from the atmosphere. Backed by strategic partnerships with major corporations like Microsoft and strong financial support, the company is poised for growth. However, Carbonova faces challenges in scaling its operations and reducing the high costs associated with capturing carbon, which limits broader adoption. As global policies shift towards net-zero goals, the company has significant opportunities to benefit from government regulations and the growing carbon credits market. Nonetheless, emerging competition in the DAC space and potential economic fluctuations pose risks to its future expansion.
+> **Information About EcoVerse Solutions:** 
+EcoVerse Solutions, a leading innovator in direct air capture (DAC) technology, has established itself as a key player in the fight against climate change by developing advanced systems to capture CO₂ directly from the atmosphere. Backed by strategic partnerships with major corporations like Microsoft and strong financial support, the company is poised for growth. However, EcoVerse Solutions faces challenges in scaling its operations and reducing the high costs associated with capturing carbon, which limits broader adoption. As global policies shift towards net-zero goals, the company has significant opportunities to benefit from government regulations and the growing carbon credits market. Nonetheless, emerging competition in the DAC space and potential economic fluctuations pose risks to its future expansion.
 
 ```prompt
 As the founder of EcoVerse Solutions, I need to understand the current market landscape. Please provide a SWOT analysis for my company, considering the renewable energy sector.
 
-Information about Carbonova:
+Information about EcoVerse Solutions:
 <insert the information from above here>
 ```
 
@@ -112,7 +113,7 @@ How does the solution impact them?
 Where is your data stored and where will the solution be hosted?
 When does it need to be ready?
 
-**Prompt:**
+```prompt
 Please help me creating an outline for a presentation targeted at potential investors. 
 I want you to make the outline not more than 10 slides. Be brief and use bulletpoints.
 The objective is to effectively communicate our company's mission to become the leading provider of CO₂ air capturing technology. 
@@ -121,6 +122,7 @@ Additional requirements:
 - Use simple language. 
 - Catchy slide titles. 
 - Clear call to action at the end.
+```
 
 </div>
 
