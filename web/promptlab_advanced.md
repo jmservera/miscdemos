@@ -7,13 +7,14 @@ permalink: /prompt-engineering-advanced
 ---
 
 <div class="section" markdown="1">
-By Florian Follonier - Cloud Solution Architect Data & AI - Microsoft
 
+By Florian Follonier - Cloud Solution Architect Data & AI - Microsoft
 & Juan Manuel Servera - Cloud Solution Architect App Innovation - Microsoft
 
 ## Introduction
 
 <div class="step" markdown="1">
+
 Welcome to the Advanced Prompt Engineering Lab. This guide will guide you through a series of steps that will teach you advanced prompt engineering skills in the context of developing a startup.
 
 This guide is tailored for participants who already possess foundational knowledge of prompt engineering and are eager to explore advanced methodologies to enhance their skills. Furthermore, the lab has been developed to work best with Microsoft Copilot. 
@@ -29,14 +30,14 @@ In this lab, you will follow a guided journey to create a startup plan using sop
 
 Overview:
 
-- Exercise 1: Getting Familiar with Microsoft Copilot
-- Exercise 2: In-Context Learning
-- Exercise 3: Thought Generation Prompting
-- Exercise 4: Manipulating output structures
-
-
+Exercise 1: Getting Familiar with Microsoft Copilot and Zero-Shot Prompting
+Exercise 2: In-Context Learning and Setting Goals with Task-Specific Prompting
+Exercise 3: Refining Responses with Recursive Prompting and Task Splitting
+Exercise 4: Enhancing Reasoning with Chain-of-Thought and Tree-of-Thought Prompting
+Exercise 5: Generating Structured Outputs and Visualizations with Advanced Techniques
 
 Let’s get started by setting the foundation for our startup journey!
+
 </div>
 </div>
 
