@@ -14,36 +14,27 @@ By Florian Follonier - Cloud Solution Architect Data & AI - Microsoft
 ## Introduction
 
 <div class="step" markdown="1">
-Welcome to the Advanced Prompt Engineering Lab. This guide will immerse you in mastering prompt engineering techniques, tailored to developing a startup using AI tools like Microsoft's Copilot.
+Welcome to the Advanced Prompt Engineering Lab. This guide will guide you through a series of steps that will teach you advanced prompt engineering skills in the context of developing a startup.
 
-In this lab, we will dive deep into sophisticated prompt engineering techniques within the context of developing a startup. 
-This guide is tailored for participants who already possess foundational knowledge of prompt engineering and are eager to explore advanced methodologies to enhance their skills.
+This guide is tailored for participants who already possess foundational knowledge of prompt engineering and are eager to explore advanced methodologies to enhance their skills. Furthermore, the lab has been developed to work best with Microsoft Copilot. 
 
 Our goal is to bring your skills and understanding to effectively use AI tools to the next level.  
 
 ### Lab Overview
 
-In this lab, you will follow a guided journey to create a startup plan using sophisticated prompt engineering methods, aligning technical precision with business strategy.
+In this lab, you will follow a guided journey to create a startup plan using sophisticated prompt engineering methods.
 
-You will leverage Large Language Models (LLMs) to:
 
-- Advise on business strategy topics.
-- Navigate complex decision-making processes.
-- Generate structured outputs like SWOT analyses and pros & cons tables.
-- Create visual concept illustrations using HTML and Mermaid.js.
-- Utilize chain-of-thought reasoning for intricate problem-solving.
+## Learning Objectives
 
-Additionally, an optional challenge will allow you to compare the performance of GPT-4o with the newer OpenAI o1 reasoning model, highlighting their strengths in handling complex tasks.
+Overview:
 
-### Learning Objectives
+- Exercise 1: Getting Familiar with Microsoft Copilot
+- Exercise 2: In-Context Learning
+- Exercise 3: Thought Generation Prompting
+- Exercise 4: Manipulating output structures
 
-By the end of this lab, you will:
 
-- Master advanced prompt engineering techniques.
-- Apply LLMs to strategic business planning and analysis.
-- Generate and manipulate structured data outputs.
-- Create simple graphical representations using code.
-- Understand the comparative strengths of different LLM reasoning models.
 
 Let’s get started by setting the foundation for our startup journey!
 </div>
@@ -70,14 +61,15 @@ Today, we’ll dive into brainstorming and strategic planning for EcoGen Solutio
 </div>
 
 
-
 <div class="section" markdown="1">
 
-## Exercise 2 – Setting Goals and Getting Started
+## Exercise 2 – In-context Learning
 
 <div class="step" markdown="1">
 
 ### Step 1: Define Your Startup Persona
+
+In-context learning, also known as few-shot learning is a technique where an LLM is given instructions or examples within the input prompt to guide its response. This method leverages the model's ability to understand adapt to patterns presented in the immediate context of the query. 
 
 Imagine you're the CEO of a Carbonova - a leading company for Co2 storage.
 
@@ -129,7 +121,26 @@ Additional requirements:
 
 <div class="step" markdown="1">
 
-### Step 3: Recusrive Prompting
+### Step 3: Providing References
+
+Using reference texts when crafting prompts for language models can significantly enhance the accuracy and relevance of the output, especially in fields that require precise information. This approach is akin to providing a student with notes during an exam; it guides the model to deliver responses based on factual information rather than making uninformed guesses, particularly in specialized or niche topics. 
+
+By directing the model to use the provided text, the likelihood of fabricating responses (hallucinations) is reduced, promoting more reliable and verifiable outputs.
+
+**Prompt:**
+What are the benefits of the OpenAI o1 model?
+
+**Prompt:**
+What are the benefits of the OpenAI o1 model?
+
+"""<insert document here>"""
+
+</div>
+
+
+<div class="step" markdown="1">
+
+### Step 4: Recusrive Prompting
 
 **Follow Up Prompt:**
 Based on this presentation, put yourself into the shoes if the investors and think about 10 questions that sceptic investors might ask during the presentation. Be creative and extra critical.
@@ -142,10 +153,55 @@ Please, give me the result as a table with columns "question" and "answer"
 
 </div>
 
+<div class="step" markdown="1">
+
+### Step 5: Splitting Tasks Into Subtasks
+
+Complex tasks often result in higher error rates and can be overwhelming for the AI. By breaking a complex task into simpler, manageable parts, the model can handle each segment with greater accuracy. This method is akin to modular programming in software engineering, where a large system is divided into smaller, independent modules. For language models, this could involve processing a task in stages, where the output of one stage serves as the input for the next, thereby simplifying the overall task and reducing potential errors.
+
+**Follow Up Prompt:**
+
+
+</div>
+
 
 <div class="section" markdown="1">
 
-## Exercise 3 – Generating Different Output Formats
+## Exercise 3 – Chain of Thought Prompting
+
+<div class="step" markdown="1">
+
+### Step 1: Giving the Model Time to "Think"
+
+Allowing the model time to "think" or process information can lead to more accurate and thoughtful responses. Encouraging a model to perform a 'chain of thought' process before arriving at a conclusion can mimic the human problem-solving process, enhancing the reliability of the responses. This approach is particularly useful in complex calculation or reasoning tasks, where immediate answers may not be as accurate. This strategy encourages the model to use more compute to provide a more comprehensive response.
+
+**Prompt:**
+First work out your own solution to the problem. Then compare your solution to the xxxx and evaluate if the solution is correct or not. Don't decide if the solution is correct until you have figured it out yourself. 
+
+</div>
+
+<div class="step" markdown="1">
+
+### Step 2: Considering Multiple Perspectives with Tree of Thoughts
+
+ToT maintains a tree of thoughts, where thoughts represent coherent language sequences that serve as intermediate steps toward solving a problem. This approach enables an LM to self-evaluate the progress through intermediate thoughts made towards solving a problem through a deliberate reasoning process. The LM's ability to generate and evaluate thoughts is then combined with search algorithms (e.g., breadth-first search and depth-first search) to enable systematic exploration of thoughts with lookahead and backtracking.
+
+
+**Prompt:**
+Imagine three different experts are answering this question.
+All experts will write down 1 step of their thinking,
+then share it with the group.
+Then all experts will go on to the next step, etc.
+If any expert realises they're wrong at any point then they leave.
+The question is...
+
+</div>
+</div>
+
+
+<div class="section" markdown="1">
+
+## Exercise 4 – Generating Different Output Formats
 
 <div class="step" markdown="1">
 
@@ -208,7 +264,7 @@ Please turn the SWOT analysis into JSON format with the following structure:
 
 <div class="section" markdown="1">
 
-## Exercise 3 – Strategic Business Planning with Advanced Prompts
+## Exercise 5 – Strategic Business Planning with Advanced Prompts
 
 <div class="step" markdown="1">
 
@@ -370,36 +426,6 @@ Incorporate eco-friendly practices to align with our sustainable mission.
 Partner with suppliers who prioritize environmental responsibility.
 
 </div>
-
-<div class="step" markdown="1">
-
-### Step 7: Optional Challenge – Comparing GPT-4o vs. OpenAI o1 Reasoning Models
-Enhance your understanding of different LLM reasoning capabilities by comparing GPT-4o with the newer OpenAI o1 model.
-
-Instructions:
-
-Task Definition:
-
-Select a complex problem relevant to your startup, such as optimizing the energy distribution network or developing a new sustainable product.
-Prompt Both Models:
-
-Use identical prompts to both GPT-4o and o1 models to solve the selected problem.
-Analyze Responses:
-
-Evaluate the depth, accuracy, and coherence of the solutions provided by each model.
-Note how each model handles multi-step reasoning and complex decision-making.
-Report Findings:
-
-Summarize the strengths and weaknesses of each model based on your analysis.
-Provide recommendations on which model to use for specific types of tasks within your startup.
-
-Example Prompt for Both Models:
-Develop a comprehensive plan to integrate renewable energy sources into our existing energy distribution network. Consider factors like cost, scalability, and environmental impact. Let's think step-by-step.
-
-This challenge will help you understand the practical applications and optimal use cases for different LLM reasoning models.
-
-</div>
-
 </div> 
 
 <div class="section" markdown="1">
