@@ -248,7 +248,7 @@ Copilot should outline a step-by-step plan, considering factors like supply chai
 
 <div class="step" markdown="1">
 
-### Step 1: Tree-of-Thought Prompting – Considering Multiple Solutions
+### Step 2: Tree-of-Thought Prompting – Considering Multiple Solutions
 
 Tree-of-thought prompting encourages the AI to explore different ideas before selecting the best one.
 
@@ -374,6 +374,8 @@ Open the file in a web browser to interact with the onboarding process steps.
 <div class="step" markdown="1">
 Congratulations on completing the Advanced Prompt Engineering Lab!
 
+![You are the Prompt Hero](./img/prompt%20hero%20badge%20advanced.png)
+
 Throughout this lab, you have:
 
 Applied Advanced Techniques: Leveraged zero-shot, few-shot, recursive, chain-of-thought, and tree-of-thought prompting to develop a robust startup plan.
@@ -385,7 +387,6 @@ Remember, advanced prompt engineering is about creativity, precision, and iterat
 We encourage you to apply these advanced techniques in your projects, whether for strategic planning, data analysis, or creative development. The skills you've honed here will empower you to harness the full potential of AI in driving your startup's success.
 
 Happy prompting!
-![You are the Prompt Hero](./img/prompt%20hero%20badge%20advanced.png)
 
 ### Additional Resources
 
