@@ -271,265 +271,157 @@ Copilot should provide an analysis of each strategy, comparing their pros and co
 
 ### Objective
 
-Learn how to instruct the AI to produce structured data and visual representations to enhance business communication.
+Learn how to instruct the AI to produce process visualizations using Mermaid.js and create interactive representations using HTML to enhance business communication and strategic planning.
 
 </div>
 
 <div class="step" markdown="1">
 
-### Step 1: Structured Prompting – Generating a Detailed SWOT Analysis
+### Step 1: Defining a Business Process to Visualize
 
-Allowing the model time to "think" or process information can lead to more accurate and thoughtful responses. Encouraging a model to perform a 'chain of thought' process before arriving at a conclusion can mimic the human problem-solving process, enhancing the reliability of the responses. This approach is particularly useful in complex calculation or reasoning tasks, where immediate answers may not be as accurate. This strategy encourages the model to use more compute to provide a more comprehensive response.
+Choose a key business process within EcoVerse Solutions that would benefit from visualization. For this exercise, we'll focus on the Customer Onboarding Process for new clients purchasing solar panel systems.
 
-**Prompt:**
-First work out your own solution to the problem. Then compare your solution to the xxxx and evaluate if the solution is correct or not. Don't decide if the solution is correct until you have figured it out yourself. 
+```Prompt:
+As the CEO of EcoVerse Solutions, I want to visualize our Customer Onboarding Process to identify areas for improvement and enhance customer experience. Please help me outline the steps involved in our Customer Onboarding Process.
+```
 
-</div>
+Expected Outcome:
 
-<div class="step" markdown="1">
+Copilot should provide a detailed list of steps involved in the customer onboarding process, such as:
 
-### Step 2: Considering Multiple Perspectives with Tree of Thoughts
-
-ToT maintains a tree of thoughts, where thoughts represent coherent language sequences that serve as intermediate steps toward solving a problem. This approach enables an LM to self-evaluate the progress through intermediate thoughts made towards solving a problem through a deliberate reasoning process. The LM's ability to generate and evaluate thoughts is then combined with search algorithms (e.g., breadth-first search and depth-first search) to enable systematic exploration of thoughts with lookahead and backtracking.
-
-
-**Prompt:**
-Imagine three different experts are answering this question.
-All experts will write down 1 step of their thinking,
-then share it with the group.
-Then all experts will go on to the next step, etc.
-If any expert realises they're wrong at any point then they leave.
-The question is...
-
-</div>
-</div>
-
-
-<div class="section" markdown="1">
-
-## Exercise 4 – Generating Different Output Formats
-
-<div class="step" markdown="1">
-
-### Step 1: Generate a SWOT Analysis
-
-A SWOT analysis can help with understanding your company's strengths, weaknesses, opportunities, and threats. 
-Use the LLM to create a detailed SWOT analysis by prompting it to ask clarifying questions to gather necessary information.
-
-**Prompt:**
-As my executive assistant, please help me create a SWOT analysis based on the information provided.
-
-*This prompt leverages the LLM's ability to structure and conceptualize complex information.*
+1. Customer Inquiry: The customer expresses interest via phone, email, or website form.
+2. Initial Consultation: Our sales team contacts the customer to discuss needs and schedule a site visit.
+3. Site Assessment: Technicians assess the property to determine suitability and system requirements.
+4. Proposal Preparation: A customized proposal is created, outlining system design and costs.
+5. Proposal Presentation: The proposal is presented to the customer for review.
+6. Contract Signing: Upon agreement, contracts are signed, and financing options are arranged.
+7. Installation Scheduling: Installation dates are scheduled based on customer availability.
+8. System Installation: The installation team installs the solar panel system.
+9. Inspection and Testing: The system is inspected and tested to ensure proper operation.
+10. Customer Training: The customer is trained on system use and maintenance.
+11. Post-Installation Support: Ongoing support and maintenance services are provided.
+12. Customer Feedback Collection: Feedback is gathered to improve services.
 
 </div>
 
 <div class="step" markdown="1">
 
-### Step 2: Structuring the SWOT Analysis
+### Step 2: Generating Mermaid.js Code to Visualize the Process
 
-Once the LLM gathers the necessary information, instruct it to present the SWOT analysis in a structured table format.
+Use the detailed process steps to create a visual flowchart using Mermaid.js.
 
-**Prompt:**
-Based on the information we've discussed, please organize the SWOT analysis into a table with four columns: Strengths, Weaknesses, Opportunities, and Threats. Ensure each point is concise and clearly articulated. Return it as Table format.
-*Generating structured data helps in better visualization and analysis.*
+```Prompt:
+Based on the detailed Customer Onboarding Process, generate Mermaid.js code for a flowchart that visualizes each step. Ensure that the flowchart accurately represents the sequence of steps and includes any decision points or feedback loops.
+```
 
-</div>
+Expected Outcome:
 
+Copilot should provide Mermaid.js code that, when rendered, displays a flowchart of the customer onboarding process.
 
+graph TD
+    A[Customer Inquiry] --> B[Initial Consultation]
+    B --> C[Site Assessment]
+    C --> D[Proposal Preparation]
+    D --> E[Proposal Presentation]
+    E --> F{Proposal Accepted?}
+    F -- Yes --> G[Contract Signing]
+    F -- No --> H[Revise Proposal]
+    H --> D
+    G --> I[Installation Scheduling]
+    I --> J[System Installation]
+    J --> K[Inspection and Testing]
+    K --> L[Customer Training]
+    L --> M[Post-Installation Support]
+    M --> N[Customer Feedback Collection]
 
-<div class="step" markdown="1">
+Instructions:
 
-### Step 3: Change the Format to JSON with Predefined Structure
-
-You want to hand the SWOT analysis over to a programmer to embedd it into an application, who wants it as a JSON file.
-
-**Prompt:**
-Please turn the SWOT analysis into JSON format with the following structure: 
-{
-  "SWOT_Analysis": {
-    "Strengths": [
-      ""
-    ],
-    "Weaknesses": [
-      ""
-    ],
-    "Opportunities": [
-      ""
-    ],
-    "Threats": [
-      ""
-    ]
-  }
-}
-
-*Generating structured data helps in better visualization and analysis.*
-
-</div>
-</div>
-
-
-<div class="section" markdown="1">
-
-## Exercise 5 – Strategic Business Planning with Advanced Prompts
-
-<div class="step" markdown="1">
-
-### Step 1: Business Strategy Advising
-
-Utilize the LLM to gain insights and advice on business strategy topics relevant to your startup.
-
-**Prompt:**
-Given our SWOT analysis, what strategic initiatives should we prioritize to leverage our strengths and opportunities while addressing our weaknesses and mitigating threats? Provide a detailed plan with actionable steps.
-
-*This **conditional prompt** directs the LLM to generate specific strategic advice based on prior analysis.*
+Use the Mermaid Live Editor at Mermaid Live Editor [mermaid.live](https://mermaid.live/) to visualize the diagram.
+Paste the generated code into the editor to view the interactive flowchart.
 
 </div>
 
 <div class="step" markdown="1">
 
-### Step 2: Pros and Cons Table for Strategic Decisions
+### Step 4: Creating an Interactive HTML Representation
 
-When faced with strategic decisions, use the LLM to create a pros and cons table to evaluate options objectively.
+Enhance the process visualization by creating an interactive HTML representation of the Customer Onboarding Process.
 
-**Prompt:**
-We are considering expanding our product line to include solar-powered batteries. Please create a table outlining the pros and cons of this expansion.
-*Structured outputs like tables facilitate clearer decision-making.*
+```Prompt:
+Please generate an HTML snippet that outlines the Customer Onboarding Process. Each step should be represented as a section with a heading and a brief description. Include navigation links or buttons that allow users to move between steps, creating an interactive experience.
+```
 
-</div>
+Expected Outcome:
 
-<div class="step" markdown="1">
+Copilot should produce HTML code that, when rendered, presents the onboarding process in an interactive format, allowing users to click through each step.
 
-### Step 3: Detailed SWOT Analysis with Interactive Input
+Example HTML Code:
 
-Enhance your SWOT analysis by allowing the LLM to ask targeted questions, ensuring a thorough evaluation.
-
-**Prompt:**
-Let's refine our SWOT analysis further. Please ask specific questions about each category to ensure we have covered all critical aspects.
-*This interactive approach ensures comprehensive data collection for each SWOT category.*
-
-</div>
-
-<div class="step" markdown="1">
-
-### Step 4: Creating Visual Concept Illustrations with HTML
-
-Visual representations can aid in communicating your startup's vision. Use the LLM to generate simple HTML code for concept illustrations.
-
-**Prompt:**
-Create a simple HTML snippet that visually represents our sustainable energy solution, incorporating elements like solar panels, wind turbines, and energy storage units.
-
-**Expected Output:**
-
-*Generating HTML code allows for easy integration of visual elements into presentations or websites.*
-
-<div>
-```html
+html
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Our Sustainable Energy Solution</title>
+    <title>EcoVerse Solutions - Customer Onboarding Process</title>
     <style>
-        .concept {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
+        .step {
+            display: none;
         }
-        .element {
-            text-align: center;
+        .step.active {
+            display: block;
+        }
+        .navigation {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px;
+            margin: 5px;
         }
     </style>
+    <script>
+        let currentStep = 0;
+        function showStep(step) {
+            const steps = document.querySelectorAll('.step');
+            steps.forEach((s, index) => {
+                s.classList.toggle('active', index === step);
+            });
+            currentStep = step;
+            document.getElementById('prevBtn').disabled = currentStep === 0;
+            document.getElementById('nextBtn').disabled = currentStep === steps.length - 1;
+        }
+        function nextStep() {
+            showStep(currentStep + 1);
+        }
+        function prevStep() {
+            showStep(currentStep - 1);
+        }
+        window.onload = () => {
+            showStep(0);
+        };
+    </script>
 </head>
 <body>
-    <div class="concept">
-        <div class="element">
-            <img src="solar-panel.png" alt="Solar Panels" width="100">
-            <p>Solar Panels</p>
-        </div>
-        <div class="element">
-            <img src="wind-turbine.png" alt="Wind Turbines" width="100">
-            <p>Wind Turbines</p>
-        </div>
-        <div class="element">
-            <img src="energy-storage.png" alt="Energy Storage" width="100">
-            <p>Energy Storage Units</p>
-        </div>
+    <h1>Customer Onboarding Process</h1>
+    <div class="step active">
+        <h2>Step 1: Customer Inquiry</h2>
+        <p>The customer reaches out via phone, email, or our website to express interest in our solar panel systems.</p>
+    </div>
+    <div class="step">
+        <h2>Step 2: Initial Consultation</h2>
+        <p>Our sales team contacts the customer to discuss their needs and schedule a site assessment.</p>
+    </div>
+    <!-- Additional steps would follow in the same format -->
+    <div class="navigation">
+        <button id="prevBtn" onclick="prevStep()">Previous</button>
+        <button id="nextBtn" onclick="nextStep()">Next</button>
     </div>
 </body>
 </html>
-```html
-</div>
 
-To display the HTML create a file with HTML extension, for example by pressing STRG + S in your browser.
-Then open the HTML file with an editor and copy the HTML code over to the file. 
-You can then open the file in Browser and view the result.
-![The mermaid code visualized.](./img/html_code.png)
-</div>
+Instructions:
 
-<div class="step" markdown="1">
+Copy the generated HTML code into an .html file.
+Open the file in a web browser to interact with the onboarding process steps.
 
-### Step 5: Generating Diagrams with Mermaid.js
-For more complex visualizations like flowcharts or organizational structures, use Mermaid.js code generated by the LLM.
-
-**Prompt:**
-Generate Mermaid.js code for an organizational chart of our startup, showing the CEO, CTO, CFO, Marketing Director, and Engineering Team.
-
-Mermaid.js allows for dynamic and interactive diagrams, enhancing visual communication.
-
-**Expected Output:**
-graph TD
-    CEO[CEO]
-    CTO[CTO]
-    CFO[CFO]
-    Marketing[Marketing Director]
-    Engineering[Engineering Team]
-
-    CEO --> CTO
-    CEO --> CFO
-    CEO --> Marketing
-    CTO --> Engineering*
-
-You can view this diagram at Mermaid Live Editor (free version): https://www.mermaidflow.app/editor
-![The mermaid code visualized.](./img/mermaid_code.png)
-
-</div>
-
-<div class="step" markdown="1">
-
-### Step 6: Implementing Chain-of-Thought Reasoning
-For complex problem-solving and strategic planning, utilize chain-of-thought prompting to guide the LLM through multi-step reasoning.
-
-**Prompt:**
-We need to optimize our supply chain for better efficiency and cost-effectiveness. Let's think step-by-step about how to achieve this.
-
-Chain-of-thought prompting encourages the LLM to break down the problem into manageable steps, leading to more coherent and logical solutions.
-
-**Expected Output:**
-
-Assess Current Supply Chain:
-
-Map out all suppliers, manufacturers, and distributors.
-Identify bottlenecks and inefficiencies.
-Identify Cost Drivers:
-
-Analyze costs associated with each stage of the supply chain.
-Determine areas with the highest expenses.
-Explore Optimization Strategies:
-
-Consider bulk purchasing to reduce costs.
-Implement just-in-time inventory to minimize storage expenses.
-Negotiate better terms with suppliers.
-Implement Technology Solutions:
-
-Adopt supply chain management software for better tracking.
-Utilize automation in warehouses to increase efficiency.
-Monitor and Review:
-
-Establish KPIs to measure supply chain performance.
-Regularly review processes and make adjustments as needed.
-Sustainability Considerations:
-
-Incorporate eco-friendly practices to align with our sustainable mission.
-Partner with suppliers who prioritize environmental responsibility.
 
 </div>
 </div> 
@@ -543,12 +435,11 @@ Congratulations on completing the Advanced Prompt Engineering Lab!
 
 Throughout this lab, you have:
 
-Applied Advanced Techniques: Leveraged business strategy advising, interactive SWOT analyses, and chain-of-thought reasoning to develop a robust startup plan.
-Generated Structured Outputs: Created SWOT tables, pros and cons lists, and detailed business plans to support strategic decisions.
+Applied Advanced Techniques: Leveraged zero-shot, few-shot, recursive, chain-of-thought, and tree-of-thought prompting to develop a robust startup plan.
+Generated Structured Outputs: Created Business Model Canvas, presentation outlines, and strategic plans in various formats, including tables and JSON.
 Enhanced Visual Communication: Utilized HTML and Mermaid.js to produce visual representations of your startup's concepts and organizational structure.
-Navigated Complex Problem-Solving: Employed chain-of-thought prompting to tackle intricate challenges methodically.
-Explored Model Comparisons: Optionally compared GPT-4o with the OpenAI o1 reasoning model to understand their respective strengths in handling complex tasks.
-Remember: Advanced prompt engineering is about creativity, precision, and iterative refinement. Continue experimenting with different techniques and prompts to uncover new possibilities and optimize your interactions with AI models.
+Navigated Complex Problem-Solving: Employed advanced reasoning techniques to tackle intricate business challenges methodically.
+Remember, advanced prompt engineering is about creativity, precision, and iterative refinement. Continue experimenting with different techniques and prompts to uncover new possibilities and optimize your interactions with AI models.
 
 We encourage you to apply these advanced techniques in your projects, whether for strategic planning, data analysis, or creative development. The skills you've honed here will empower you to harness the full potential of AI in driving your startup's success.
 
