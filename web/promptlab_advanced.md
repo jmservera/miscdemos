@@ -350,74 +350,14 @@ Paste the generated code into the editor to view the interactive flowchart.
 Enhance the process visualization by creating an interactive HTML representation of the Customer Onboarding Process.
 
 ```Prompt:
-Please generate an HTML snippet that outlines the Customer Onboarding Process. Each step should be represented as a section with a heading and a brief description. Include navigation links or buttons that allow users to move between steps, creating an interactive experience.
+Please generate an HTML snippet that outlines the Customer Onboarding Process. 
+When the user hovers above one of the steps, there should be additional information displayed.
 ```
 
 Expected Outcome:
 
 Copilot should produce HTML code that, when rendered, presents the onboarding process in an interactive format, allowing users to click through each step.
 
-Example HTML Code:
-
-html
-<!DOCTYPE html>
-<html>
-<head>
-    <title>EcoVerse Solutions - Customer Onboarding Process</title>
-    <style>
-        .step {
-            display: none;
-        }
-        .step.active {
-            display: block;
-        }
-        .navigation {
-            margin-top: 20px;
-        }
-        button {
-            padding: 10px;
-            margin: 5px;
-        }
-    </style>
-    <script>
-        let currentStep = 0;
-        function showStep(step) {
-            const steps = document.querySelectorAll('.step');
-            steps.forEach((s, index) => {
-                s.classList.toggle('active', index === step);
-            });
-            currentStep = step;
-            document.getElementById('prevBtn').disabled = currentStep === 0;
-            document.getElementById('nextBtn').disabled = currentStep === steps.length - 1;
-        }
-        function nextStep() {
-            showStep(currentStep + 1);
-        }
-        function prevStep() {
-            showStep(currentStep - 1);
-        }
-        window.onload = () => {
-            showStep(0);
-        };
-    </script>
-</head>
-<body>
-    <h1>Customer Onboarding Process</h1>
-    <div class="step active">
-        <h2>Step 1: Customer Inquiry</h2>
-        <p>The customer reaches out via phone, email, or our website to express interest in our solar panel systems.</p>
-    </div>
-    <div class="step">
-        <h2>Step 2: Initial Consultation</h2>
-        <p>Our sales team contacts the customer to discuss their needs and schedule a site assessment.</p>
-    </div>
-    <!-- Additional steps would follow in the same format -->
-    <div class="navigation">
-        <button id="prevBtn" onclick="prevStep()">Previous</button>
-        <button id="nextBtn" onclick="nextStep()">Next</button>
-    </div>
-</body>
-</html>
 
 Instructions:
 
