@@ -186,19 +186,17 @@ Recursive prompting involves using follow-up prompts to refine the AI's output.
 Based on the presentation outline, put yourself in the shoes of skeptical investors and think about 10 critical questions they might ask during the presentation. Be creative and extra critical.
 ```
 
-```Follow-Up Prompt:
+```Follow-Up Prompt 1:
 For each question, please provide a well-thought-out answer.
 ```
 
-```Follow-Up Prompt:
+```Follow-Up Prompt 2:
 Please present the results in a table with two columns: "Question" and "Answer".
 ```
 
 Expected Outcome:
 
 Copilot should generate a table with critical investor questions and corresponding answers, demonstrating how recursive prompts can refine and expand the AI's responses.
-
-"""<insert document here>"""
 
 </div>
 
@@ -218,26 +216,68 @@ Expected Outcome:
 By breaking down the task, Copilot can focus on listing concerns first and then addressing them, resulting in a more detailed and accurate output.
 
 </div>
-
-<div class="step" markdown="1">
-
-### Step 5: Splitting Tasks Into Subtasks
-
-Complex tasks often result in higher error rates and can be overwhelming for the AI. By breaking a complex task into simpler, manageable parts, the model can handle each segment with greater accuracy. This method is akin to modular programming in software engineering, where a large system is divided into smaller, independent modules. For language models, this could involve processing a task in stages, where the output of one stage serves as the input for the next, thereby simplifying the overall task and reducing potential errors.
-
-**Follow Up Prompt:**
-
-
 </div>
-
 
 <div class="section" markdown="1">
 
-## Exercise 3 – Chain of Thought Prompting
+## Exercise 4 – Enhancing Reasoning with Chain-of-Thought and Tree-of-Thought Prompting
 
 <div class="step" markdown="1">
 
-### Step 1: Giving the Model Time to "Think"
+### Objective
+
+Utilize advanced prompting techniques to encourage the AI to perform deeper reasoning and consider multiple perspectives.
+
+</div>
+
+<div class="step" markdown="1">
+
+### Step 1: Splitting Tasks Into Subtasks
+
+Chain-of-thought prompting guides the AI to think through problems step-by-step.
+
+```Prompt:
+We need to develop a strategic plan to scale our manufacturing while maintaining cost-effectiveness. Let's think through the steps we need to take to achieve this goal.
+```
+
+Expected Outcome:
+
+Copilot should outline a step-by-step plan, considering factors like supply chain optimization, cost reduction strategies, and potential partnerships.
+
+</div>
+
+<div class="step" markdown="1">
+
+### Step 1: Tree-of-Thought Prompting – Considering Multiple Solutions
+
+Tree-of-thought prompting encourages the AI to explore different ideas before selecting the best one.
+
+```Prompt:
+We are exploring new markets to expand into. Imagine three different market entry strategies: entering developing countries, targeting urban areas in developed countries, or partnering with governments for large-scale projects. Generate these ideas and evaluate which aligns best with our mission and resources.
+```
+
+Expected Outcome:
+
+Copilot should provide an analysis of each strategy, comparing their pros and cons, and suggest the most suitable option.
+
+</div>
+</div>
+
+<div class="section" markdown="1">
+
+## Exercise 5 – Generating Structured Outputs and Visualizations with Advanced Techniques
+
+<div class="step" markdown="1">
+
+### Objective
+
+Learn how to instruct the AI to produce structured data and visual representations to enhance business communication.
+
+</div>
+
+<div class="step" markdown="1">
+
+### Step 1: Structured Prompting – Generating a Detailed SWOT Analysis
 
 Allowing the model time to "think" or process information can lead to more accurate and thoughtful responses. Encouraging a model to perform a 'chain of thought' process before arriving at a conclusion can mimic the human problem-solving process, enhancing the reliability of the responses. This approach is particularly useful in complex calculation or reasoning tasks, where immediate answers may not be as accurate. This strategy encourages the model to use more compute to provide a more comprehensive response.
 
