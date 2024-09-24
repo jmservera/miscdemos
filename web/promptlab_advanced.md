@@ -339,6 +339,8 @@ Instructions:
 Use the Mermaid Live Editor at Mermaid Live Editor [mermaid.live](https://mermaid.live/) to visualize the diagram.
 Paste the generated code into the editor to view the interactive flowchart.
 
+![The diagram should look similar to this](./img/mermaidjs.png)
+
 </div>
 
 <div class="step" markdown="1">
