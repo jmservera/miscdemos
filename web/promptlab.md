@@ -45,7 +45,7 @@ For this exercise we are going to use Microsoft Copilot, your everyday AI compan
 
 > During this lab you need to ask more than the basic 4 questions that you get with an unauthenticated account, and more than the 10 you get if you are not using the Edge browser. In order to get the best experience with this lab, please follow these instructions:
 >
-> * If you still don't have one, create a Microsoft account; any Outlook, Hotmail or Live account will work, and it’s free to create one: [Microsoft account | Sign In or Create Your Account Today – Microsoft](https://account.microsoft.com/account/CreateAccount). Notice that work accounts with Microsoft 365 enabled will also work.
+> * If you still don't have one, create a Microsoft account; any Outlook, Hotmail or Live account will work, and it’s free to create one: [Microsoft account \| Sign In or Create Your Account Today – Microsoft](https://account.microsoft.com/account/CreateAccount). Notice that work accounts with Microsoft 365 enabled will also work.
 > * Install the latest [Edge browser](https://www.microsoft.com/edge/download) and log in with your Microsoft account.
 
 </div>
