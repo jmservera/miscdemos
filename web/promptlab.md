@@ -35,13 +35,18 @@ Now, let's dive in and get started with our first exercise!
 ## Exercise 1 – Warmup with Basic prompts
 
 <div class="step" markdown="1">
-For this exercise we are going to use Microsoft Copilot, your everyday AI companion, providing AI-powered chat for the web. Open it at <https://www.bing.com/chat> and configure the conversation style to “**More creative**”, because today we are going to have an ideation session and, as Linus Pauling said once:
+For this exercise we are going to use Microsoft Copilot, your everyday AI companion, providing AI-powered chat for the web. Open it at <https://www.bing.com/chat> and, if available, configure the conversation style to “**More creative**”, because today we are going to have an ideation session and, as Linus Pauling said once:
 
 > The best way to have a good idea is to have lots of ideas.
 
 ![Screenshot showing Copilot on the web.](./img/Copilot%20in%20desktop.png)
 
 *If you follow this exercise from the mobile browser, you may see a different interface and Copilot may ask you for login credentials. You can use your Microsoft account to log in and continue with the exercise.*
+
+> During this lab you need to ask more than the basic 4 questions that you get with an unauthenticated account, and more than the 10 you get if you are not using the Edge browser. In order to get the best experience with this lab, please follow these instructions:
+>
+> * If you still don't have one, create a Microsoft account; any Outlook, Hotmail or Live account will work, and it’s free to create one: [Microsoft account \| Sign In or Create Your Account Today – Microsoft](https://account.microsoft.com/account/CreateAccount). Notice that work accounts with Microsoft 365 enabled will also work.
+> * Install the latest [Edge browser](https://www.microsoft.com/edge/download) and log in with your Microsoft account.
 
 </div>
 <div class="step" markdown="1">
