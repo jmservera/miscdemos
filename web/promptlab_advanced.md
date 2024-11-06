@@ -15,6 +15,8 @@ By Florian Follonier - Cloud Solution Architect Data & AI - Microsoft
 
 <div class="step" markdown="1">
 
+![Screenshot showing Copilot on the web.](./img/Copilot%20image.png)
+
 Welcome to the Advanced Prompt Engineering Lab. This guide will guide you through a series of steps that will teach you advanced prompt engineering skills in the context of developing a startup.
 
 This guide is tailored for participants who already possess foundational knowledge of prompt engineering and are eager to explore advanced methodologies to enhance their skills. Furthermore, the lab has been developed to work best with Microsoft Copilot. 
