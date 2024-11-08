@@ -69,8 +69,8 @@ Two options how to access Copilot:
     <li>
         <strong>You have a work account with a Copilot License:</strong> <br>
         In this case, you can use Copilot via 
-        Open Copilot at <a href="https://www.bing.com/chat">bing.com/chat</a>.<br>
-        (set the conversation style to "<strong>More creative</strong>.")
+        <a href="https://www.bing.com/chat">bing.com/chat</a>.<br>
+        Select <strong>"Web"</strong> mode and set the conversation style to "<strong>More creative</strong>."
     </li>
     <li>
         <strong>You don't have a work account with a Copilot License:</strong> <br>
@@ -79,17 +79,20 @@ Two options how to access Copilot:
     </li>
 </ul>
 
-We're diving into an ideation session today, and as Linus Pauling once said:
 
-Today, we’ll dive into brainstorming and strategic planning for EcoGen Solutions. Your tasks will include defining the company’s strengths and weaknesses, identifying opportunities in a growing market, and anticipating potential threats. As Linus Pauling once said:
-
-> *The best way to have a good idea is to have lots of ideas.*
 
 ![Screenshot showing Copilot on the web.](./img/Copilot%20in%20desktop.png)
 
 *Note:* If you’re accessing this exercise on a mobile browser, you might encounter a different interface. In that case, you may be prompted to log in with your Microsoft account to proceed.
 
 > **Important:** This exercise builds on foundational prompt engineering concepts. If you’re new to prompt engineering, we recommend starting with the [entry-level tutorial](https://jmservera.github.io/miscdemos/prompt-engineering#exercise-1--warmup-with-basic-prompts) to familiarize yourself with the basics before moving on to advanced techniques.
+
+Next, we’ll dive into brainstorming and strategic planning for EcoGen Solutions. Your tasks will include defining the company’s strengths and weaknesses, identifying opportunities in a growing market, and anticipating potential threats. 
+
+We're diving into an ideation session today, and as Linus Pauling once said:
+
+> *The best way to have a good idea is to have lots of ideas.*
+
 </div>
 
 
@@ -97,9 +100,12 @@ Today, we’ll dive into brainstorming and strategic planning for EcoGen Solutio
 
 ### Step 2: Initiating a SWOT Analysis with Zero-Shot Prompting
 
-Zero-shot prompting involves giving the AI a broad prompt without specific examples, allowing it to generate open-ended responses.
+Let's begin with <strong>Zero-shot prompting</strong>. 
 
-Imagine you're the CEO of a EcoVerse Solutions - a leading company for Co2 storage.
+Zero-shot prompting involves giving the AI a broad prompt without specific examples, allowing it to generate open-ended responses.<br><br>
+
+<strong>Imagine...</strong><br><br>
+You're the CEO of a EcoVerse Solutions - a leading company for Co2 storage.
 
 Your mission is to lead strategic growth while ensuring innovation. 
 Alongside you is an AI-driven executive assistant that you can prompt to tackle this task.
@@ -110,14 +116,16 @@ EcoVerse Solutions, a leading innovator in direct air capture (DAC) technology, 
 ```prompt
 As the founder of EcoVerse Solutions, I need to understand the current market landscape. Please provide a SWOT analysis for my company, considering the renewable energy sector.
 
-<insert the information from above here>
+<insert the company information from above here>
 ```
 
-*This **zero-shot prompt** sets the context and assigns roles without providing specific examples.*
+*This **zero-shot prompt** sets the context and assigns roles without providing specific examples.*<br><br>
 
-Expected Outcome:
+<strong>Expected Outcome</strong>
 
 Copilot should provide a basic SWOT analysis outlining potential strengths, weaknesses, opportunities, and threats for EcoVerse Solutions.
+
+![This is what the output could look like:](./img/exercise_1-1_output.png)
 
 </div>
 </div>
@@ -130,7 +138,7 @@ Copilot should provide a basic SWOT analysis outlining potential strengths, weak
 
 ### Objective
 
-Enhance the AI's responses by providing context and setting clear goals, using in-context learning and task-specific prompting.
+Next, let's enhance the AI's responses by providing additional context and setting goals. For this, we use <strong>in-context learning</strong> and <strong>task-specific prompting</strong>.
 
 </div>
 
@@ -138,17 +146,25 @@ Enhance the AI's responses by providing context and setting clear goals, using i
 
 ### Step 1: Define Your Startup Persona
 
-In-context learning provides the AI with specific information within the prompt to guide its response.
+In-context learning provides the AI with specific information within the prompt to guide its response.<br><br>
 
-Scenario:
+<strong>Scenario</strong>.
 
-You are the CEO of EcoVerse Solutions. Your mission is to lead strategic growth while ensuring innovation in renewable energy.
+You are the CEO of EcoVerse Solutions. Your mission is to lead strategic growth while ensuring innovation in renewable energy. <br><br>
 
 ```prompt
-I am the CEO of EcoVerse Solutions. You are an experienced business strategist with a background in renewable energy. Assist me with a series of tasks based on the following information about my company:
-```
+I am the new CEO of EcoVerse Solutions. I have recently joined the company and now need to tackle various challenges. 
 
-This prompt provides context, setting roles and background information to guide the AI's response more effectively.
+You are assuming the role of an experienced business strategist with a background in renewable energy, particularly skilled in scaling operations, optimizing sustainability practices, and navigating industry regulations. My immediate goals are to build strong partnerships, secure funding, and establish a competitive market position while addressing operational challenges like cost-efficiency and technology adoption. I seek your expertise in developing strategic initiatives, identifying growth opportunities, and overcoming potential obstacles as we work towards making EcoVerse a leader in sustainable innovation.
+
+Assist me with a series of tasks that I will provide to you next. Just reply with "Ok".
+
+```
+<br>
+This prompt provides context, setting roles and background information to guide the AI's response more effectively without triggering an immediate response.
+
+<strong>Expected Outcome</strong>
+"Ok"
 
 </div>
 
@@ -178,10 +194,9 @@ Catchy slide titles.
 Clear call to action at the end.
 Present the outline in bullet points.
 ```
-
-Expected Outcome:
-
-Copilot should generate a structured presentation outline that meets the specified requirements, demonstrating how providing clear goals and context improves the quality of the AI's output.
+<br>
+<strong>Expected Outcome</strong> <br> <br> 
+<p>Copilot should generate a structured presentation outline that meets the specified requirements, demonstrating how providing clear goals and context improves the quality of the AI's output.</p>
 
 </div>
 </div>
@@ -202,23 +217,29 @@ Learn how to refine AI responses through recursive prompting and improve task ha
 
 ### Step 1: Recursive Prompting – Anticipating Investor Questions
 
-Recursive prompting involves using follow-up prompts to refine the AI's output.
+Recursive prompting involves using follow-up prompts to refine the AI's output. <br> <br>
 
-```Prompt:
-Based on the presentation outline, put yourself in the shoes of skeptical investors and think about 10 critical questions they might ask during the presentation. Be creative and extra critical.
+<strong>Initial prompt</strong>
+```
+Based on the presentation outline, put yourself in the shoes of skeptical investors and think about 10 critical questions they might ask during the presentation. Be creative and extra critical. 
 ```
 
-```Follow-Up Prompt 1:
+<strong>First follow-Up prompt</strong>
+```
 For each question, please provide a well-thought-out answer.
 ```
-
-```Follow-Up Prompt 2:
+<strong>Second follow-Up prompt</strong>
+```
 Please present the results in a table with two columns: "Question" and "Answer".
 ```
+<br>
 
-Expected Outcome:
+<strong>Expected Outcome</strong>
 
-Copilot should generate a table with critical investor questions and corresponding answers, demonstrating how recursive prompts can refine and expand the AI's responses.
+Copilot should generate a table with critical investor questions and corresponding answers, demonstrating how recursive prompts can refine and expand the AI's responses. 
+
+Sample output:
+![This is what the output could look like:](./img/exercise_3-1_output.png)
 
 </div>
 
@@ -232,10 +253,34 @@ Task splitting involves dividing a complex task into simpler, manageable parts t
 ```Prompt:
 Let's improve our investor Q&A section. First, list common investor concerns in the renewable energy sector. Then, for each concern, explain how EcoVerse Solutions addresses it.
 ```
-
-Expected Outcome:
-
 By breaking down the task, Copilot can focus on listing concerns first and then addressing them, resulting in a more detailed and accurate output.
+
+<strong>Expected Outcome</strong><br><br>
+A list or table with investor concerns and potential answers. 
+
+> **Note:** 
+Please note that the output will likely appear in table format again, as specified in the previous task. To switch back to non-table responses, you can simply add a statement at the end of your prompt, such as "respond in plain text" or "drop the table format."
+
+Adding more specific context:
+
+In a real-world scenario, to get tailored and valuable results it would be essential to provide specific details about your business model and organizational context to the prompt. Without these specifics, Copilot will rely on general knowledge, leading to common responses rather than insights specific to your organization.
+
+With a follow-up prompt, we will add some more details together with the task to refine the previous answers.
+
+Follow-up prompt
+
+```Prompt:
+Please consider these additional context below and refine your response accordingly:
+
+1. High Upfront Costs: EcoVerse Solutions tackles high initial costs by refining its manufacturing processes and securing bulk supply agreements, which cut expenses without sacrificing quality. We actively pursue government incentives, including carbon reduction grants and renewable energy tax credits, which can be passed to consumers. This approach allows us to offer more affordable DAC systems to both private and industrial customers, broadening our market reach.
+
+2. Technology Viability: Our unique approach integrates advanced nano-materials with proprietary DAC technology, capturing CO₂ even in lower concentration areas. Unlike conventional systems, EcoVerse’s technology ensures consistent, high-efficiency performance in diverse environments, from urban centers to rural areas. Rigorous testing and continuous improvements make our solution resilient and effective, showcasing technology that’s both cutting-edge and reliable.
+
+3. Market Volatility: To withstand market fluctuations, EcoVerse has established a diversified supply chain that reduces dependency on single sources, enhancing resilience. Strategic alliances with established industry partners, including Microsoft, provide additional stability and resource-sharing benefits, allowing us to adapt to economic changes without disrupting operations. This foundation offers investors assurance in EcoVerse’s ability to scale sustainably despite market uncertainties.
+```
+
+<strong>Expected Outcome</strong><br><br>
+A list of refined answers that better capture the context of our startup.
 
 </div>
 </div>
@@ -248,7 +293,7 @@ By breaking down the task, Copilot can focus on listing concerns first and then 
 
 ### Objective
 
-Utilize advanced prompting techniques to encourage the AI to perform deeper reasoning and consider multiple perspectives.
+In this exersize, we will utilize advanced prompting techniques to encourage Copilot to perform deeper reasoning and consider multiple perspectives.
 
 </div>
 
@@ -262,7 +307,7 @@ Chain-of-thought prompting guides the AI to think through problems step-by-step.
 We need to develop a strategic plan to scale our manufacturing while maintaining cost-effectiveness. Let's think through the steps we need to take to achieve this goal.
 ```
 
-Expected Outcome:
+<strong>Expected Outcome</strong>
 
 Copilot should outline a step-by-step plan, considering factors like supply chain optimization, cost reduction strategies, and potential partnerships.
 
@@ -278,9 +323,11 @@ Tree-of-thought prompting encourages the AI to explore different ideas before se
 We are exploring new markets to expand into. Imagine three different market entry strategies: entering developing countries, targeting urban areas in developed countries, or partnering with governments for large-scale projects. Generate these ideas and evaluate which aligns best with our mission and resources.
 ```
 
-Expected Outcome:
-
+<strong>Expected Outcome</strong>
 Copilot should provide an analysis of each strategy, comparing their pros and cons, and suggest the most suitable option.
+
+![This is what the output could look like:](./img/exercise_4-1_output.png)
+
 
 </div>
 </div>
