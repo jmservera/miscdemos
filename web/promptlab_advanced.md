@@ -8,8 +8,11 @@ permalink: /prompt-engineering-advanced
 
 <div class="section" markdown="1">
 
-By Florian Follonier - Cloud Solution Architect Data & AI - Microsoft
-& Juan Manuel Servera - Cloud Solution Architect App Innovation - Microsoft
+Lab created by
+<ul style="list-style-type: none; padding: 0; margin: 0;">
+    <li>Florian Follonier - Cloud Solution Architect Data & AI - Microsoft</li>
+    <li>Juan Manuel Servera - Cloud Solution Architect App Innovation - Microsoft</li>
+</ul>
 
 ## Introduction
 
@@ -17,17 +20,19 @@ By Florian Follonier - Cloud Solution Architect Data & AI - Microsoft
 
 ![Screenshot showing Copilot on the web.](./img/Copilot_robot.png)
 
-Welcome to the Advanced Prompt Engineering Lab. This guide will guide you through a series of steps that will teach you advanced prompt engineering skills in the context of developing a startup.
+<strong>Welcome to the Advanced Prompt Engineering Lab</strong>
 
-This guide is tailored for participants who already possess foundational knowledge of prompt engineering and are eager to explore advanced methodologies to enhance their skills. Furthermore, the lab has been developed to work best with Microsoft Copilot. 
+This guide will walk you through a series of steps designed to teach advanced techniques for crafting highly effective prompts. The exercises are tailored for participants with prior experience working with Large Language Models (LLMs) who are eager to elevate their prompt engineering skills.
 
-Our goal is to bring your skills and understanding to effectively use AI tools to the next level.  
+Our goal is to enhance your ability to use AI tools effectively, empowering you to achieve more with each interaction.
 
-### Lab Overview
+This lab has been developed and tested with Microsoft Copilot but may also be compatible with other AI assistants.
+
+### What Awaits You in This Lab?
 
 In this lab, you will follow a guided journey to create a startup plan using sophisticated prompt engineering methods.
 
-Overview:
+<strong>Lab Overview:</strong>
 
 - Exercise 1: Getting Familiar with Microsoft Copilot and Zero-Shot Prompting
 - Exercise 2: In-Context Learning and Setting Goals with Task-Specific Prompting
@@ -56,7 +61,25 @@ In this exercise, you'll become acquainted with Microsoft Copilot and practice z
 
 ### Step 1: Setting Up Microsoft Copilot
 
-For this exercise, we’ll be using **Microsoft Copilot** —your go-to AI companion for web-based AI-powered chat. Open Copilot at [bing.com/chat](https://www.bing.com/chat) and set the conversation style to "**More creative**." We're diving into an ideation session today, and as Linus Pauling once said:
+For this exercise, we’ll be using **Microsoft Copilot** —your go-to AI companion for web-based AI-powered chat. 
+
+Two options how to access Copilot:
+
+<ul>
+    <li>
+        <strong>You have a work account with a Copilot License:</strong> <br>
+        In this case, you can use Copilot via 
+        Open Copilot at <a href="https://www.bing.com/chat">bing.com/chat</a>.<br>
+        (set the conversation style to "<strong>More creative</strong>.")
+    </li>
+    <li>
+        <strong>You don't have a work account with a Copilot License:</strong> <br>
+        In this case, use Copilot via 
+        <a href="https://copilot.microsoft.com/">copilot.microsoft.com</a>.
+    </li>
+</ul>
+
+We're diving into an ideation session today, and as Linus Pauling once said:
 
 Today, we’ll dive into brainstorming and strategic planning for EcoGen Solutions. Your tasks will include defining the company’s strengths and weaknesses, identifying opportunities in a growing market, and anticipating potential threats. As Linus Pauling once said:
 
