@@ -39,6 +39,7 @@ In this lab, you will follow a guided journey to create a startup plan using sop
 - Exercise 3: Refining Responses with Recursive Prompting and Task Splitting
 - Exercise 4: Enhancing Reasoning with Chain-of-Thought and Tree-of-Thought Prompting
 - Exercise 5: Generating Structured Outputs and Visualizations with Advanced Techniques
+- Exercise 6: Classifying Text with Zero-Shot and Few-Shot Sentiment Analysis
 
 Let’s get started by setting the foundation for our startup journey!
 
@@ -311,6 +312,8 @@ We need to develop a strategic plan to scale our manufacturing while maintaining
 
 Copilot should outline a step-by-step plan, considering factors like supply chain optimization, cost reduction strategies, and potential partnerships.
 
+![This is what the output could look like:](./img/exercise_4-1_output.png)
+
 </div>
 
 <div class="step" markdown="1">
@@ -320,14 +323,24 @@ Copilot should outline a step-by-step plan, considering factors like supply chai
 Tree-of-thought prompting encourages the AI to explore different ideas before selecting the best one.
 
 ```Prompt:
-We are exploring new markets to expand into. Imagine three different market entry strategies: entering developing countries, targeting urban areas in developed countries, or partnering with governments for large-scale projects. Generate these ideas and evaluate which aligns best with our mission and resources.
+We are exploring new markets to expand into. 
+
+Imagine three different market entry strategies: entering developing countries, targeting urban areas in developed countries, or partnering with governments for large-scale projects. Generate these ideas and evaluate which aligns best with our mission and resources.
 ```
 
 <strong>Expected Outcome</strong>
 Copilot should provide an analysis of each strategy, comparing their pros and cons, and suggest the most suitable option.
 
-![This is what the output could look like:](./img/exercise_4-1_output.png)
 
+
+> **Note:** 
+Please note that Microsoft Copilot now utilizes OpenAI's GPT-4o model, which features an expanded context window of up to 128,000 tokens. 
+THE VERGE
+ This enhancement allows Copilot to retain and process a significantly larger amount of preceding text, reducing the likelihood of "forgetting" earlier parts of the conversation. <br> <br>
+To verify if Copilot still remembers initial details, you can prompt it with a question like, "Can you remind me of the role I initially assigned to you?" If details are missing, it may be helpful to refresh the conversation by restating key points, such as roles or organizational context, to maintain accuracy and coherence.
+
+Sample response if Copilot still remembers the beginning of your conversation:
+![This is what the response should look if Copilot still remembers the beginning of your conversation:](./img/exercise_4-2_output.png)
 
 </div>
 </div>
@@ -351,10 +364,12 @@ Learn how to instruct the AI to produce process visualizations using Mermaid.js 
 Choose a key business process within EcoVerse Solutions that would benefit from visualization. For this exercise, we'll focus on the Customer Onboarding Process for new clients purchasing solar panel systems.
 
 ```Prompt:
-As the CEO of EcoVerse Solutions, I want to visualize our Customer Onboarding Process to identify areas for improvement and enhance customer experience. Please help me outline the steps involved in our Customer Onboarding Process.
+As the CEO of EcoVerse Solutions, I want to visualize our Customer Onboarding Process. 
+My goal is to identify areas for improvement and enhance customer experience. 
+Please help me outline the steps involved in our Customer Onboarding Process.
 ```
 
-Expected Outcome:
+<strong>Expected Outcome</strong>
 
 Copilot should provide a detailed list of steps involved in the customer onboarding process, such as:
 
@@ -383,29 +398,17 @@ Use the detailed process steps to create a visual flowchart using Mermaid.js.
 Based on the detailed Customer Onboarding Process, generate Mermaid.js code for a flowchart that visualizes each step. Ensure that the flowchart accurately represents the sequence of steps and includes any decision points or feedback loops.
 ```
 
-Expected Outcome:
+<strong>Expected Outcome</strong>
 
 Copilot should provide Mermaid.js code that, when rendered, displays a flowchart of the customer onboarding process.
 
-graph TD
-    A[Customer Inquiry] --> B[Initial Consultation]
-    B --> C[Site Assessment]
-    C --> D[Proposal Preparation]
-    D --> E[Proposal Presentation]
-    E --> F{Proposal Accepted?}
-    F -- Yes --> G[Contract Signing]
-    F -- No --> H[Revise Proposal]
-    H --> D
-    G --> I[Installation Scheduling]
-    I --> J[System Installation]
-    J --> K[Inspection and Testing]
-    K --> L[Customer Training]
-    L --> M[Post-Installation Support]
-    M --> N[Customer Feedback Collection]
+Sample response:
+
+![mermaid code sample](./img/exercise_5-2_output.png)
 
 Instructions:
 
-Use the Mermaid Live Editor at Mermaid Live Editor [mermaid.live](https://mermaid.live/) to visualize the diagram.
+Use the Mermaid Live Editor at Mermaid Live Editor [mermaid.live](https://mermaid.live/) to visualize the diagram. <br>
 Paste the generated code into the editor to view the interactive flowchart.
 
 ![The diagram should look similar to this](./img/mermaidjs.png)
@@ -414,7 +417,7 @@ Paste the generated code into the editor to view the interactive flowchart.
 
 <div class="step" markdown="1">
 
-### Step 4: Creating an Interactive HTML Representation
+### Step 3: Creating an Interactive HTML Representation
 
 Enhance the process visualization by creating an interactive HTML representation of the Customer Onboarding Process.
 
@@ -423,15 +426,23 @@ Please generate an HTML snippet that outlines the Customer Onboarding Process.
 When the user hovers above one of the steps, there should be additional information displayed.
 ```
 
-Expected Outcome:
+<strong>Expected Outcome</strong>
 
 Copilot should produce HTML code that, when rendered, presents the onboarding process in an interactive format, allowing users to click through each step.
 
+![HTML Code sample](./img/exercise_5-3_output.png)
 
-Instructions:
+How to display the HTML code:
 
-Copy the generated HTML code into an .html file.
-Open the file in a web browser to interact with the onboarding process steps.
+<ol>
+    <li>Copy the HTML code that Copilot provided.</li>
+    <li>Open a text editor (like Notepad, TextEdit, or any code editor you prefer).</li>
+    <li>Paste the HTML code into the editor.</li>
+    <li>Save the file with a .html extension (e.g., CustomerOnboardingProcess.html).</li>
+    <li>Open the file in a web browser to display the process steps.</li>
+    <li>Now you should be able to interact with the onboarding process steps.</li>
+</ol>
+
 
 </div>
 </div> 
@@ -445,7 +456,8 @@ Open the file in a web browser to interact with the onboarding process steps.
 
 ### Objective
 
-Learn how to perform text classification, specifically sentiment analysis, using both zero-shot and few-shot prompting techniques. This exercise will enable you to analyze customer feedback effectively, enhancing your ability to understand and respond to customer sentiments.
+Learn how to perform text classification, specifically sentiment analysis, using both zero-shot and few-shot prompting techniques. 
+This exercise will enable you to analyze customer feedback effectively, enhancing your ability to understand and respond to customer sentiments.
 
 </div> 
 
@@ -459,28 +471,16 @@ Scenario:
 EcoVerse Solutions has received various pieces of customer feedback. You need to classify the sentiment of each feedback to understand customer satisfaction levels.
 
 ```Prompt:
-*Classify the following customer feedback into positive, negative, or neutral sentiment.*
-```
+Classify the following customer feedback into positive, negative, or neutral sentiment.
 
 Feedback: "The installation team was professional and efficient."
 
 Sentiment:
-Expected Outcome:
+```
+
+<strong>Expected Outcome</strong>
 
 Copilot should analyze the feedback and classify the sentiment appropriately.
-
-Example Response:
-
-Positive
-
-Instructions:
-
-Provide the Prompt: Use the prompt as shown above, replacing the feedback text as needed.
-Interpret the Response: The AI will classify the sentiment based on the content of the feedback.
-Benefits:
-
-Efficiency: Quickly categorize large volumes of feedback.
-Insight: Gain insights into overall customer satisfaction and areas needing improvement.
 
 </div> 
 
@@ -490,37 +490,55 @@ Insight: Gain insights into overall customer satisfaction and areas needing impr
 
 Few-shot prompting involves providing the AI with a few examples of how to classify sentiments. This technique guides the AI to follow a specific pattern, improving accuracy and consistency in classification.
 
-Scenario:
-
 To enhance the accuracy of sentiment classification, provide the AI with example classifications.
 
 ```Prompt:
-*Classify the following customer feedback into positive, negative, or neutral sentiment based on the examples below:*
+Q: The installation team was professional and efficient.
+A: Positive
 
-- "The installation team was professional and efficient." // Positive
-- "The product stopped working after a week." // Negative
-- "The service was okay, nothing exceptional." // Neutral
+Q: The product stopped working after a week. 
+A: Negative
 
-Feedback: "I love the design of your solar panels, but the pricing is a bit high."
+Q: The service was okay, nothing exceptional.
+A: Neutral
 
-Sentiment:
+Q: I love the design of your solar panels, but the pricing is a bit high.
+A: 
 ```
 
-Expected Outcome:
+<strong>Expected Outcome</strong>
 
 Copilot should classify the sentiment of the new feedback by following the pattern established in the examples.
 
-Example Response:
+You can also define a different format for the response, such as JSON. This is particularly useful when working with LLMs in an application context, where the output needs to be structured to allow for programmtic processing of results.
 
-Positive
-Instructions:
+```Prompt:
+{
+    [
+        {
+            "Q": "The installation team was professional and efficient.",
+            "A": "Positive"
+        },
+        {
+            "Q": "The product stopped working after a week.",
+            "A": "Negative"
+        },
+        {
+            "Q": "The service was okay, nothing exceptional.",
+            "A": "Neutral"
+        },
+        {
+            "Q": "I love the design of your solar panels, but the pricing is a bit high.",
+            "A": ""
+        }
+    ]
+}
+```
 
-Provide the Prompt: Use the prompt as shown above, ensuring to include clear examples.
-Interpret the Response: The AI will classify the sentiment based on the provided examples.
-Benefits:
+<strong>Expected Outcome</strong>
 
-Improved Accuracy: The AI follows the demonstrated pattern, reducing misclassification.
-Consistency: Ensures that similar feedback is classified in a uniform manner.
+Completed output as JSON response:
+![HTML Code sample](./img/exercise_6-2_output.png)
 
 </div> 
 
