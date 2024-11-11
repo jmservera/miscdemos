@@ -426,14 +426,14 @@ Copilot should produce HTML code that, when rendered, presents the onboarding pr
 
 How to display the HTML code:
 
-<ol>
-    <li>Copy the HTML code that Copilot provided.</li>
-    <li>Open a text editor (like Notepad, TextEdit, or any code editor you prefer).</li>
-    <li>Paste the HTML code into the editor.</li>
-    <li>Save the file with a .html extension (e.g., CustomerOnboardingProcess.html).</li>
-    <li>Open the file in a web browser to display the process steps.</li>
-    <li>Now you should be able to interact with the onboarding process steps.</li>
-</ol>
+- You can use an online HMTL editor like [JS Bin](https://jsbin.com/) or [JSFiddle](https://jsfiddle.net/).
+- Or, you can follow these steps to display the HTML code on your local machine:
+    1. Copy the HTML code that Copilot provided.
+    2. Open a text editor (like Notepad, TextEdit, or any code editor you prefer).
+    3. Paste the HTML code into the editor.
+    4. Save the file with a `.html` extension (e.g., `CustomerOnboardingProcess.html`).
+    5. Open the file in a web browser to display the process steps.
+    6. Now you should be able to interact with the onboarding process steps.
 
 
 </div>
