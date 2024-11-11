@@ -20,7 +20,7 @@ Lab created by
 
 ![Screenshot showing Copilot on the web.](./img/Copilot_robot.png)
 
-<strong>Welcome to the Advanced Prompt Engineering Lab</strong>
+**Welcome to the Advanced Prompt Engineering Lab**
 
 This guide will walk you through a series of steps designed to teach advanced techniques for crafting highly effective prompts. The exercises are tailored for participants with prior experience working with Large Language Models (LLMs) who are eager to elevate their prompt engineering skills.
 
@@ -32,23 +32,23 @@ This lab has been developed and tested with Microsoft Copilot but may also be co
 
 In this lab, you will follow a guided journey to create a startup plan using sophisticated prompt engineering methods.
 
-<strong>Lab Overview:</strong>
+**Lab Overview:**
 
-- Exercise 1: Getting Familiar with Microsoft Copilot and Zero-Shot Prompting
-- Exercise 2: In-Context Learning and Setting Goals with Task-Specific Prompting
-- Exercise 3: Refining Responses with Recursive Prompting and Task Splitting
-- Exercise 4: Enhancing Reasoning with Chain-of-Thought and Tree-of-Thought Prompting
-- Exercise 5: Generating Structured Outputs and Visualizations with Advanced Techniques
-- Exercise 6: Classifying Text with Zero-Shot and Few-Shot Sentiment Analysis
+- [Exercise 1]({{ basename }}#exercise-1): Getting Familiar with Microsoft Copilot and Zero-Shot Prompting
+- [Exercise 2]({{ basename }}#exercise-2): In-Context Learning and Setting Goals with Task-Specific Prompting
+- [Exercise 3]({{ basename }}#exercise-3): Refining Responses with Recursive Prompting and Task Splitting
+- [Exercise 4]({{ basename }}#exercise-4): Enhancing Reasoning with Chain-of-Thought and Tree-of-Thought Prompting
+- [Exercise 5]({{ basename }}#exercise-5): Generating Structured Outputs and Visualizations with Advanced Techniques
+- [Exercise 6]({{ basename }}#exercise-6): Classifying Text with Zero-Shot and Few-Shot Sentiment Analysis
 
 Let’s get started by setting the foundation for our startup journey!
 
 </div>
 </div>
 
-<div class="section" markdown="1">
+<div class="section" markdown="1"> <!-- section: Exercise 1 -->
 
-## Exercise 1 – Getting familiar with Microsoft Copilot
+## Exercise 1 – Getting familiar with Microsoft Copilot {#exercise-1}
 
 <div class="step" markdown="1">
 
@@ -66,23 +66,17 @@ For this exercise, we’ll be using **Microsoft Copilot** —your go-to AI compa
 
 Two options how to access Copilot:
 
-<ul>
-    <li>
-        <strong>You have a work account with a Copilot License:</strong> <br>
+- **You have a work account with a Copilot License:**<br>
         In this case, you can use Copilot via 
-        <a href="https://www.bing.com/chat">bing.com/chat</a>.<br>
-        Select <strong>"Web"</strong> mode and set the conversation style to "<strong>More creative</strong>."
-    </li>
-    <li>
-        <strong>You don't have a work account with a Copilot License:</strong> <br>
-        In this case, use Copilot via 
-        <a href="https://copilot.microsoft.com/">copilot.microsoft.com</a>.
-    </li>
-</ul>
-
-
-
-![Screenshot showing Copilot on the web.](./img/Copilot%20in%20desktop.png)
+        [bing.com/chat](https://www.bing.com/chat), ensure you configure the assistant for *WEB* and not for *WORK*. It will look similar to:
+        ![Screenshot showing bing chat](./img/copilot_for_work_web.png)
+        
+- **You don't have a work account with a Copilot License:**<br>
+        In this case, use Copilot via [copilot.microsoft.com](https://copilot.microsoft.com/). In this case, ensure that:
+        
+    - You log in with a [Microsoft account](https://account.microsoft.com/account/CreateAccount) (@outlook @hotmail @live or similar)
+    - You use the [Edge Browser](https://www.microsoft.com/edge/download). It will look similar to:
+![Screenshot showing Copilot on the web.](./img/newcopilot.png)
 
 *Note:* If you’re accessing this exercise on a mobile browser, you might encounter a different interface. In that case, you may be prompted to log in with your Microsoft account to proceed.
 
@@ -101,45 +95,43 @@ We're diving into an ideation session today, and as Linus Pauling once said:
 
 ### Step 2: Initiating a SWOT Analysis with Zero-Shot Prompting
 
-Let's begin with <strong>Zero-shot prompting</strong>. 
+Let's begin with **Zero-shot prompting**. 
 
 Zero-shot prompting involves giving the AI a broad prompt without specific examples, allowing it to generate open-ended responses.<br><br>
 
-<strong>Imagine...</strong><br><br>
+**Imagine...**<br><br>
 You're the CEO of a EcoVerse Solutions - a leading company for Co2 storage.
 
 Your mission is to lead strategic growth while ensuring innovation. 
 Alongside you is an AI-driven executive assistant that you can prompt to tackle this task.
 
-> **Information About EcoVerse Solutions:** 
-EcoVerse Solutions, a leading innovator in direct air capture (DAC) technology, has established itself as a key player in the fight against climate change by developing advanced systems to capture CO₂ directly from the atmosphere. Backed by strategic partnerships with major corporations like Microsoft and strong financial support, the company is poised for growth. However, EcoVerse Solutions faces challenges in scaling its operations and reducing the high costs associated with capturing carbon, which limits broader adoption. As global policies shift towards net-zero goals, the company has significant opportunities to benefit from government regulations and the growing carbon credits market. Nonetheless, emerging competition in the DAC space and potential economic fluctuations pose risks to its future expansion.
+
 
 ```prompt
 As the founder of EcoVerse Solutions, I need to understand the current market landscape. Please provide a SWOT analysis for my company, considering the renewable energy sector.
 
-<insert the company information from above here>
+Information About EcoVerse Solutions: EcoVerse Solutions, a leading innovator in direct air capture (DAC) technology, has established itself as a key player in the fight against climate change by developing advanced systems to capture CO₂ directly from the atmosphere. Backed by strategic partnerships with major corporations like Microsoft and strong financial support, the company is poised for growth. However, EcoVerse Solutions faces challenges in scaling its operations and reducing the high costs associated with capturing carbon, which limits broader adoption. As global policies shift towards net-zero goals, the company has significant opportunities to benefit from government regulations and the growing carbon credits market. Nonetheless, emerging competition in the DAC space and potential economic fluctuations pose risks to its future expansion.
 ```
 
-*This **zero-shot prompt** sets the context and assigns roles without providing specific examples.*<br><br>
+> This **zero-shot prompt** sets the context and assigns roles without providing specific examples.
 
-<strong>Expected Outcome</strong>
+**Expected Outcome**
 
 Copilot should provide a basic SWOT analysis outlining potential strengths, weaknesses, opportunities, and threats for EcoVerse Solutions.
 
 ![This is what the output could look like:](./img/exercise_1-1_output.png)
-
 </div>
-</div>
+</div> <!-- end section: Exercise 1 -->
 
-<div class="section" markdown="1">
+<div class="section" markdown="1"> <!-- section: Exercise 2 -->
 
-## Exercise 2 – In-Context Learning and Setting Goals with Task-Specific Prompting
+## Exercise 2 – In-Context Learning and Setting Goals with Task-Specific Prompting {#exercise-2}
 
 <div class="step" markdown="1">
 
 ### Objective
 
-Next, let's enhance the AI's responses by providing additional context and setting goals. For this, we use <strong>in-context learning</strong> and <strong>task-specific prompting</strong>.
+Next, let's enhance the AI's responses by providing additional context and setting goals. For this, we use **in-context learning** and **task-specific prompting**.
 
 </div>
 
@@ -149,7 +141,7 @@ Next, let's enhance the AI's responses by providing additional context and setti
 
 In-context learning provides the AI with specific information within the prompt to guide its response.<br><br>
 
-<strong>Scenario</strong>.
+**Scenario**.
 
 You are the CEO of EcoVerse Solutions. Your mission is to lead strategic growth while ensuring innovation in renewable energy. <br><br>
 
@@ -164,7 +156,7 @@ Assist me with a series of tasks that I will provide to you next. Just reply wit
 <br>
 This prompt provides context, setting roles and background information to guide the AI's response more effectively without triggering an immediate response.
 
-<strong>Expected Outcome</strong>
+**Expected Outcome**
 "Ok"
 
 </div>
@@ -196,15 +188,15 @@ Clear call to action at the end.
 Present the outline in bullet points.
 ```
 <br>
-<strong>Expected Outcome</strong> <br> <br> 
+**Expected Outcome** <br> <br> 
 <p>Copilot should generate a structured presentation outline that meets the specified requirements, demonstrating how providing clear goals and context improves the quality of the AI's output.</p>
 
 </div>
-</div>
+</div><!-- end section: Exercise 2 -->
 
-<div class="section" markdown="1">
+<div class="section" markdown="1"> <!-- section: Exercise 3 -->
 
-## Exercise 3 – Refining Responses with Recursive Prompting and Task Splitting
+## Exercise 3 – Refining Responses with Recursive Prompting and Task Splitting {#exercise-3}
 
 <div class="step" markdown="1">
 
@@ -220,22 +212,22 @@ Learn how to refine AI responses through recursive prompting and improve task ha
 
 Recursive prompting involves using follow-up prompts to refine the AI's output. <br> <br>
 
-<strong>Initial prompt</strong>
+**Initial prompt**
 ```
 Based on the presentation outline, put yourself in the shoes of skeptical investors and think about 10 critical questions they might ask during the presentation. Be creative and extra critical. 
 ```
 
-<strong>First follow-Up prompt</strong>
+**First follow-Up prompt**
 ```
 For each question, please provide a well-thought-out answer.
 ```
-<strong>Second follow-Up prompt</strong>
+**Second follow-Up prompt**
 ```
 Please present the results in a table with two columns: "Question" and "Answer".
 ```
 <br>
 
-<strong>Expected Outcome</strong>
+**Expected Outcome**
 
 Copilot should generate a table with critical investor questions and corresponding answers, demonstrating how recursive prompts can refine and expand the AI's responses. 
 
@@ -256,7 +248,7 @@ Let's improve our investor Q&A section. First, list common investor concerns in 
 ```
 By breaking down the task, Copilot can focus on listing concerns first and then addressing them, resulting in a more detailed and accurate output.
 
-<strong>Expected Outcome</strong><br><br>
+**Expected Outcome**<br><br>
 A list or table with investor concerns and potential answers. 
 
 > **Note:** 
@@ -280,15 +272,15 @@ Please consider these additional context below and refine your response accordin
 3. Market Volatility: To withstand market fluctuations, EcoVerse has established a diversified supply chain that reduces dependency on single sources, enhancing resilience. Strategic alliances with established industry partners, including Microsoft, provide additional stability and resource-sharing benefits, allowing us to adapt to economic changes without disrupting operations. This foundation offers investors assurance in EcoVerse’s ability to scale sustainably despite market uncertainties.
 ```
 
-<strong>Expected Outcome</strong><br><br>
+**Expected Outcome**<br><br>
 A list of refined answers that better capture the context of our startup.
 
 </div>
-</div>
+</div> <!-- section: Exercise 3 -->
 
-<div class="section" markdown="1">
+<div class="section" markdown="1"> <!-- section: Exercise 4 -->
 
-## Exercise 4 – Enhancing Reasoning with Chain-of-Thought and Tree-of-Thought Prompting
+## Exercise 4 – Enhancing Reasoning with Chain-of-Thought and Tree-of-Thought Prompting {#exercise-4}
 
 <div class="step" markdown="1">
 
@@ -308,7 +300,7 @@ Chain-of-thought prompting guides the AI to think through problems step-by-step.
 We need to develop a strategic plan to scale our manufacturing while maintaining cost-effectiveness. Let's think through the steps we need to take to achieve this goal.
 ```
 
-<strong>Expected Outcome</strong>
+**Expected Outcome**
 
 Copilot should outline a step-by-step plan, considering factors like supply chain optimization, cost reduction strategies, and potential partnerships.
 
@@ -328,7 +320,7 @@ We are exploring new markets to expand into.
 Imagine three different market entry strategies: entering developing countries, targeting urban areas in developed countries, or partnering with governments for large-scale projects. Generate these ideas and evaluate which aligns best with our mission and resources.
 ```
 
-<strong>Expected Outcome</strong>
+**Expected Outcome**
 Copilot should provide an analysis of each strategy, comparing their pros and cons, and suggest the most suitable option.
 
 
@@ -343,11 +335,11 @@ Sample response if Copilot still remembers the beginning of your conversation:
 ![This is what the response should look if Copilot still remembers the beginning of your conversation:](./img/exercise_4-2_output.png)
 
 </div>
-</div>
+</div> <!-- end section: Exercise 4 -->
 
-<div class="section" markdown="1">
+<div class="section" markdown="1"> <!-- section: Exercise 5 -->
 
-## Exercise 5 – Generating Structured Outputs and Visualizations with Advanced Techniques
+## Exercise 5 – Generating Structured Outputs and Visualizations with Advanced Techniques {#exercise-5}
 
 <div class="step" markdown="1">
 
@@ -369,7 +361,7 @@ My goal is to identify areas for improvement and enhance customer experience.
 Please help me outline the steps involved in our Customer Onboarding Process.
 ```
 
-<strong>Expected Outcome</strong>
+**Expected Outcome**
 
 Copilot should provide a detailed list of steps involved in the customer onboarding process, such as:
 
@@ -398,7 +390,7 @@ Use the detailed process steps to create a visual flowchart using Mermaid.js.
 Based on the detailed Customer Onboarding Process, generate Mermaid.js code for a flowchart that visualizes each step. Ensure that the flowchart accurately represents the sequence of steps and includes any decision points or feedback loops.
 ```
 
-<strong>Expected Outcome</strong>
+**Expected Outcome**
 
 Copilot should provide Mermaid.js code that, when rendered, displays a flowchart of the customer onboarding process.
 
@@ -426,7 +418,7 @@ Please generate an HTML snippet that outlines the Customer Onboarding Process.
 When the user hovers above one of the steps, there should be additional information displayed.
 ```
 
-<strong>Expected Outcome</strong>
+**Expected Outcome**
 
 Copilot should produce HTML code that, when rendered, presents the onboarding process in an interactive format, allowing users to click through each step.
 
@@ -445,12 +437,12 @@ How to display the HTML code:
 
 
 </div>
-</div> 
+</div> <!-- end section: Exercise 5 -->
 
 
-<div class="section" markdown="1">
+<div class="section" markdown="1"> <!-- section: Exercise 6 -->
 
-## Exercise 6 – Classifying Text with Zero-Shot and Few-Shot Sentiment Analysis
+## Exercise 6 – Classifying Text with Zero-Shot and Few-Shot Sentiment Analysis {#exercise-6}
 
 <div class="step" markdown="1">
 
@@ -478,7 +470,7 @@ Feedback: "The installation team was professional and efficient."
 Sentiment:
 ```
 
-<strong>Expected Outcome</strong>
+**Expected Outcome**
 
 Copilot should analyze the feedback and classify the sentiment appropriately.
 
@@ -506,7 +498,7 @@ Q: I love the design of your solar panels, but the pricing is a bit high.
 A: 
 ```
 
-<strong>Expected Outcome</strong>
+**Expected Outcome**
 
 Copilot should classify the sentiment of the new feedback by following the pattern established in the examples.
 
@@ -535,16 +527,17 @@ You can also define a different format for the response, such as JSON. This is p
 }
 ```
 
-<strong>Expected Outcome</strong>
+**Expected Outcome**
 
 Completed output as JSON response:
 ![HTML Code sample](./img/exercise_6-2_output.png)
 
-</div> 
+</div>
+</div> <!-- end section: Exercise 6 -->
 
-<div class="section" markdown="1">
+<div class="section" markdown="1"> <!-- section: Conclusion -->
 
-### Conclusion
+## Conclusion
 
 <div class="step" markdown="1">
 Congratulations on completing the Advanced Prompt Engineering Lab!
@@ -571,12 +564,26 @@ If you want to learn more, here you have a few interesting resources to extend y
 * [OpenAI Prompt Engineering](https://platform.openai.com/docs/guides/prompt-engineering/prompt-engineering): A guide to prompt engineering by the GPT-4 creators.
 * [Prompt Engineering Techniques](https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/advanced-prompt-engineering): Tips and tricks for prompting with Azure OpenAI Service.
 
-</div> 
-</div> 
+### Cleanup
 
-<div class="section" markdown="1">
+If you don't want to keep this exercise into your Copilot chat history, you can delete the conversation by clicking on the clock icon next to your conversation box:
 
-Glossary
+![Conversation history](./img/copilot_history.png)
+
+And then you can click on the conversation you just had to remove it from your history:
+
+![Remove conversation](./img/copilot_remove.png)
+
+If you are using your work account you will have more granular control on your conversations. You can access them from the side menu and delete them from there individually:
+
+![Remove conversation in Copilot for Work](./img/copilot_for_work_delete.png)
+
+</div> 
+</div> <!-- end section: Conclusion -->
+
+<div class="section" markdown="1"> <!-- section: Glossary -->
+
+## Glossary
 
 <div class="step" markdown="1"> 
 
@@ -599,37 +606,51 @@ Glossary
 These definitions are specific to this lab guide and the usage of Microsoft's AI companion, Copilot. The definitions might vary slightly in different contexts or with different AI systems.
 
 </div> 
-</div> 
+</div> <!-- end section: Glossary -->
 
-<div class="section" markdown="1">
+<div class="section" markdown="1"> <!-- section: Additional examples -->
 
-Additional Example Prompts
+## Additional Example Prompts
 
 <div class="step" markdown="1"> 
 
 Here are advanced examples for each type of prompt mentioned in the lab:
-Zero-Shot Prompt:
-"Develop a marketing strategy for our sustainable energy startup targeting urban households."
-Conditional Prompt:
-"Based on our current market position, propose three strategic initiatives to increase our market share in the renewable energy sector."
-Multiple Choice Prompt:
-"Which of the following technologies should we invest in to enhance our energy storage capabilities?
-A) Lithium-ion batteries
-B) Flow batteries
-C) Solid-state batteries
-D) Hydrogen fuel cells"
-Few-Shot Prompt:
-"Here are some mission statements from leading sustainable energy companies:
+
+- Zero-Shot Prompt:
+```prompt
+Develop a marketing strategy for our sustainable energy startup targeting urban households.
+```
+- Conditional Prompt:
+```prompt
+Based on our current market position, propose three strategic initiatives to increase our market share in the renewable energy sector.
+```
+- Multiple Choice Prompt:
+```prompt
+Which of the following technologies should we invest in to enhance our energy storage capabilities?
+  A) Lithium-ion batteries
+  B) Flow batteries
+  C) Solid-state batteries
+  D) Hydrogen fuel cells
+```
+- Few-Shot Prompt:
+```prompt
+Here are some mission statements from leading sustainable energy companies:
 'To accelerate the world's transition to sustainable energy.'
 'Innovating renewable energy solutions for a greener tomorrow.'
 'Empowering communities with clean and affordable energy.'
-Generate three mission statements for our startup that emphasizes innovation and sustainability."
-Chain-of-Thought Prompting:
-"We aim to reduce our carbon footprint by 50% over the next five years. Let's outline the steps needed to achieve this goal."
-Tree-of-Thought Prompting:
-"Our product development team is brainstorming ideas for a new solar panel design. They have three different concepts. Generate these ideas and evaluate which one aligns best with our sustainability goals."
-Mermaid.js Prompt:
-"Create Mermaid.js code for a flowchart depicting our customer onboarding process, including steps like 'Sign Up', 'Verification', 'Welcome Package', and 'First Purchase'."
-
+Generate three mission statements for our startup that emphasizes innovation and sustainability.
+```
+- Chain-of-Thought Prompting:
+```prompt
+We aim to reduce our carbon footprint by 50% over the next five years. Let's outline the steps needed to achieve this goal.
+```
+- Tree-of-Thought Prompting:
+```prompt
+Our product development team is brainstorming ideas for a new solar panel design. They have three different concepts. Generate these ideas and evaluate which one aligns best with our sustainability goals.
+```
+- Mermaid.js Prompt:
+```prompt
+Create Mermaid.js code for a flowchart depicting our customer onboarding process, including steps like 'Sign Up', 'Verification', 'Welcome Package', and 'First Purchase'.
+```
 </div> 
-</div> 
+</div> <!-- end section: Additional examples -->
