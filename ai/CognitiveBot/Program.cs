@@ -21,6 +21,7 @@ namespace EchoBot
                     {
                         logging.AddDebug();
                         logging.AddConsole();
+                        logging.AddAzureWebAppDiagnostics();
                     });
                     webBuilder.UseStartup<Startup>();
                 });

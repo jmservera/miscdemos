@@ -8,39 +8,75 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Schema;
+using Microsoft.Extensions.Logging;
+using EchoBot.AI;
+using System.Linq;
+using Microsoft.Bot.Schema.SharePoint;
 
 namespace EchoBot.Bots
 {
-    public class EchoBot : ActivityHandler
+    public class EchoBot(ILogger<EchoBot> logger, PictureDescriber describer) : ActivityHandler
     {
+        static readonly HashSet<string> validMimeTypes = ["image/jpeg", "image/png", "image/gif"];
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
+            logger.LogInformation("Running dialog with Message Activity.");
             if (turnContext.Activity.Attachments != null && turnContext.Activity.Attachments.Count > 0)
             {
                 foreach (var attachment in turnContext.Activity.Attachments)
                 {
-                    var fileContent = await DownloadAttachmentAsync(attachment.ContentUrl);
-                    // Process the file content as needed
-                    var replyText = $"Received file: {attachment.Name}";
-                    await turnContext.SendActivityAsync(MessageFactory.Text(replyText, replyText), cancellationToken);
+                    if (validMimeTypes.Contains(attachment.ContentType))
+                    {
+                        await turnContext.SendActivityAsync(Activity.CreateTypingActivity(), cancellationToken);
+                        var fileContent = await DownloadAttachmentAsync(attachment.ContentUrl, cancellationToken);
+                        var descriptions = await describer.DescribePictureAsync(fileContent, attachment.ContentType, cancellationToken);
+
+                        var reply = MessageFactory.Text("What is your favorite quote?");
+
+                        reply.SuggestedActions = new SuggestedActions()
+                        {
+                            Actions = [.. descriptions.Select(d => new CardAction() { Title = d.Title, Type = ActionTypes.MessageBack, Value = d.Description, DisplayText = d.Description })],
+                        };
+                        await turnContext.SendActivityAsync(reply, cancellationToken);
+
+                        // // iterate through all the dictionary
+                        // var replyText = string.Join("\n", descriptions.Select(d => $"{d.Title}: {d.Description}"));
+
+                        // await turnContext.SendActivityAsync(MessageFactory.Text(replyText, replyText), cancellationToken);
+                    }
+                    else
+                    {
+                        var replyText = $"Attachment of type {attachment.ContentType} is not supported.";
+                        await turnContext.SendActivityAsync(MessageFactory.Text(replyText, replyText), cancellationToken);
+                    }
                 }
             }
             else
             {
-                var replyText = $"Echos: {turnContext.Activity.Text}";
-                await turnContext.SendActivityAsync(MessageFactory.Text(replyText, replyText), cancellationToken);
+                if (turnContext.Activity.Value != null)
+                {
+                    var replyText = $"You selected: {turnContext.Activity.Value}";
+                    await turnContext.SendActivityAsync(MessageFactory.Text(replyText, replyText), cancellationToken);
+                }
+                else
+                {
+                    var replyText = $"Echos: {turnContext.Activity.Text}";
+                    await turnContext.SendActivityAsync(MessageFactory.Text(replyText, replyText), cancellationToken);
+                }
             }
         }
 
-        private async Task<string> DownloadAttachmentAsync(string contentUrl)
+        private async Task<Stream> DownloadAttachmentAsync(string contentUrl, CancellationToken cancellationToken)
         {
-            using (var httpClient = new HttpClient())
-            {
-                var response = await httpClient.GetAsync(contentUrl);
-                response.EnsureSuccessStatusCode();
-                var content = await response.Content.ReadAsStringAsync();
-                return content;
-            }
+            logger.LogInformation("Downloading attachment from {contentUrl}.", contentUrl);
+            // todo - dispose this client properly (cannot be done in this method as the ReadAsStreamAsync method will return an error)
+            var httpClient = new HttpClient();
+            var response = await httpClient.GetAsync(contentUrl, cancellationToken);
+            response.EnsureSuccessStatusCode();
+            response.Headers.TryGetValues("Content-Type", out var values);
+            logger.LogInformation("Creating stream from {contentUrl}. Content-Type: {contentType}.", contentUrl, values?.FirstOrDefault());
+            // write the content to a file on disk as jpeg
+            return await response.Content.ReadAsStreamAsync(cancellationToken);
         }
 
         protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
