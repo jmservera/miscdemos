@@ -33,27 +33,84 @@ namespace EchoBot.Bots
 
                         var descriptions = await describer.DescribePictureAsync(fileContent, attachment.ContentType, cancellationToken);
 
-                        await turnContext.SendActivityAsync(MessageFactory.Text("I've generated some ideas, give me some more time to make a nice background..."), cancellationToken);
+                        var descriptionsActivity = new Activity()
+                        {
+                            Type = ActivityTypes.Message,
+                            Text = "I've generated some ideas, give me some more time to make a nice background...",
+                            Attachments = [..descriptions.Select(d=> new HeroCard()
+                                            {
+                                                Title = d.Title,
+                                                Subtitle = d.Description,
+                                            }.ToAttachment())]
+                        };
+                        await turnContext.SendActivityAsync(descriptionsActivity, cancellationToken);
+
                         await turnContext.SendActivityAsync(Activity.CreateTypingActivity(), cancellationToken);
 
-                        fileContent.Seek(0, SeekOrigin.Begin);
+                        // we need it again as the stream has been closed
+                        fileContent = await DownloadAttachmentAsync(attachment.ContentUrl, cancellationToken);
 
-
-
-
-
-                        var reply = MessageFactory.Text("Here's what I've generated for you:");
-
-                        reply.AttachmentLayout = AttachmentLayoutTypes.Carousel;
-                        reply.Attachments = [.. descriptions.Select(d => new HeroCard()
+                        await turnContext.SendActivityAsync(MessageFactory.Text("I'm trying to remove the background of the picture..."), cancellationToken);
+                        await turnContext.SendActivityAsync(Activity.CreateTypingActivity(), cancellationToken);
+                        var (foreground, height, width) = await pictureTools.RemoveBackground(fileContent, attachment.ContentType, cancellationToken);
+                        await turnContext.SendActivityAsync(MessageFactory.Text("Great, now I'm going to generate some alternative pictures..."), cancellationToken);
+                        await turnContext.SendActivityAsync(Activity.CreateTypingActivity(), cancellationToken);
+                        foreach (var description in descriptions)
                         {
-                            Title = d.Title,
-                            Subtitle = d.Description,
-                            Images = [new(d.Url)]
-                        }.ToAttachment())];
+                            try
+                            {
+                                var prompt = $"""
+                            Generate a background for a picture that would match the following description of another picture:
+                            ---
+                            Title: {description.Title}
+                            Description: {description.Description}
+                            ---
+                            Generate a background that is not too distracting as it will be used to merge the original picture of the people over it.
+                            """;
+                                var background = await pictureTools.GenerateBackgroundFromTextAsync(prompt, cancellationToken);
+                                foreground.Position = 0;
+                                Stream newImage;
+                                if (background != null)
+                                {
+                                    newImage = await pictureTools.MergePicturesAsync(foreground, attachment.ContentType, background, cancellationToken);
+                                }
+                                else
+                                {
+                                    newImage = foreground;
+                                }
+                                var url = await pictureTools.PersistImageAsync(newImage, attachment.ContentType, cancellationToken);
+                                var msg = new Activity()
+                                {
+                                    Type = ActivityTypes.Message,
+                                    Attachments = [new HeroCard()
+                                    {
+                                        Title = description.Title,
+                                        Subtitle = description.Description,
+                                        Images = [new(url)]
+                                    }.ToAttachment()]
+                                };
+                                await turnContext.SendActivityAsync(msg, cancellationToken);
+                            }
+                            catch (Exception ex)
+                            {
+                                logger.LogError(ex, "Error generating new image card.");
+                            }
+                        }
 
-                        await turnContext.SendActivityAsync(reply, cancellationToken);
-                        reply = MessageFactory.Text("Which one is your favorite?");
+
+
+                        // var reply = MessageFactory.Text("Here's what I've generated for you:");
+
+                        // reply.AttachmentLayout = AttachmentLayoutTypes.Carousel;
+                        // reply.Attachments = [.. descriptions.Select(d => new HeroCard()
+                        // {
+                        //     Title = d.Title,
+                        //     Subtitle = d.Description,
+                        //     Images = [new(d.Url)]
+                        // }.ToAttachment())];
+
+                        // await turnContext.SendActivityAsync(reply, cancellationToken);
+                        var reply = MessageFactory.Text("Which one is your favorite?");
                         reply.SuggestedActions = new SuggestedActions() { Actions = [.. descriptions.Select(d => new CardAction() { Title = d.Title, Type = ActionTypes.MessageBack, Value = d.Title, DisplayText = d.Description })] };
                         await turnContext.SendActivityAsync(reply, cancellationToken);
                     }

@@ -52,7 +52,7 @@ namespace EchoBot
                         configuration.GetValue<string>("AOAI_ENDPOINT") ?? throw new InvalidOperationException("AOAI_ENDPOINT is not set."),
                         configuration.GetValue<string>("AOAI_KEY") ?? throw new InvalidOperationException("AOAI_KEY is not set."))
                     .AddAzureOpenAITextToImage(
-                        configuration.GetValue<string>("DallEModel") ?? throw new InvalidOperationException("AOAI_ENDPOINT is not set."),
+                        configuration.GetValue<string>("AOAI_DALLE_NAME") ?? throw new InvalidOperationException("AOAI_DALLE_NAME is not set."),
                         configuration.GetValue<string>("AOAI_ENDPOINT") ?? throw new InvalidOperationException("AOAI_ENDPOINT is not set."),
                         configuration.GetValue<string>("AOAI_KEY") ?? throw new InvalidOperationException("AOAI_KEY is not set."));
         }

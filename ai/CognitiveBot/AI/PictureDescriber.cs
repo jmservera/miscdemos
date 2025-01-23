@@ -28,11 +28,10 @@ public record Results([property: JsonProperty("result")] IList<Descriptions> Res
 public partial class PictureDescriber(ILogger<PictureDescriber> logger, FaceRecognition face,
                                             IChatCompletionService chatCompletionService, PictureTools pictureTools, IConfiguration configuration)
 {
-    public async Task<IList<Descriptions>> DescribePictureAsync(Stream picture, string contentType, CancellationToken cancellationToken)
+    public async Task<IList<Descriptions>> DescribePictureAsync(Stream picture, string contentType, CancellationToken cancellationToken = default)
     {
-        logger.LogInformation("Creating thumbnail for AI description.");
-        var imageBytes = await pictureTools.GetThumbnailAsync(picture, contentType, cancellationToken);
-
+        picture.Position = 0;
+        var imageBytes = await pictureTools.GetThumbnailAsync(picture, contentType, 800, 800, cancellationToken);
         picture.Position = 0;
         logger.LogInformation("Identifying people in the picture.");
         var people = await face.IdentifyInPersonGroupAsync(picture, cancellationToken: cancellationToken);
@@ -65,33 +64,21 @@ public partial class PictureDescriber(ILogger<PictureDescriber> logger, FaceReco
 
         ChatMessageContentItemCollection items = [];
 
-        items.Add(new TextContent(people.Names.Count > 0 ? $"""
+        items.Add(new TextContent(people?.Names?.Count > 0 ? $"""
             In this picture you see the following people: {string.Join(',', people.Names)}.
             Please find a funny title and description for this picture that includes the provided names.
             """ : "Please find a funny title and description for this picture."));
 
-        string contentUrl = "";
-        if (imageBytes != null)
-        {
-            ImageContent imageContent = new(new ReadOnlyMemory<byte>(imageBytes), contentType);
-            items.Add(imageContent);
+        ImageContent imageContent = new(new ReadOnlyMemory<byte>(imageBytes), contentType);
+        items.Add(imageContent);
 
-            // write image to disk with a random name in the temp folder
-            var tempFileName = Path.GetTempFileName();
-            tempFileName = Path.ChangeExtension(tempFileName, contentType.Split('/')[1]);
-            File.WriteAllBytes(tempFileName, imageBytes);
-            contentUrl = string.Concat(configuration.GetValue<string>("BaseUrl"), "api/pictures/", Path.GetFileName(tempFileName));
-        }
         history.AddUserMessage(items);
 
         var chatMessageContent = await chatCompletionService.GetChatMessageContentAsync(history, settings, cancellationToken: cancellationToken);
         var description = chatMessageContent.Content ?? throw new InvalidOperationException("No text generated");
 
         var localizedDescriptions = JsonConvert.DeserializeObject<Results>(description) ?? throw new InvalidOperationException("No text converted");
-        foreach (var desc in localizedDescriptions.Result)
-        {
-            desc.Url = contentUrl;
-        }
+
         return localizedDescriptions.Result;
         // return localizedDescriptions.Select(
         //     s => new KeyValuePair<string, string>(s.Key,
