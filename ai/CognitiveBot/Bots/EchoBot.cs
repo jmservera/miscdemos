@@ -28,14 +28,18 @@ namespace EchoBot.Bots
                     if (validMimeTypes.Contains(attachment.ContentType))
                     {
                         await turnContext.SendActivityAsync(MessageFactory.Text("Analyzing the picture..."), cancellationToken);
+
+                        // todo: change to proactive to avoid timeout
+                        // https://learn.microsoft.com/en-us/azure/bot-service/bot-builder-howto-proactive-message?view=azure-bot-service-4.0&tabs=csharp
+
                         await turnContext.SendActivityAsync(Activity.CreateTypingActivity(), cancellationToken);
 
                         var fileContent = await DownloadAttachmentAsync(attachment.ContentUrl, cancellationToken);
 
                         var descriptions = await describer.DescribePictureAsync(fileContent, attachment.ContentType, cancellationToken);
 
-
                         await turnContext.SendActivityAsync(MessageFactory.Text("I've generated some ideas, take a look while you give me some more time to make a nice background..."), cancellationToken);
+
                         // foreach (var description in descriptions)
                         // {
                         //     try
