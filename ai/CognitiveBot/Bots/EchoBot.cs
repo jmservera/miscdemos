@@ -11,11 +11,10 @@ using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Logging;
 using EchoBot.AI;
 using System.Linq;
-using Microsoft.Bot.Schema.SharePoint;
 
 namespace EchoBot.Bots
 {
-    public class EchoBot(ILogger<EchoBot> logger, PictureDescriber describer) : ActivityHandler
+    public class EchoBot(ILogger<EchoBot> logger, PictureDescriber describer, PictureTools pictureTools) : ActivityHandler
     {
         static readonly HashSet<string> validMimeTypes = ["image/jpeg", "image/png", "image/gif"];
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
@@ -27,22 +26,36 @@ namespace EchoBot.Bots
                 {
                     if (validMimeTypes.Contains(attachment.ContentType))
                     {
+                        await turnContext.SendActivityAsync(MessageFactory.Text("Analyzing the picture..."), cancellationToken);
                         await turnContext.SendActivityAsync(Activity.CreateTypingActivity(), cancellationToken);
+
                         var fileContent = await DownloadAttachmentAsync(attachment.ContentUrl, cancellationToken);
+
                         var descriptions = await describer.DescribePictureAsync(fileContent, attachment.ContentType, cancellationToken);
 
-                        var reply = MessageFactory.Text("What is your favorite quote?");
+                        await turnContext.SendActivityAsync(MessageFactory.Text("I've generated some ideas, give me some more time to make a nice background..."), cancellationToken);
+                        await turnContext.SendActivityAsync(Activity.CreateTypingActivity(), cancellationToken);
 
-                        reply.SuggestedActions = new SuggestedActions()
+                        fileContent.Seek(0, SeekOrigin.Begin);
+
+
+
+
+
+                        var reply = MessageFactory.Text("Here's what I've generated for you:");
+
+                        reply.AttachmentLayout = AttachmentLayoutTypes.Carousel;
+                        reply.Attachments = [.. descriptions.Select(d => new HeroCard()
                         {
-                            Actions = [.. descriptions.Select(d => new CardAction() { Title = d.Title, Type = ActionTypes.MessageBack, Value = d.Description, DisplayText = d.Description })],
-                        };
+                            Title = d.Title,
+                            Subtitle = d.Description,
+                            Images = [new(d.Url)]
+                        }.ToAttachment())];
+
                         await turnContext.SendActivityAsync(reply, cancellationToken);
-
-                        // // iterate through all the dictionary
-                        // var replyText = string.Join("\n", descriptions.Select(d => $"{d.Title}: {d.Description}"));
-
-                        // await turnContext.SendActivityAsync(MessageFactory.Text(replyText, replyText), cancellationToken);
+                        reply = MessageFactory.Text("Which one is your favorite?");
+                        reply.SuggestedActions = new SuggestedActions() { Actions = [.. descriptions.Select(d => new CardAction() { Title = d.Title, Type = ActionTypes.MessageBack, Value = d.Title, DisplayText = d.Description })] };
+                        await turnContext.SendActivityAsync(reply, cancellationToken);
                     }
                     else
                     {

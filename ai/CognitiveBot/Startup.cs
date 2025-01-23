@@ -2,6 +2,7 @@
 
 using System;
 using Azure.AI.Vision.ImageAnalysis;
+using EchoBot.AI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.CognitiveServices.Vision.Face;
@@ -43,20 +44,15 @@ namespace EchoBot
                                 Endpoint = configuration.GetValue<string>("VISION_ENDPOINT") ?? throw new InvalidOperationException("VISION_ENDPOINT is not set.")
                             };
                         })
-                    // .AddTransient<ImageAnalysisClient>(provider =>
-                    //     {
-                    //         var config = provider.GetRequiredService<IConfiguration>();
-                    //         return new ImageAnalysisClient(new ApiKeyServiceClientCredentials(
-                    //                                         config.GetValue<string>("VISION_KEY") ?? throw new InvalidOperationException("VISION_KEY is not set."))
-                    //         {
-                    //             Endpoint = config.GetValue<string>("VISION_ENDPOINT") ?? throw new InvalidOperationException("VISION_ENDPOINT is not set.")
-                    //         });
-                    //     })
-
+                    .AddTransient<PictureTools>()
                     .AddTransient<AI.FaceRecognition>()
                     .AddTransient<AI.PictureDescriber>()
                     .AddAzureOpenAIChatCompletion(
                         configuration.GetValue<string>("AOAI_DEPLOYMENT_NAME") ?? throw new InvalidOperationException("AOAI_DEPLOYMENT_NAME is not set."),
+                        configuration.GetValue<string>("AOAI_ENDPOINT") ?? throw new InvalidOperationException("AOAI_ENDPOINT is not set."),
+                        configuration.GetValue<string>("AOAI_KEY") ?? throw new InvalidOperationException("AOAI_KEY is not set."))
+                    .AddAzureOpenAITextToImage(
+                        configuration.GetValue<string>("DallEModel") ?? throw new InvalidOperationException("AOAI_ENDPOINT is not set."),
                         configuration.GetValue<string>("AOAI_ENDPOINT") ?? throw new InvalidOperationException("AOAI_ENDPOINT is not set."),
                         configuration.GetValue<string>("AOAI_KEY") ?? throw new InvalidOperationException("AOAI_KEY is not set."));
         }
