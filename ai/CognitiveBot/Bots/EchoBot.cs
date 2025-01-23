@@ -11,6 +11,7 @@ using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Logging;
 using EchoBot.AI;
 using System.Linq;
+using System.Web;
 
 namespace EchoBot.Bots
 {
@@ -33,24 +34,34 @@ namespace EchoBot.Bots
 
                         var descriptions = await describer.DescribePictureAsync(fileContent, attachment.ContentType, cancellationToken);
 
-                        var descriptionsActivity = new Activity()
-                        {
-                            Type = ActivityTypes.Message,
-                            Text = "I've generated some ideas, give me some more time to make a nice background...",
-                            Attachments = [..descriptions.Select(d=> new HeroCard()
-                                            {
-                                                Title = d.Title,
-                                                Subtitle = d.Description,
-                                            }.ToAttachment())]
-                        };
-                        await turnContext.SendActivityAsync(descriptionsActivity, cancellationToken);
 
+                        await turnContext.SendActivityAsync(MessageFactory.Text("I've generated some ideas, take a look while you give me some more time to make a nice background..."), cancellationToken);
+                        // foreach (var description in descriptions)
+                        // {
+                        //     try
+                        //     {
+                        //         var card = new Activity()
+                        //         {
+                        //             Type = ActivityTypes.Message,
+                        //             Attachments = [new HeroCard()
+                        //         {
+                        //             Title = description.Title,
+                        //             Text = description.Description,
+                        //         }.ToAttachment()]
+                        //         };
+                        //         await turnContext.SendActivityAsync(card, cancellationToken);
+                        //     }
+                        //     catch (Exception ex)
+                        //     {
+                        //         logger.LogError(ex, "Error generating new card. {title}: {subtitle}", description.Title, description.Description);
+                        //     }
+                        // }
+
+                        await turnContext.SendActivityAsync(MessageFactory.Text("I'm going to remove the background of the picture..."), cancellationToken);
                         await turnContext.SendActivityAsync(Activity.CreateTypingActivity(), cancellationToken);
-
                         // we need it again as the stream has been closed
                         fileContent = await DownloadAttachmentAsync(attachment.ContentUrl, cancellationToken);
 
-                        await turnContext.SendActivityAsync(MessageFactory.Text("I'm trying to remove the background of the picture..."), cancellationToken);
                         await turnContext.SendActivityAsync(Activity.CreateTypingActivity(), cancellationToken);
                         var (foreground, height, width) = await pictureTools.RemoveBackground(fileContent, attachment.ContentType, cancellationToken);
                         await turnContext.SendActivityAsync(MessageFactory.Text("Great, now I'm going to generate some alternative pictures..."), cancellationToken);
@@ -85,8 +96,8 @@ namespace EchoBot.Bots
                                     Attachments = [new HeroCard()
                                     {
                                         Title = description.Title,
-                                        Subtitle = description.Description,
-                                        Images = [new(url)]
+                                        Text = description.Description,
+                                        Images = [new(url, description.Description)]
                                     }.ToAttachment()]
                                 };
                                 await turnContext.SendActivityAsync(msg, cancellationToken);
