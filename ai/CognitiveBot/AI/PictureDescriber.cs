@@ -18,17 +18,18 @@ using SixLabors.ImageSharp.Processing;
 
 namespace EchoBot.AI;
 
-public record Descriptions([property: JsonProperty("title")] string Title, [property: JsonProperty("description")] string Description)
+public record DescriptionInfo(IList<string> Names, int TotalPeople, IList<PictureDescription> Descriptions);
+public record PictureDescription([property: JsonProperty("title")] string Title, [property: JsonProperty("description")] string Description)
 {
     [JsonProperty("url")]
     public string Url { get; set; }
 }
-public record Results([property: JsonProperty("result")] IList<Descriptions> Result);
+public record Results([property: JsonProperty("result")] IList<PictureDescription> Result);
 
-public partial class PictureDescriber(ILogger<PictureDescriber> logger, FaceRecognition face,
+public class PictureDescriber(ILogger<PictureDescriber> logger, FaceRecognition face,
                                             IChatCompletionService chatCompletionService, PictureTools pictureTools, IConfiguration configuration)
 {
-    public async Task<IList<Descriptions>> DescribePictureAsync(Stream picture, string contentType, CancellationToken cancellationToken = default)
+    public async Task<DescriptionInfo> DescribePictureAsync(Stream picture, string contentType, CancellationToken cancellationToken = default)
     {
         picture.Position = 0;
         var imageBytes = await pictureTools.GetThumbnailAsync(picture, contentType, 800, 800, cancellationToken);
@@ -37,15 +38,10 @@ public partial class PictureDescriber(ILogger<PictureDescriber> logger, FaceReco
         var people = await face.IdentifyInPersonGroupAsync(picture, cancellationToken: cancellationToken);
         logger.LogInformation("Generating descriptions with AI for the picture.");
         var descriptions = await GenerateDescriptionsFromImageOrCaptionsAsync(contentType, imageBytes, people, cancellationToken);
-        return descriptions;
+        return new DescriptionInfo(people.Names, people.TotalFaces, descriptions);
     }
 
-
-
-    [GeneratedRegex("^\"|\"$")]
-    private static partial Regex RemoveDoubleQuotes();
-
-    private async Task<IList<Descriptions>> GenerateDescriptionsFromImageOrCaptionsAsync(string contentType, byte[] imageBytes, Faces people, CancellationToken cancellationToken)
+    private async Task<IList<PictureDescription>> GenerateDescriptionsFromImageOrCaptionsAsync(string contentType, byte[] imageBytes, Faces people, CancellationToken cancellationToken)
     {
 #pragma warning disable SKEXP0010 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
         OpenAIPromptExecutionSettings settings = new() { ResponseFormat = "json_object" };
@@ -80,13 +76,6 @@ public partial class PictureDescriber(ILogger<PictureDescriber> logger, FaceReco
         var localizedDescriptions = JsonConvert.DeserializeObject<Results>(description) ?? throw new InvalidOperationException("No text converted");
 
         return localizedDescriptions.Result;
-        // return localizedDescriptions.Select(
-        //     s => new KeyValuePair<string, string>(s.Key,
-        //         //url encode string to be stored in metadata
-        //         Uri.EscapeDataString(
-        //             //remove double quotes
-        //             RemoveDoubleQuotes().Replace(s.Value, "")
-        //         ))).ToDictionary();
     }
 
 }
