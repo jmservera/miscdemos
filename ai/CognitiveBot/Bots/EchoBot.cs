@@ -14,10 +14,13 @@ using System.Linq;
 using System.Web;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Extensions.Configuration;
+using Microsoft.SemanticKernel.ChatCompletion;
 
 namespace EchoBot.Bots
 {
-    public class EchoBot(ILogger<EchoBot> logger, IBotFrameworkHttpAdapter adapter, PictureDescriber describer, PictureTools pictureTools, IConfiguration configuration) : ActivityHandler
+    public class EchoBot(ILogger<EchoBot> logger, IBotFrameworkHttpAdapter adapter, PictureDescriber describer, PictureTools pictureTools,
+     IChatCompletionService chatCompletionService,
+     IConfiguration configuration) : ActivityHandler
     {
         static readonly HashSet<string> validMimeTypes = ["image/jpeg", "image/png", "image/gif"];
         static Timer timer;
@@ -48,6 +51,7 @@ namespace EchoBot.Bots
             public Stream Foreground { get; set; }
             public DateTime LastActivity { get; set; }
             public bool WaitingForAnswer { get; set; }
+            public ChatHistory History { get; init; } = [];
         }
 
         static readonly Dictionary<string, ConversationState> attachments = [];
@@ -77,7 +81,9 @@ namespace EchoBot.Bots
                     switch (state.Stage)
                     {
                         case 0:
-                            await turnContext.SendActivityAsync(MessageFactory.Text("Thanks for the picture, let me analyze it."), cancellationToken);
+                            var msg_0 = "Thanks for the picture, let me analyze it.";
+                            state.History.AddAssistantMessage(msg_0);
+                            await turnContext.SendActivityAsync(MessageFactory.Text(msg_0), cancellationToken);
                             await turnContext.SendActivityAsync(Activity.CreateTypingActivity(), cancellationToken);
                             // _ = Task.Run(async () =>                            {
                             var fileContent = await DownloadAttachmentAsync(attachment.ContentUrl, cancellationToken);
@@ -89,10 +95,40 @@ namespace EchoBot.Bots
                             // }, cancellationToken);
                             break;
                         case 1:
-                            var peopleorperson = state.DescriptionInfo.TotalPeople > 1 ? "people" : "person";
-                            await turnContext.SendActivityAsync(MessageFactory.Text($"There's {state.DescriptionInfo.TotalPeople} {peopleorperson} in the picture. {string.Join(", ", state.DescriptionInfo.Names)}."), cancellationToken);
-                            await turnContext.SendActivityAsync(MessageFactory.Text("I'm going to remove the background of the picture..."), cancellationToken);
-                            await turnContext.SendActivityAsync(Activity.CreateTypingActivity(), cancellationToken);
+                            string msg_1;
+                            if (state.DescriptionInfo.TotalPeople > 1)
+                            {
+                                msg_1 = $"I see there are {state.DescriptionInfo.TotalPeople} people in the picture.";
+                            }
+                            else
+                            {
+                                if (state.DescriptionInfo.TotalPeople == 0)
+                                {
+                                    msg_1 = $"I don't see any people in the picture.";
+                                }
+                                else
+                                {
+                                    msg_1 = $"I see there is {state.DescriptionInfo.TotalPeople} person in the picture.";
+                                }
+                            }
+                            if (state.DescriptionInfo.Names?.Count > 0)
+                            {
+                                var names = string.Join(", ", state.DescriptionInfo.Names);
+                                if (state.DescriptionInfo.Names.Count > 1)
+                                {
+                                    names = string.Concat(names.AsSpan(0, names.LastIndexOf(',') + 1), "and ", names.AsSpan(names.LastIndexOf(',') + 1));
+                                    msg_1 += $" I believe these are {names}.";
+                                }
+                                else
+                                {
+                                    msg_1 += $" I believe this is {names}.";
+                                }
+                            }
+                            msg_1 += " I'm going to remove the background of the picture.";
+
+                            state.History.AddAssistantMessage(msg_1);
+
+                            await turnContext.SendActivityAsync(MessageFactory.Text(msg_1), cancellationToken);
                             await turnContext.SendActivityAsync(Activity.CreateTypingActivity(), cancellationToken);
 
                             _ = Task.Run(async () =>
@@ -117,7 +153,9 @@ namespace EchoBot.Bots
                             break;
                         case 2:
                             //todo - this can be done in parallel
-                            await turnContext.SendActivityAsync(MessageFactory.Text("Great, now I'm going to generate some alternative pictures..."), cancellationToken);
+                            var msg_2 = "Thanks for waiting, I removed the background. Now I'm going to generate some alternative pictures.";
+                            state.History.AddAssistantMessage(msg_2);
+                            await turnContext.SendActivityAsync(MessageFactory.Text(msg_2), cancellationToken);
 
                             foreach (var description in state.DescriptionInfo.Descriptions)
                             {
@@ -153,6 +191,7 @@ namespace EchoBot.Bots
                                                                 Images = [new(url, description.Description)]
                                                             }.ToAttachment()]
                                     };
+                                    state.History.AddAssistantMessage($"{description.Title}: ![{description.Description}]({url})");
                                     await turnContext.SendActivityAsync(msg, cancellationToken);
                                 }
                                 catch (Exception ex)
@@ -162,6 +201,7 @@ namespace EchoBot.Bots
                             }
 
                             var reply = MessageFactory.Text("Which one is your favorite?");
+                            state.History.AddUserMessage(reply.Text);
                             reply.SuggestedActions = new SuggestedActions() { Actions = [.. state.DescriptionInfo.Descriptions.Select(d => new CardAction() { Title = d.Title, Type = ActionTypes.MessageBack, Value = d.Title, DisplayText = d.Description })] };
                             await turnContext.SendActivityAsync(reply, cancellationToken);
                             break;
@@ -177,28 +217,54 @@ namespace EchoBot.Bots
         }
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
+            var reference = turnContext.Activity.GetConversationReference();
+            attachments.TryGetValue(reference.Conversation.Id, out var state);
+            if (state == null)
+            {
+                attachments[reference.Conversation.Id] = state = new ConversationState();
+            }
+            state.LastActivity = DateTime.UtcNow;
+            if (state.History?.Count == 0)
+            {
+                state.History.AddSystemMessage("""
+                Your name is the SnapMash Bot. You are an assistant that helps people get funny quotes and descriptions for their pictures, along with some privacy by removing the original background of the pictures and replacing it with an AI generated one.
+                This is what the bot will do when a user uploads a picture:
+                1. Background Removal: Upload your selfie. I'll automatically remove the background, leaving you with a clean image of yourself.
+                2. Generate a Funny Quote: Once your background is removed, I'll generate a humorous quote that suits your selfie.
+                3. Create a New Background: I'll then generate a new background based on the quote, ensuring it complements your selfie perfectly.
+                4. Seamlessly Merge Everything: I'll blend your selfie, the funny quote, and the new background into one cohesive and entertaining image.
+                5. Share and Enjoy
+                Save your masterpiece and share it with friends or on social media.
+
+                Enjoy the creative and humorous twist to your selfies!
+
+                This is your main task. You can let users chat with you, but tell them that you are focused on helping them with their pictures, so they need to upload one to get started.
+                When a user connects for the first time, introduce yourself and your main task.
+                """);
+            }
+
             logger.LogInformation("Running dialog with Message Activity.");
             if (turnContext.Activity.Attachments != null && turnContext.Activity.Attachments.Count > 0)
             {
-                var reference = turnContext.Activity.GetConversationReference();
-                var state = new ConversationState { Attachments = [.. turnContext.Activity.Attachments], LastActivity = DateTime.UtcNow };
-                attachments.TryAdd(reference.Conversation.Id, state);
+                state.Attachments = [.. turnContext.Activity.Attachments];
                 BotAdapter botAdapter = (BotAdapter)adapter;
                 await botAdapter.ContinueConversationAsync(configuration.GetValue<string>("MicrosoftAppId") ?? string.Empty, reference, BotCallback, cancellationToken);
             }
             else
             {
+                await turnContext.SendActivityAsync(Activity.CreateTypingActivity(), cancellationToken);
                 if (turnContext.Activity.Value != null)
                 {
-                    var replyText = $"You selected: {turnContext.Activity.Value}";
-                    await turnContext.SendActivityAsync(MessageFactory.Text(replyText, replyText), cancellationToken);
+                    state.History.AddUserMessage(turnContext.Activity.Value.ToString());
                 }
                 else
                 {
-                    // TODO: Use ChatGPT to generate answers
-                    var replyText = $"Echos: {turnContext.Activity.Text}";
-                    await turnContext.SendActivityAsync(MessageFactory.Text(replyText, replyText), cancellationToken);
+                    state.History.AddUserMessage(turnContext.Activity.Text);
                 }
+                var response = await chatCompletionService.GetChatMessageContentAsync(state.History, cancellationToken: cancellationToken);
+                state.History.AddAssistantMessage(response.Content);
+
+                await turnContext.SendActivityAsync(MessageFactory.Text(response.Content, response.Content), cancellationToken);
             }
         }
 

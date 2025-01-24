@@ -27,7 +27,7 @@ public record PictureDescription([property: JsonProperty("title")] string Title,
 public record Results([property: JsonProperty("result")] IList<PictureDescription> Result);
 
 public class PictureDescriber(ILogger<PictureDescriber> logger, FaceRecognition face,
-                                            IChatCompletionService chatCompletionService, PictureTools pictureTools, IConfiguration configuration)
+                                            IChatCompletionService chatCompletionService, PictureTools pictureTools)
 {
     public async Task<DescriptionInfo> DescribePictureAsync(Stream picture, string contentType, CancellationToken cancellationToken = default)
     {

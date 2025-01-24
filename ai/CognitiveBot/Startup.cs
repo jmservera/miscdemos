@@ -3,6 +3,8 @@
 using System;
 using Azure.AI.Vision.ImageAnalysis;
 using EchoBot.AI;
+using EchoBot.Messaging;
+using EchoBot.Storage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.CognitiveServices.Vision.Face;
@@ -47,6 +49,8 @@ namespace EchoBot
                     .AddTransient<PictureTools>()
                     .AddTransient<AI.FaceRecognition>()
                     .AddTransient<AI.PictureDescriber>()
+                    .AddTransient<IStorageManager, StorageManager>()
+                    .AddTransient<IChatHistoryManager, BotHistoryManager>()
                     .AddAzureOpenAIChatCompletion(
                         configuration.GetValue<string>("AOAI_DEPLOYMENT_NAME") ?? throw new InvalidOperationException("AOAI_DEPLOYMENT_NAME is not set."),
                         configuration.GetValue<string>("AOAI_ENDPOINT") ?? throw new InvalidOperationException("AOAI_ENDPOINT is not set."),
