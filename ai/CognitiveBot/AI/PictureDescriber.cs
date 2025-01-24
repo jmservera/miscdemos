@@ -62,7 +62,8 @@ public class PictureDescriber(ILogger<PictureDescriber> logger, FaceRecognition 
 
         items.Add(new TextContent(people?.Names?.Count > 0 ? $"""
             In this picture you see the following people: {string.Join(',', people.Names)}.
-            Please find a funny title and description for this picture that includes the provided names.
+            There's a total of {people.TotalFaces} people.
+            Please find a funny title and description for this picture that includes the provided names, if there's more people in the picture just say "and other fancy people".
             """ : "Please find a funny title and description for this picture."));
 
         ImageContent imageContent = new(new ReadOnlyMemory<byte>(imageBytes), contentType);

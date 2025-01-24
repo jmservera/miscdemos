@@ -68,13 +68,14 @@ namespace EchoBot.AI
         {
             logger.LogInformation("Detecting faces for recognition");
             var detectedFaces = await DetectFaceRecognizeAsync(stream, recognitionModel);
-            List<Guid> sourceFaceIds = [.. detectedFaces.Faces.Where(face => face.FaceId != null).Select(face => face.FaceId!.Value)];
+            List<Guid> sourceFaceIds = [.. detectedFaces.Faces.Where(face => face.FaceId != null).OrderBy(face => face.FaceRectangle.Left).Select(face => face.FaceId!.Value)];
 
             if (sourceFaceIds.Count == 0)
             {
                 logger.LogInformation("No faces detected in the image.");
                 return new Faces(TotalFaces: detectedFaces.TotalFaces);
             }
+
             // Identify the faces in a person group. 
             var identifyResults = await client.Face.IdentifyAsync(sourceFaceIds, personGroupId, cancellationToken: cancellationToken);
             List<string> personNames = [];

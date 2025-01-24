@@ -202,6 +202,7 @@ namespace EchoBot.Bots
 
                             var reply = MessageFactory.Text("Which one is your favorite?");
                             state.History.AddUserMessage(reply.Text);
+                            state.Stage = 0;
                             reply.SuggestedActions = new SuggestedActions() { Actions = [.. state.DescriptionInfo.Descriptions.Select(d => new CardAction() { Title = d.Title, Type = ActionTypes.MessageBack, Value = d.Title, DisplayText = d.Description })] };
                             await turnContext.SendActivityAsync(reply, cancellationToken);
                             break;
