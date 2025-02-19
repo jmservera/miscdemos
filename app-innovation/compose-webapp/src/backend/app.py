@@ -9,6 +9,12 @@ r = redis.Redis(host=redishost, port=6379, db=0)
 
 @app.route('/health', methods=['GET'])
 def health():
+    # check if the redis server is healthy
+    try:
+        r.ping()
+    except redis.ConnectionError:
+        return jsonify({"message": "Unhealthy"}), 500
+
     return jsonify({"message": "Healthy"}), 200
 
 @app.route('/set', methods=['POST'])

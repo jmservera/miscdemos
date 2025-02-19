@@ -15,7 +15,7 @@
         "value":"composeapp/web:6"
       },
       "backendAppContainerImageName":{
-        "value":"composeapp/backend:6"
+        "value":"composeapp/backend:7"
       }
     }
 }
