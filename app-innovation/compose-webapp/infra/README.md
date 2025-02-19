@@ -19,8 +19,8 @@ The following files are generated to meet your infrastructure requirements.
   - `containerregistry.bicep`
   - `appservice.apps.bicep`
 
-## Configure the files with Github Copilot for Azure
-You could make changes to the recommended infrastructure by [Github Copilot for Azure](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azure-github-copilot). Try the following prompts in the chat window:
+## Configure the files with GitHub Copilot for Azure
+You could make changes to the recommended infrastructure by [GitHub Copilot for Azure](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azure-github-copilot). Try the following prompts in the chat window:
 1. @azure Replace container app with app service in the infrastructure.
 2. @azure Add an environment variable KEY=val to my project.
 3. @azure Update the environment variable KEY to \"val\" in the recommendation.
