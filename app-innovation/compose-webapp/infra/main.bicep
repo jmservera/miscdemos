@@ -46,7 +46,6 @@ module containerRegistry 'containerregistry.bicep' = {
     tags: tags
   }
 }
-var containerRegistryId = containerRegistry.outputs.id
 
 module appservice 'appservice.bicep' = {
   name: 'app-service-deployment'
@@ -57,7 +56,7 @@ module appservice 'appservice.bicep' = {
     appServicePlanId: appServicePlanId
     identityType: 'SystemAssigned'
     tags: {'azd-service-name': 'web'}
-    linuxFxVersion: 'DOCKER|${containerRegistry.outputs.name}.azurecr.io/${webAppContainerImageName}'
+    linuxFxVersion: 'sitecontainers'
   }
 }
 
