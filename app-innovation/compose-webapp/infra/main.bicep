@@ -1,105 +1,91 @@
-param webAppName string = 'sidecardemo'
+targetScope = 'subscription'
+
+param location string = 'swedencentral'
+param environmentName string = 'myenv'
+param resourceGroupName string = 'rg-myenv'
+param resourceToken string = toLower(uniqueString(subscription().id, location, resourceGroupName))
+param projectName string = 'composeapp'
 
 param webAppContainerImageName string = 'composeapp/web:5'
 param backendAppContainerImageName string = 'composeapp/backend:5'
 
-param location string = resourceGroup().location
 
-var uniquestring = substring(uniqueString(resourceGroup().id),0,5)
-var hostingPlanName = 'ASP-${webAppName}-${uniquestring}'
-var registryName = '${webAppName}-${uniquestring}' // The name of your container registry
-var uniqueWebName = '${webAppName}-${uniquestring}'
+var appServicePlanName = 'ASP-${environmentName}-${resourceToken}'
+var registryName = '${environmentName}${resourceToken}' // The name of your container registry
+var uniqueWebName = '${environmentName}${resourceToken}'
 
-resource hostingPlan 'Microsoft.Web/serverfarms@2022-03-01' = {
-  name: hostingPlanName
-  location: location
-  sku: {
-    name: 'P1v2' // Specify your SKU here
-    tier: 'PremiumV2'
-  }
-  properties: {
-    reserved: true
-  }
+param tags object = {
+  environment: 'development'
+  project: projectName
+  'azd-env-name': environmentName
 }
 
-resource containerRegistry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
-  name: registryName
-  location: location
-  sku: {
-    name: 'Standard' // You can specify Basic, Standard, or Premium
-  }
-  properties: {
-    adminUserEnabled: false
-  }
+resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+	name: resourceGroupName
+	location: location
+	tags: tags
 }
 
-resource webApp 'Microsoft.Web/sites@2022-03-01' = {
-  name: uniqueWebName
-  location: location
-  identity: {
-    type: 'SystemAssigned'
-  }
-  properties: {
-    serverFarmId: hostingPlan.id
-    siteConfig: {
-      linuxFxVersion: 'DOCKER|${containerRegistry.name}.azurecr.io/${webAppContainerImageName}'
-      appSettings: [
-        {
-          name: 'WEBSITES_ENABLE_APP_SERVICE_STORAGE'
-          value: 'false'          
-        }        
-      ]
-    }
+module appServicePlan 'appserviceplan.bicep' = {
+	name: 'app-service-plan-deployment'
+	scope: resourceGroup
+	params: {
+		location: location
+		name: appServicePlanName
+	}
+}
+var appServicePlanId = appServicePlan.outputs.id
+
+module containerRegistry 'containerregistry.bicep' = {
+  name: 'container-registry-deployment'
+  scope: resourceGroup
+  params: {
+    location: location
+    registryName: registryName
+    sku: 'Standard'
+    tags: tags
   }
 }
+var containerRegistryId = containerRegistry.outputs.id
 
-resource acrPullRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(webApp.id, containerRegistry.id, 'acrpull')
-  scope: containerRegistry
-  properties: {
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d') // AcrPull role
-    principalId: webApp.identity.principalId
+module appservice 'appservice.bicep' = {
+  name: 'app-service-deployment'
+  scope: resourceGroup
+  params: {
+    location: location
+    name: uniqueWebName
+    appServicePlanId: appServicePlanId
+    identityType: 'SystemAssigned'
+    tags: {'azd-service-name': 'web'}
+    linuxFxVersion: 'DOCKER|${containerRegistry.outputs.name}.azurecr.io/${webAppContainerImageName}'
   }
 }
 
 
-resource sites_jmdockercomposetest_name_backend 'Microsoft.Web/sites/sitecontainers@2024-04-01' = {
-  parent: webApp
-  name: 'backend'
-  properties: {
-    isMain: false
-    image: '${containerRegistry.name}.azurecr.io/${backendAppContainerImageName}'
-    targetPort: '8080'
-    authType: 'SystemIdentity'
-    userManagedIdentityClientId: 'SystemIdentity'
+module containerRegistryPull 'containerRegistryPullRole.bicep' = {
+  name: 'container-registry-pull-deployment'
+  scope: resourceGroup
+  params: {
+    webAppName: appservice.outputs.name
+    containerRegistryName: containerRegistry.outputs.name
   }
-  dependsOn: [
-    acrPullRoleAssignment
-  ]
 }
 
-resource sites_jmdockercomposetest_name_main 'Microsoft.Web/sites/sitecontainers@2024-04-01' = {
-  parent: webApp
-  name: 'main'
-  properties: {
-    image: '${containerRegistry.name}.azurecr.io/${webAppContainerImageName}'
-    targetPort: '80'
-    isMain: true
-    authType: 'SystemIdentity'
-    userManagedIdentityClientId: 'SystemIdentity'
+module apps 'appservice.apps.bicep' = {
+  name: 'app-service-apps-deployment'
+  scope: resourceGroup
+  params: {
+    appServiceName: appservice.outputs.name
+    containerRegistryName: containerRegistry.outputs.name
+    webAppContainerImageName: webAppContainerImageName
+    backendAppContainerImageName: backendAppContainerImageName
+    acrPullRoleAssignmentName: containerRegistryPull.outputs.name
   }
-  dependsOn: [
-    acrPullRoleAssignment
-  ]
 }
 
-resource sites_jmdockercomposetest_name_redis 'Microsoft.Web/sites/sitecontainers@2024-04-01' = {
-  parent: webApp
-  name: 'redis'
-  properties: {
-    image: 'docker.io/redis:alpine'
-    targetPort: '6379'
-    isMain: false
-    authType: 'Anonymous'
-  }
-}
+output webAppName string = appservice.outputs.name
+output containerRegistryName string = containerRegistry.outputs.name
+output webAppContainerImageName string = webAppContainerImageName
+output backendAppContainerImageName string = backendAppContainerImageName
+output resourceGroupName string = resourceGroupName
+output location string = location
