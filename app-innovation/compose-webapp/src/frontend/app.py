@@ -97,11 +97,10 @@ def set_value():
 @app.route('/get/<key>', methods=['GET'])
 def get_value(key):
     value = requests.get(backend + '/get/' + key)
-    if value:
+    if value.status_code == 200:
         return value.json(), 200
     else:
         return jsonify({"message": "Key not found"}), 404
-
 @app.route('/health', methods=['GET'])
 def health():
     # send a rest get request to the backend
