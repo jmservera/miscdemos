@@ -92,5 +92,15 @@ def get_value(key):
     else:
         return jsonify({"message": "Key not found"}), 404
 
+@app.route('/health', methods=['GET'])
+def health():
+    # send a rest get request to the backend
+    response = requests.get(backend + '/health')
+    if response.status_code == 200:
+        return jsonify({"message": "Healthy"}), 200
+    else:
+        return jsonify({"message": "Backend Unhealthy"}), 500
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80)

@@ -2,6 +2,12 @@ targetScope = 'subscription'
 
 param location string = 'swedencentral'
 param environmentName string = 'myenv'
+@allowed([
+  'development'
+  'staging'
+  'production'
+])
+param environmentType string = 'development'
 param resourceGroupName string = 'rg-myenv'
 param resourceToken string = toLower(uniqueString(subscription().id, location, resourceGroupName))
 param projectName string = 'composeapp'
@@ -15,7 +21,7 @@ var registryName = '${environmentName}${resourceToken}' // The name of your cont
 var uniqueWebName = '${environmentName}${resourceToken}'
 
 param tags object = {
-  environment: 'development'
+  environment: environmentType
   project: projectName
   'azd-env-name': environmentName
 }

@@ -10,6 +10,12 @@
       },
       "resourceGroupName": {
         "value": "rg-${AZURE_ENV_NAME}"
+      },
+      "webAppContainerImageName":{
+        "value":"composeapp/web:6"
+      },
+      "backendAppContainerImageName":{
+        "value":"composeapp/backend:6"
       }
     }
 }

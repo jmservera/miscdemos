@@ -12,26 +12,27 @@ param tags object = {}
 
 
 resource appService 'Microsoft.Web/sites@2022-09-01' = {
-  name: name
-  location: location
+	name: name
+	location: location
 	identity: (empty(userAssignedIdentities) ? {
 		type: identityType
 	} : {
 		type: identityType
 		userAssignedIdentities: userAssignedIdentities
 	})
-  properties: {
-    serverFarmId: appServicePlanId
+	properties: {
+		serverFarmId: appServicePlanId
 		siteConfig: {
 			linuxFxVersion: linuxFxVersion
 			appSettings: appSettings
 			cors: (empty(corsAllowedOrigins) ? null : {
 				allowedOrigins: corsAllowedOrigins
 			})
+			healthCheckPath: '/health'
 		}
-    httpsOnly: true
-  }
-	tags:union(tags,{ 'azd-service-name': 'web' })
+		httpsOnly: true
+	}
+	tags: union(tags, { 'azd-service-name': 'web' })
 }
 
 

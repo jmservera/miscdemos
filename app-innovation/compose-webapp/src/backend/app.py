@@ -7,6 +7,10 @@ redishost = os.getenv("REDISHOST", "localhost")
 app = Flask(__name__)
 r = redis.Redis(host=redishost, port=6379, db=0)
 
+@app.route('/health', methods=['GET'])
+def health():
+    return jsonify({"message": "Healthy"}), 200
+
 @app.route('/set', methods=['POST'])
 def set_value():
     key = request.json.get('key')
