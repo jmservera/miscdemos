@@ -1,0 +1,19 @@
+services:
+  web:
+    build: ./src/frontend
+    ports:
+      - "5000:5000"
+    depends_on:
+      - backend
+    environment:
+      - BACKEND=http://backend:5001
+  backend:
+    build: ./src/backend
+    ports:
+      - "5001:5001"
+    depends_on:
+      - redis
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
