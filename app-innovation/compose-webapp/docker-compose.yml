@@ -2,15 +2,17 @@ services:
   web:
     build: ./src/frontend
     ports:
-      - "5000:5000"
+      - "80:80"
     depends_on:
       - backend
     environment:
-      - BACKEND=http://backend:5001
+      - BACKEND=http://backend:8080
   backend:
     build: ./src/backend
     ports:
-      - "5001:5001"
+      - "8080:8080"
+    environment:
+      - REDISHOST=redis
     depends_on:
       - redis
   redis:

@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, render_template_string
 import requests
 import os
 
-backend = os.getenv("BACKEND", "http://localhost:5001")
+backend = os.getenv("BACKEND", "http://localhost:8080")
 
 app = Flask(__name__)
 
@@ -93,4 +93,4 @@ def get_value(key):
         return jsonify({"message": "Key not found"}), 404
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=80)

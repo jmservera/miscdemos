@@ -1,8 +1,11 @@
 from flask import Flask, request, jsonify
 import redis
+import os
+
+redishost = os.getenv("REDISHOST", "localhost")
 
 app = Flask(__name__)
-r = redis.Redis(host='redis', port=6379, db=0)
+r = redis.Redis(host=redishost, port=6379, db=0)
 
 @app.route('/set', methods=['POST'])
 def set_value():
@@ -20,4 +23,4 @@ def get_value(key):
         return jsonify({"message": "Key not found"}), 404
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001)
+    app.run(host='0.0.0.0', port=8080)
