@@ -17,7 +17,7 @@ param backendAppContainerImageName string = 'composeapp/backend:5'
 
 
 var appServicePlanName = 'ASP-${environmentName}-${resourceToken}'
-var registryName = '${environmentName}${resourceToken}' // The name of your container registry
+var registryName = '${environmentName}${resourceToken}'
 var uniqueWebName = '${environmentName}${resourceToken}'
 
 param tags object = {

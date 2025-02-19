@@ -12,7 +12,7 @@ resource acrPullRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-
   name: acrPullRoleAssignmentName
 }
 
-resource sites_jmdockercomposetest_name_backend 'Microsoft.Web/sites/sitecontainers@2024-04-01' = {
+resource sites_backend 'Microsoft.Web/sites/sitecontainers@2024-04-01' = {
   parent: webApp
   name: 'backend'
   properties: {
@@ -27,7 +27,7 @@ resource sites_jmdockercomposetest_name_backend 'Microsoft.Web/sites/sitecontain
   ]
 }
 
-resource sites_jmdockercomposetest_name_main 'Microsoft.Web/sites/sitecontainers@2024-04-01' = {
+resource sites_main 'Microsoft.Web/sites/sitecontainers@2024-04-01' = {
   parent: webApp
   name: 'main'
   properties: {
@@ -42,7 +42,7 @@ resource sites_jmdockercomposetest_name_main 'Microsoft.Web/sites/sitecontainers
   ]
 }
 
-resource sites_jmdockercomposetest_name_redis 'Microsoft.Web/sites/sitecontainers@2024-04-01' = {
+resource sites_redis 'Microsoft.Web/sites/sitecontainers@2024-04-01' = {
   parent: webApp
   name: 'redis'
   properties: {
