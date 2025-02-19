@@ -62,14 +62,24 @@ def index():
                         const cellValue = newRow.insertCell(1);
                         cellKey.textContent = key;
                         cellValue.textContent = value;
+                    } else {
+                        alert('Failed to set value: ' + data.message);
                     }
+                }).catch(error => {
+                    alert('An error occurred: ' + error.message);
                 });
             };
             document.getElementById('getValueForm').onsubmit = function(event) {
                 event.preventDefault();
                 const key = document.getElementById('getKey').value;
                 fetch(`/get/${key}`).then(response => response.json()).then(data => {
-                    document.getElementById('showValue').textContent = `Key: ${data.key}, Value: ${data.value}`;
+                    if (data.key && data.value) {
+                        document.getElementById('showValue').textContent = `Key: ${data.key}, Value: ${data.value}`;
+                    } else {
+                        alert('Key not found');
+                    }
+                }).catch(error => {
+                    alert('An error occurred: ' + error.message);
                 });
             };
         </script>
