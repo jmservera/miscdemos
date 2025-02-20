@@ -94,3 +94,4 @@ output webAppContainerImageName string = webAppContainerImageName
 output backendAppContainerImageName string = backendAppContainerImageName
 output resourceGroupName string = resourceGroupName
 output location string = location
+output serviceUrl string = appservice.outputs.requestUrl
