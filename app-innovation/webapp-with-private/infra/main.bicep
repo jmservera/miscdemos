@@ -39,6 +39,18 @@ module backEndApp './modules/webApp.bicep' = {
   }
 }
 
+// SQL Database
+module sqlDb './modules/sqlDatabase.bicep' = {
+  name: 'sqlDb'
+  params: {
+    serverName: '${namePrefix}-sqlserver'
+    databaseName: '${namePrefix}-db'
+    location: location
+    adminLogin: sqlAdminLogin
+    adminPassword: sqlAdminPassword
+  }
+}
+
 // Private endpoint for backend
 module backEndPrivateEndpoint './modules/privateEndpoint.bicep' = {
   name: 'backEndPrivateEndpoint'
@@ -49,18 +61,6 @@ module backEndPrivateEndpoint './modules/privateEndpoint.bicep' = {
     subnetId: vnet.outputs.appSubnetId
     privateLinkServiceId: backEndApp.outputs.id
     targetSubResource: 'sites'
-  }
-}
-
-// SQL Database
-module sqlDb './modules/sqlDatabase.bicep' = {
-  name: 'sqlDb'
-  params: {
-    serverName: '${namePrefix}-sqlserver'
-    databaseName: '${namePrefix}-db'
-    location: location
-    adminLogin: sqlAdminLogin
-    adminPassword: sqlAdminPassword
   }
 }
 
@@ -76,6 +76,16 @@ module sqlPrivateEndpoint './modules/privateEndpoint.bicep' = {
     targetSubResource: 'sqlServer'
   }
 }
+
+//https://learn.microsoft.com/en-us/azure/container-apps/tutorial-ci-cd-runners-jobs?tabs=bash&pivots=container-apps-jobs-self-hosted-ci-cd-github-actions
+
+// module containerApp 'modules/containerApp.bicep' = {name: 'containerApp'
+//   params: {
+//     name: '${namePrefix}-container'
+//     location: location
+//     containerImage:
+//   }
+// }
 
 // Output important values
 output frontendUrl string = frontEndApp.outputs.url

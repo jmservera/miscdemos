@@ -19,12 +19,12 @@ var dnsByTarget = {
   webpubsub: 'privatelink.webpubsub.azure.com'
   sites: 'privatelink.azurewebsites.net'
   blob: 'privatelink.blob.${environment().suffixes.storage}'
-  sqlServer: 'privatelink${environment().suffixes.sqlServerHostname}'
+  sqlServer: 'privatelink${environment().suffixes.sqlServerHostname}' // dont' know why but sqlserverhostname suffix already contains the dot
 }
 
-resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
-  location: location
+resource privateEndpoint 'Microsoft.Network/privateEndpoints@2022-05-01' = {
   name: endpointName
+  location: location
   properties: {
     subnet: {
       id: subnetId
@@ -34,8 +34,8 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
       {
         name: endpointName
         properties: {
-          privateLinkServiceId: privateLinkServiceId
           groupIds: [targetSubResource]
+          privateLinkServiceId: privateLinkServiceId
         }
       }
     ]
@@ -45,18 +45,7 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
 resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   name: dnsByTarget[targetSubResource]
   location: 'global'
-}
-
-resource vnetLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018-09-01' = {
-  name: '${endpointName}-link'
-  location: 'global'
-  parent: privateDnsZone
-  properties: {
-    registrationEnabled: registrationEnabled
-    virtualNetwork: {
-      id: vnetId
-    }
-  }
+  dependsOn: [privateEndpoint]
 }
 
 resource privateEndpointDnsGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2022-05-01' = {
@@ -71,6 +60,18 @@ resource privateEndpointDnsGroup 'Microsoft.Network/privateEndpoints/privateDnsZ
         }
       }
     ]
+  }
+}
+
+resource vnetLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
+  parent: privateDnsZone
+  name: '${endpointName}-link' // it's important to keep this name structure, otherwise the link will fail
+  location: 'global'
+  properties: {
+    registrationEnabled: registrationEnabled
+    virtualNetwork: {
+      id: vnetId
+    }
   }
 }
 
