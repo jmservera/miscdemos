@@ -77,7 +77,7 @@ echo "*************** Installing IoT Edge"
 
 
 echo "*************** Configuring IoT Edge"
-iotedge config mp --connection-string "$1"
+iotedge config mp --connection-string "$1" --force
 iotedge config apply
 
 # Check the installation
