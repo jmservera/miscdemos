@@ -32,22 +32,30 @@ else
     touch /etc/wsl.conf
 fi
 
-echo "Configuring /etc/resolv.conf"
-cat << EOF > /etc/resolv.conf
+if grep -q "nameserver 8.8.8.8" /etc/resolv.conf; then
+    echo "/etc/resolv.conf already configured"    
+else
+    echo "Configuring /etc/resolv.conf"
+    cat << EOF > /etc/resolv.conf
 nameserver 8.8.8.8
 nameserver 1.1.1.1
 nameserver 172.28.48.1
 EOF
-
+fi
 
 wget https://packages.microsoft.com/config/ubuntu/24.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
 dpkg -i packages-microsoft-prod.deb
 rm packages-microsoft-prod.deb
-
 apt-get update
-apt-get install moby-engine -y
 
+# if docker is not installed install it
+if ! command -v docker &> /dev/null; then
+    apt-get install moby-engine -y
+fi
 
+iptables --version
+
+# configure docker to use custom dns
 echo '{ "log-driver": "local", "dns": ["1.1.1.1"] }' | tee /etc/docker/daemon.json
 systemctl restart docker
 
