@@ -41,13 +41,13 @@ dpkg -i packages-microsoft-prod.deb
 rm packages-microsoft-prod.deb
 
 apt-get update
-apt-get install moby-engine
+apt-get install moby-engine -y
 
 
 echo '{ "log-driver": "local", "dns": ["1.1.1.1"] }' | tee /etc/docker/daemon.json
 systemctl restart docker
 
-apt-get install aziot-edge
+apt-get install aziot-edge -y
 
 iotedge config mp --connection-string "$1"
 iotedge config apply
