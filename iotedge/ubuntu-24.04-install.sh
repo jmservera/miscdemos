@@ -70,15 +70,20 @@ fi
 if ! command -v iotedge &> /dev/null; then
     echo "*************** Installing IoT Edge dependencies"
     apt-get install aziot-edge -y
+
+    echo "*************** Configuring IoT Edge"
+    iotedge config mp --connection-string "$1"
+    iotedge config apply
 else
-    echo "*************** IoT Edge already installed"
+    echo "*************** IoT Edge already installed"    
 fi
 echo "*************** Installing IoT Edge"
 
+# create /home/edge/test folder
+mkdir -p /home/edge/test
+echo "<html><body><h1>IoT Edge is working!</h1></body></html>" > /home/edge/test/index.html
+chown -R 101:101 /home/edge/test
 
-echo "*************** Configuring IoT Edge"
-iotedge config mp --connection-string "$1" --force
-iotedge config apply
 
 # Check the installation
 iotedge system status
