@@ -22,7 +22,7 @@ if [ -f /etc/wsl.conf ]; then
     if grep -q "generateResolvConf" /etc/wsl.conf; then
         echo "/etc/wsl.conf already contains generateResolvConf setting"
     else
-        echo "Adding generateResolvConf setting to /etc/wsl.conf"
+        echo "*************** Adding generateResolvConf setting to /etc/wsl.conf"
         cat << EOF >> /etc/wsl.conf
 [network]
 generateResolvConf = false
@@ -33,9 +33,9 @@ else
 fi
 
 if grep -q "nameserver 8.8.8.8" /etc/resolv.conf; then
-    echo "/etc/resolv.conf already configured"    
+    echo "*************** /etc/resolv.conf already configured"    
 else
-    echo "Configuring /etc/resolv.conf"
+    echo "*************** Configuring /etc/resolv.conf"
     cat << EOF > /etc/resolv.conf
 nameserver 8.8.8.8
 nameserver 1.1.1.1
@@ -50,17 +50,33 @@ apt-get update
 
 # if docker is not installed install it
 if ! command -v docker &> /dev/null; then
+    echo "*************** Installing Docker"
     apt-get install moby-engine -y
 fi
 
-iptables --version
+echo "*************** iptables version: $(iptables --version)"
 
-# configure docker to use custom dns
-echo '{ "log-driver": "local", "dns": ["1.1.1.1"] }' | tee /etc/docker/daemon.json
-systemctl restart docker
 
-apt-get install aziot-edge -y
+if grep -q "1.1.1.1" /etc/docker/daemon.json; then
+    echo "*************** Docker already configured to use custom DNS"
+else
+    echo "*************** /etc/docker/daemon.json not configured"
+    # configure docker to use custom dns
+    echo "*************** Configuring Docker to use custom DNS"
+    echo '{ "log-driver": "local", "dns": ["1.1.1.1"] }' | tee /etc/docker/daemon.json
+    systemctl restart docker
+fi
 
+if ! command -v iotedge &> /dev/null; then
+    echo "*************** Installing IoT Edge dependencies"
+    apt-get install aziot-edge -y
+else
+    echo "*************** IoT Edge already installed"
+fi
+echo "*************** Installing IoT Edge"
+
+
+echo "*************** Configuring IoT Edge"
 iotedge config mp --connection-string "$1"
 iotedge config apply
 
