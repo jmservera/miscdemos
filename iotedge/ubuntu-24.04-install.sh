@@ -5,6 +5,7 @@ set -e
 echo "--------------------------------------------"
 echo "Starting IoT Edge installation for Ubuntu 24.04 on WSL"
 echo "--------------------------------------------"
+
 # check for root
 if [ "$EUID" -ne 0 ]; then
     echo "Please run as root"
