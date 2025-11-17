@@ -68,3 +68,4 @@ iotedge config apply
 iotedge system status
 iotedge check
 iotedge list
+iotedge system logs -- -f
