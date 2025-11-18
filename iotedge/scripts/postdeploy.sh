@@ -12,4 +12,9 @@ MODULES=$(cat ./modules.json | sed "s|\${ACR_LOGIN_SERVER}|${ACR_LOGIN_SERVER}|g
 az iot edge set-modules --device-id "$DEVICE_NAME" --hub-name "$IOTHUB_NAME" \
     --content "$MODULES"
 
+CONNECTION_STRING=$(az iot hub device-identity connection-string show -d "$DEVICE_NAME" -n "$IOTHUB_NAME" --query  connectionString -o tsv)
+CONNECTION_STRING=$(echo $CONNECTION_STRING | tr -d '\r\n')
+
 echo "Deployment complete."
+echo "You can now configure your edge device with the following command:"
+echo "sudo iotedge config mp --connection-string \"$CONNECTION_STRING\" --force"
