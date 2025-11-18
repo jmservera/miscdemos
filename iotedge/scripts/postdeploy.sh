@@ -1,4 +1,5 @@
 #!/bin/sh
+DEVICE_NAME=${DEVICE_NAME-"wsltestdevice"}
 
 echo "Getting ACR credentials and deploying modules to IoT Edge device..."
 ACR_PASSWORD=$(az acr credential show -n ${ACR_NAME} --query passwords[0].value -o tsv)
@@ -16,5 +17,6 @@ CONNECTION_STRING=$(az iot hub device-identity connection-string show -d "$DEVIC
 CONNECTION_STRING=$(echo $CONNECTION_STRING | tr -d '\r\n')
 
 echo "Deployment complete."
-echo "You can now configure your edge device with the following command:"
-echo "sudo iotedge config mp --connection-string \"$CONNECTION_STRING\" --force"
+echo "You can now configure your edge device with the following commands:"
+echo "   sudo iotedge config mp --connection-string \"$CONNECTION_STRING\" --force"
+echo "   sudo iotedge config apply"

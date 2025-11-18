@@ -66,7 +66,8 @@ else
     # configure docker to use custom dns
     echo "*************** Configuring Docker to use custom DNS"
     echo '{ "log-driver": "local", "dns": ["1.1.1.1"] }' | tee /etc/docker/daemon.json
-    systemctl restart docker
+
+    systemctl restart docker 2>/dev/null || echo "Warning: Could not restart docker service (this is expected in WSL), you will need to restart WSL to apply the changes."
 fi
 
 if ! command -v iotedge &> /dev/null; then
