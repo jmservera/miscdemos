@@ -32,17 +32,29 @@ else
     touch /etc/wsl.conf
 fi
 
-if grep -q "nameserver 8.8.8.8" /etc/resolv.conf; then
+if grep -q "nameserver 8.8.8.8" /etc/resolv.conf 2>/dev/null; then
     echo "*************** /etc/resolv.conf already configured"    
 else
-    # remove existing resolv.conf as it may be a symlink
-    rm /etc/resolv.conf
-    touch /etc/resolv.conf
     echo "*************** Configuring /etc/resolv.conf"
+    # Unmount if it's mounted (WSL auto-generation)
+    if mountpoint -q /etc/resolv.conf 2>/dev/null; then
+        umount /etc/resolv.conf || true
+    fi
+    # Remove existing resolv.conf as it may be a symlink
+    rm -f /etc/resolv.conf
+    # Create new resolv.conf with custom DNS
     cat << EOF > /etc/resolv.conf
 nameserver 8.8.8.8
 nameserver 1.1.1.1
 EOF
+    # Make it immutable to prevent WSL from overwriting it
+    chattr +i /etc/resolv.conf 2>/dev/null || true
+    
+    # Reload networking to apply changes
+    echo "*************** Reloading network configuration"
+    systemctl restart systemd-resolved 2>/dev/null || true
+    # Flush DNS cache
+    resolvectl flush-caches 2>/dev/null || true
 fi
 
 wget https://packages.microsoft.com/config/ubuntu/24.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
@@ -67,7 +79,19 @@ else
     echo "*************** Configuring Docker to use custom DNS"
     echo '{ "log-driver": "local", "dns": ["1.1.1.1"] }' | tee /etc/docker/daemon.json
 
-    systemctl restart docker 2>/dev/null || echo "Warning: Could not restart docker service (this is expected in WSL), you will need to restart WSL to apply the changes."
+    # Try to restart docker, but if it fails, start it manually
+    if systemctl restart docker 2>/dev/null; then
+        echo "*************** Docker service restarted successfully"
+    else
+        echo "*************** Starting Docker daemon manually (WSL environment)"
+        # Kill any existing dockerd processes
+        pkill -f dockerd || true
+        sleep 2
+        # Start dockerd in background
+        dockerd > /var/log/dockerd.log 2>&1 &
+        sleep 5
+        echo "*************** Docker daemon started"
+    fi
 fi
 
 if ! command -v iotedge &> /dev/null; then
