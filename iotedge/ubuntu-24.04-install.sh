@@ -87,6 +87,17 @@ else
     echo '{ "log-driver": "local", "dns": ["1.1.1.1"] }' | tee /etc/docker/daemon.json
 fi
 
+# Fix Docker systemd service to include iptables in PATH
+if [ ! -d /etc/systemd/system/docker.service.d ]; then
+    echo "*************** Configuring Docker systemd service PATH"
+    mkdir -p /etc/systemd/system/docker.service.d
+    cat > /etc/systemd/system/docker.service.d/override.conf << 'EOF'
+[Service]
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+EOF
+    systemctl daemon-reload
+fi
+
 # Ensure Docker is running (systemd or manual start)
 if ! docker info &>/dev/null; then
     echo "*************** Docker is not running, attempting to start..."
