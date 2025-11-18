@@ -17,6 +17,11 @@ if [ "$#" -ne 1 ]; then
     exit 1
 fi
 
+# connection string is $1 in the format: HostName=iothubname.azure-devices.net;DeviceId=deviceid;SharedAccessKey=xxx
+# extract DeviceId from connection string
+DEVICE_ID=$(echo "$1" | sed -n 's/.*DeviceId=\([^;]*\).*/\1/p')
+echo "*************** Device ID: $DEVICE_ID"
+
 # Disable WSL auto generation of resolv.conf
 if [ -f /etc/wsl.conf ]; then
     if grep -q "generateResolvConf" /etc/wsl.conf; then
@@ -25,7 +30,8 @@ if [ -f /etc/wsl.conf ]; then
         echo "*************** Adding generateResolvConf setting to /etc/wsl.conf"
         cat << EOF >> /etc/wsl.conf
 [network]
-generateResolvConf = false
+generateResolvConf=false
+hostname=$DEVICE_ID
 EOF
     fi
 else
