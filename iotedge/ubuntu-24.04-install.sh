@@ -117,7 +117,7 @@ if ! command -v iotedge &> /dev/null; then
 else
     echo -e "${CYAN}*************** IoT Edge already installed${NC}"    
 fi
-echo -e "${CYAN}*************** Installing IoT Edge${NC}"
+echo -e "${CYAN}*************** Configuring web page${NC}"
 
 # create /home/edge/test folder
 mkdir -p /home/edge/test
