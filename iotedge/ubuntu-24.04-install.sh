@@ -150,7 +150,7 @@ iotedge list || true
 # If you want to view live logs, uncomment the next line and interrupt with Ctrl+C when done.
 # iotedge system logs -- -f
 # Alternatively, to view recent logs without following, use:
-iotedge system logs || true
+# iotedge system logs || true
 
 echo "--------------------------------------------"
 echo "IoT Edge installation for Ubuntu 24.04 on WSL completed"
