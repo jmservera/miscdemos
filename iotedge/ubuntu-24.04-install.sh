@@ -2,16 +2,20 @@
 
 set -e
 
+# Color codes
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+
 # Helper function to wait for a service to be ready
 wait_for_service() {
     local service_name="$1"
     local check_command="$2"
     local max_attempts="${3:-30}"
     
-    echo "*************** Waiting for $service_name to be ready..."
+    echo -e "${CYAN}*************** Waiting for $service_name to be ready...${NC}"
     for i in $(seq 1 $max_attempts); do
         if eval "$check_command" &>/dev/null; then
-            echo "*************** $service_name is ready!"
+            echo -e "${CYAN}*************** $service_name is ready!${NC}"
             return 0
         fi
         sleep 1
@@ -38,11 +42,11 @@ fi
 # connection string is $1 in the format: HostName=iothubname.azure-devices.net;DeviceId=deviceid;SharedAccessKey=xxx
 # extract DeviceId from connection string
 DEVICE_ID=$(echo "$1" | sed -n 's/.*DeviceId=\([^;]*\).*/\1/p')
-echo "*************** Device ID: $DEVICE_ID"
+echo -e "${CYAN}*************** Device ID: $DEVICE_ID${NC}"
 
 # Configure WSL if needed
 if ! grep -q "generateResolvConf" /etc/wsl.conf 2>/dev/null; then
-    echo "*************** Configuring WSL settings"
+    echo -e "${CYAN}*************** Configuring WSL settings${NC}"
     cat << EOF >> /etc/wsl.conf
 [network]
 generateResolvConf=false
@@ -52,7 +56,7 @@ fi
 
 # Configure DNS if needed
 if ! grep -q "nameserver 8.8.8.8" /etc/resolv.conf 2>/dev/null; then
-    echo "*************** Configuring DNS"
+    echo -e "${CYAN}*************** Configuring DNS${NC}"
     mountpoint -q /etc/resolv.conf 2>/dev/null && umount /etc/resolv.conf || true
     cat > /etc/resolv.conf << EOF
 nameserver 8.8.8.8
@@ -68,19 +72,19 @@ apt-get update
 
 # Install and configure Docker
 if ! command -v docker &> /dev/null; then
-    echo "*************** Installing Docker"
+    echo -e "${CYAN}*************** Installing Docker${NC}"
     apt-get install moby-engine -y
 fi
 
 # Configure Docker daemon if needed
 if ! grep -q "1.1.1.1" /etc/docker/daemon.json 2>/dev/null; then
-    echo "*************** Configuring Docker DNS"
+    echo -e "${CYAN}*************** Configuring Docker DNS${NC}"
     echo '{ "log-driver": "local", "dns": ["1.1.1.1"] }' > /etc/docker/daemon.json
 fi
 
 # Configure Docker systemd service PATH if needed
 if [ ! -f /etc/systemd/system/docker.service.d/override.conf ]; then
-    echo "*************** Configuring Docker systemd PATH"
+    echo -e "${CYAN}*************** Configuring Docker systemd PATH${NC}"
     mkdir -p /etc/systemd/system/docker.service.d
     cat > /etc/systemd/system/docker.service.d/override.conf << 'EOF'
 [Service]
@@ -92,7 +96,7 @@ fi
 
 # Start Docker if not running
 if ! docker info &>/dev/null; then
-    echo "*************** Starting Docker services"
+    echo -e "${CYAN}*************** Starting Docker services${NC}"
     systemctl restart containerd docker
     wait_for_service "Docker" "docker info" || {
         echo "Docker logs:"
@@ -100,20 +104,20 @@ if ! docker info &>/dev/null; then
         exit 1
     }
 else
-    echo "*************** Docker is already running"
+    echo -e "${CYAN}*************** Docker is already running${NC}"
 fi
 
 if ! command -v iotedge &> /dev/null; then
-    echo "*************** Installing IoT Edge dependencies"
+    echo -e "${CYAN}*************** Installing IoT Edge dependencies${NC}"
     apt-get install aziot-edge -y
 
-    echo "*************** Configuring IoT Edge"
+    echo -e "${CYAN}*************** Configuring IoT Edge${NC}"
     iotedge config mp --connection-string "$1"
     iotedge config apply
 else
-    echo "*************** IoT Edge already installed"    
+    echo -e "${CYAN}*************** IoT Edge already installed${NC}"    
 fi
-echo "*************** Installing IoT Edge"
+echo -e "${CYAN}*************** Installing IoT Edge${NC}"
 
 # create /home/edge/test folder
 mkdir -p /home/edge/test
@@ -122,14 +126,14 @@ chown -R 101:101 /home/edge/test
 
 
 # Wait for IoT Edge services
-echo "*************** Checking IoT Edge services"
+echo -e "${CYAN}*************** Checking IoT Edge services${NC}"
 wait_for_service "IoT Edge" "iotedge system status | grep -q 'aziot-keyd.*Running' && iotedge system status | grep -q 'aziot-certd.*Running'" 60 || {
     echo "IoT Edge status:"
     iotedge system status || true
     exit 1
 }
 
-echo "*************** Final IoT Edge check and listing modules"
+echo -e "${CYAN}*************** Final IoT Edge check and listing modules${NC}"
 
 # Wait for edgeHub docker container to be running
 wait_for_service "edgeHub module" "docker ps --filter 'name=edgeHub' --filter 'status=running' | grep -q edgeHub" 120 || {
