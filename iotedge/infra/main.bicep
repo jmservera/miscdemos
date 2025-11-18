@@ -7,9 +7,6 @@ param name string
 @minLength(1)
 @description('Primary location for all resources')
 param location string
-@description('Container image name to use for the nginx <image_name>:<tag>')
-param containerImageName string = 'nginx-proxy:latest'
-
 var resourceToken = toLower(uniqueString(subscription().id, name, location))
 var tags = { 'azd-env-name': name }
 
