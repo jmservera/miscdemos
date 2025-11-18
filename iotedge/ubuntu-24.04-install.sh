@@ -71,6 +71,7 @@ fi
 echo "*************** iptables version: $(iptables --version)"
 
 
+# Configure Docker daemon.json
 if grep -q "1.1.1.1" /etc/docker/daemon.json 2>/dev/null; then 
     echo "*************** Docker already configured to use custom DNS"
 else
@@ -78,20 +79,49 @@ else
     # configure docker to use custom dns
     echo "*************** Configuring Docker to use custom DNS"
     echo '{ "log-driver": "local", "dns": ["1.1.1.1"] }' | tee /etc/docker/daemon.json
+fi
 
-    # Try to restart docker, but if it fails, start it manually
+# Ensure Docker is running (systemd or manual start)
+if ! docker info &>/dev/null; then
+    echo "*************** Docker is not running, attempting to start..."
+    
+    # Try systemctl first
     if systemctl restart docker 2>/dev/null; then
-        echo "*************** Docker service restarted successfully"
+        echo "*************** Docker service restarted via systemctl"
     else
-        echo "*************** Starting Docker daemon manually (WSL environment)"
+        echo "*************** Starting Docker manually (WSL environment)"
+        
+        # Ensure containerd is running first
+        if ! pgrep -x containerd > /dev/null; then
+            echo "*************** Starting containerd..."
+            containerd > /var/log/containerd.log 2>&1 &
+            sleep 3
+        fi
+        
         # Kill any existing dockerd processes
         pkill -f dockerd || true
         sleep 2
+        
         # Start dockerd in background
         dockerd > /var/log/dockerd.log 2>&1 &
-        sleep 5
-        echo "*************** Docker daemon started"
+        
+        # Wait for Docker to be ready
+        echo "*************** Waiting for Docker to be ready..."
+        for i in {1..30}; do
+            if docker info &>/dev/null; then
+                echo "*************** Docker is ready!"
+                break
+            fi
+            sleep 1
+        done
+        
+        if ! docker info &>/dev/null; then
+            echo "ERROR: Docker failed to start properly"
+            echo "Check /var/log/dockerd.log and /var/log/containerd.log for details"
+        fi
     fi
+else
+    echo "*************** Docker is already running"
 fi
 
 if ! command -v iotedge &> /dev/null; then
