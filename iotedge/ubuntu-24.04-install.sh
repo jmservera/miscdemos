@@ -98,36 +98,57 @@ if ! docker info &>/dev/null; then
     else
         echo "*************** Starting Docker manually (WSL environment)"
         
-        # Kill any existing dockerd/containerd processes
-        pkill -f dockerd || true
-        pkill -f containerd || true
-        sleep 2
-        
-        # Start containerd first in a new session (fully detached)
-        echo "*************** Starting containerd..."
-        setsid containerd > /var/log/containerd.log 2>&1 < /dev/null &
-        disown
+        # Kill any existing dockerd/containerd processes and wait for them to fully stop
+        pkill -9 dockerd || true
+        pkill -9 containerd || true
+        pkill -9 docker || true
         sleep 3
         
-        # Start dockerd in a new session (fully detached)
-        echo "*************** Starting dockerd..."
-        setsid dockerd > /var/log/dockerd.log 2>&1 < /dev/null &
-        disown
+        # Ensure no stale sockets
+        rm -f /var/run/docker.sock /run/containerd/containerd.sock || true
         
-        # Wait for Docker to be ready
+        # Start containerd service first
+        echo "*************** Starting containerd service..."
+        systemctl start containerd || {
+            echo "systemctl failed, starting containerd manually..."
+            setsid containerd > /var/log/containerd.log 2>&1 < /dev/null &
+            disown
+        }
+        sleep 3
+        
+        # Verify containerd is running
+        if ! pgrep -x containerd > /dev/null; then
+            echo "ERROR: containerd failed to start"
+            tail -20 /var/log/containerd.log 2>/dev/null || true
+            exit 1
+        fi
+        echo "*************** containerd is running"
+        
+        # Now start Docker service
+        echo "*************** Starting Docker service..."
+        systemctl start docker || {
+            echo "ERROR: Failed to start Docker service"
+            systemctl status docker || true
+            exit 1
+        }
+        
+        # Wait for Docker to be ready with timeout
         echo "*************** Waiting for Docker to be ready..."
         for i in {1..30}; do
-            if docker info &>/dev/null; then
+            if timeout 5 docker info &>/dev/null; then
                 echo "*************** Docker is ready!"
                 break
             fi
+            if [ $i -eq 30 ]; then
+                echo "ERROR: Docker failed to start properly after 30 seconds"
+                echo "--- containerd status ---"
+                systemctl status containerd || tail -20 /var/log/containerd.log
+                echo "--- docker status ---"
+                systemctl status docker || tail -20 /var/log/dockerd.log
+                exit 1
+            fi
             sleep 1
         done
-        
-        if ! docker info &>/dev/null; then
-            echo "ERROR: Docker failed to start properly"
-            echo "Check /var/log/dockerd.log and /var/log/containerd.log for details"
-        fi
     fi
 else
     echo "*************** Docker is already running"
