@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+
+name: iotedgewsl
+
+hooks:
+  postprovision:
+    posix:
+        shell: sh
+        run: ./scripts/postprovision.sh
+        interactive: true
+        continueOnError: false
+  predeploy:
+    posix:
+        shell: sh
+        run: ./scripts/predeploy.sh
+        interactive: true
+        continueOnError: false
+  postdeploy:
+    posix:
+        shell: sh
+        run: ./scripts/postdeploy.sh
+        interactive: true
+        continueOnError: false
