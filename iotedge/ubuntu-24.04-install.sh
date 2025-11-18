@@ -132,7 +132,7 @@ wait_for_service "IoT Edge" "iotedge system status | grep -q 'aziot-keyd.*Runnin
 echo "*************** Final IoT Edge check and listing modules"
 
 # Wait for edgeHub docker container to be running
-wait_for_service "edgeHub module" "docker ps --filter 'name=edgeHub' --filter 'status=running' | grep -q edgeHub" 60 || {
+wait_for_service "edgeHub module" "docker ps --filter 'name=edgeHub' --filter 'status=running' | grep -q edgeHub" 120 || {
     echo "Docker containers:"
     docker ps || true
     exit 1
