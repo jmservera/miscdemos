@@ -1,0 +1,79 @@
+{
+  "content": {
+    "modulesContent": {
+      "$edgeAgent": {
+        "properties.desired": {
+          "modules": {
+            "nginx": {
+              "restartPolicy": "always",
+              "settings": {
+                "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"80/tcp\":[{\"HostPort\":\"80\"}]},\"Mounts\":[{\"Source\":\"/home/edge/test\",\"Target\":\"/usr/share/nginx/html\",\"Type\":\"bind\",\"ReadOnly\":true}]},\"NetworkSettings\":{\"Ports\":{\"80/tcp\":{\"HostIp\":\"0.0.0.0\",\"HostPort\":\"80\"}}}}",
+                "image": "${ACR_LOGIN_SERVER}/nginx-proxy:latest"
+              },
+              "status": "running",
+              "type": "docker"
+            },
+            "nginxhello": {
+              "restartPolicy": "always",
+              "settings": {
+                "image": "nginxdemos/hello:latest"
+              },
+              "status": "running",
+              "type": "docker"
+            }
+          },
+          "runtime": {
+            "settings": {
+              "registryCredentials": {
+                "privateacr": {
+                  "address": "${ACR_LOGIN_SERVER}",
+                  "password": "${ACR_PASSWORD}",
+                  "username": "${ACR_NAME}"
+                }
+              }
+            },
+            "type": "docker"
+          },
+          "schemaVersion": "1.1",
+          "systemModules": {
+            "edgeAgent": {
+              "settings": {
+                "image": "mcr.microsoft.com/azureiotedge-agent:1.5"
+              },
+              "type": "docker"
+            },
+            "edgeHub": {
+              "restartPolicy": "always",
+              "settings": {
+                "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"443/tcp\":[{\"HostPort\":\"443\"}],\"5671/tcp\":[{\"HostPort\":\"5671\"}],\"8883/tcp\":[{\"HostPort\":\"8883\"}]}}}",
+                "image": "mcr.microsoft.com/azureiotedge-hub:1.5"
+              },
+              "status": "running",
+              "type": "docker"
+            }
+          }
+        }
+      },
+      "$edgeHub": {
+        "properties.desired": {
+          "routes": {},
+          "schemaVersion": "1.1",
+          "storeAndForwardConfiguration": {
+            "timeToLiveSecs": 7200
+          }
+        }
+      },
+      "nginx": {
+        "properties.desired": {
+          "myprop": {
+            "value1": 1,
+            "value2": 2
+          }
+        }
+      },
+      "nginxhello": {
+        "properties.desired": {}
+      }
+    }
+  }
+}
