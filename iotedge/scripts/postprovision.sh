@@ -4,7 +4,7 @@ DEVICE_NAME="wsltestdevice"
 az extension add --upgrade -n azure-iot
 
 echo "Retrieving device identity for device ${DEVICE_NAME}"
-DEVICE_KEY=$(az iot hub device-identity show -n "$IOTHUB_NAME" -d "${DEVICE_NAME}" --query authentication.symmetricKey.primaryKey > /dev/null 2>&1 ||  echo "")
+DEVICE_KEY=$(az iot hub device-identity show -n "$IOTHUB_NAME" -d "${DEVICE_NAME}" --query authentication.symmetricKey.primaryKey -o tsv 2>/dev/null || echo "")
 if [ -z "$DEVICE_KEY" ]; then
     echo "Device not found. Creating device identity for device ${DEVICE_NAME}"
     # --ee enables edge-enabled device
