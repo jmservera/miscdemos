@@ -108,7 +108,7 @@ echo "*************** Installing IoT Edge"
 
 # create /home/edge/test folder
 mkdir -p /home/edge/test
-echo "<html><body><h1>IoT Edge is working!</h1></body></html>" > /home/edge/test/index.html
+echo "<html><body><h1>IoT Edge is working!</h1>" > /home/edge/test/index.html
 chown -R 101:101 /home/edge/test
 
 
