@@ -88,7 +88,7 @@ else
 fi
 
 # Fix Docker systemd service to include iptables in PATH
-if [ ! -d /etc/systemd/system/docker.service.d ]; then
+if [ ! -f /etc/systemd/system/docker.service.d/override.conf ]; then
     echo "*************** Configuring Docker systemd service PATH"
     mkdir -p /etc/systemd/system/docker.service.d
     cat > /etc/systemd/system/docker.service.d/override.conf << 'EOF'
@@ -96,6 +96,8 @@ if [ ! -d /etc/systemd/system/docker.service.d ]; then
 Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 EOF
     systemctl daemon-reload
+    sleep 1
+    echo "*************** Systemd configuration reloaded"
 fi
 
 # Ensure Docker is running (systemd or manual start)
