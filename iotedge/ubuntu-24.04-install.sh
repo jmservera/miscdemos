@@ -188,7 +188,26 @@ chown -R 101:101 /home/edge/test
 
 
 # Check the installation
-iotedge system status || true
+
+echo "*************** Checking IoT Edge system status"
+for i in {1..20}; do
+    STATUS_OUTPUT=$(iotedge system status || true)
+    echo "$STATUS_OUTPUT"
+    KEYD_STATUS=$(echo "$STATUS_OUTPUT" | grep "aziot-keyd" | awk '{print $2}')
+    CERTD_STATUS=$(echo "$STATUS_OUTPUT" | grep "aziot-certd" | awk '{print $2}')
+    if [ "$KEYD_STATUS" == "Running" ] && [ "$CERTD_STATUS" == "Running" ]; then
+        echo "*************** aziot-keyd and aziot-certd are Running"
+        break
+    fi
+    if [ $i -eq 20 ]; then
+        echo "ERROR: aziot-keyd and/or aziot-certd failed to reach Running state after 20 attempts"
+        exit 1
+    fi
+    sleep 3
+done
+
+echo "*************** Final IoT Edge check and listing modules"
+
 iotedge check || true
 iotedge list || true
 # The following command will follow logs indefinitely.
