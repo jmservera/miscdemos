@@ -103,14 +103,16 @@ if ! docker info &>/dev/null; then
         pkill -f containerd || true
         sleep 2
         
-        # Start containerd first
+        # Start containerd first in a new session (fully detached)
         echo "*************** Starting containerd..."
-        nohup containerd > /var/log/containerd.log 2>&1 &
+        setsid containerd > /var/log/containerd.log 2>&1 < /dev/null &
+        disown
         sleep 3
         
-        # Start dockerd
+        # Start dockerd in a new session (fully detached)
         echo "*************** Starting dockerd..."
-        nohup dockerd > /var/log/dockerd.log 2>&1 &
+        setsid dockerd > /var/log/dockerd.log 2>&1 < /dev/null &
+        disown
         
         # Wait for Docker to be ready
         echo "*************** Waiting for Docker to be ready..."
