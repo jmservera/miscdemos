@@ -35,11 +35,13 @@ fi
 if grep -q "nameserver 8.8.8.8" /etc/resolv.conf; then
     echo "*************** /etc/resolv.conf already configured"    
 else
+    # remove existing resolv.conf as it may be a symlink
+    rm /etc/resolv.conf
+    touch /etc/resolv.conf
     echo "*************** Configuring /etc/resolv.conf"
     cat << EOF > /etc/resolv.conf
 nameserver 8.8.8.8
 nameserver 1.1.1.1
-nameserver 172.28.48.1
 EOF
 fi
 
@@ -57,7 +59,7 @@ fi
 echo "*************** iptables version: $(iptables --version)"
 
 
-if grep -q "1.1.1.1" /etc/docker/daemon.json; then
+if grep -q "1.1.1.1" /etc/docker/daemon.json 2>/dev/null; then 
     echo "*************** Docker already configured to use custom DNS"
 else
     echo "*************** /etc/docker/daemon.json not configured"
@@ -94,3 +96,9 @@ iotedge list
 # iotedge system logs -- -f
 # Alternatively, to view recent logs without following, use:
 iotedge system logs
+
+echo "--------------------------------------------"
+echo "IoT Edge installation for Ubuntu 24.04 on WSL completed"
+echo "--------------------------------------------"
+echo "You can see the test web pages by navigating to http://localhost and http://localhost/hello in your web browser."
+echo "To watch IoT Edge logs, use the command: sudo iotedge system logs -- -f"
