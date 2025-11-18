@@ -86,24 +86,25 @@ if ! docker info &>/dev/null; then
     echo "*************** Docker is not running, attempting to start..."
     
     # Try systemctl first
-    if systemctl restart docker 2>/dev/null; then
+    if systemctl is-system-running &>/dev/null && systemctl restart docker 2>/dev/null && systemctl restart containerd 2>/dev/null; then
         echo "*************** Docker service restarted via systemctl"
+        sleep 2
     else
         echo "*************** Starting Docker manually (WSL environment)"
         
-        # Ensure containerd is running first
-        if ! pgrep -x containerd > /dev/null; then
-            echo "*************** Starting containerd..."
-            containerd > /var/log/containerd.log 2>&1 &
-            sleep 3
-        fi
-        
-        # Kill any existing dockerd processes
+        # Kill any existing dockerd/containerd processes
         pkill -f dockerd || true
+        pkill -f containerd || true
         sleep 2
         
-        # Start dockerd in background
-        dockerd > /var/log/dockerd.log 2>&1 &
+        # Start containerd first
+        echo "*************** Starting containerd..."
+        nohup containerd > /var/log/containerd.log 2>&1 &
+        sleep 3
+        
+        # Start dockerd
+        echo "*************** Starting dockerd..."
+        nohup dockerd > /var/log/dockerd.log 2>&1 &
         
         # Wait for Docker to be ready
         echo "*************** Waiting for Docker to be ready..."
