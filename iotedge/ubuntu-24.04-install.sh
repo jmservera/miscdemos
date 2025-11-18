@@ -89,17 +89,18 @@ chown -R 101:101 /home/edge/test
 
 
 # Check the installation
-iotedge system status
-iotedge check
-iotedge list
+iotedge system status || true
+iotedge check || true
+iotedge list || true
 # The following command will follow logs indefinitely.
 # If you want to view live logs, uncomment the next line and interrupt with Ctrl+C when done.
 # iotedge system logs -- -f
 # Alternatively, to view recent logs without following, use:
-iotedge system logs
+iotedge system logs || true
 
 echo "--------------------------------------------"
 echo "IoT Edge installation for Ubuntu 24.04 on WSL completed"
+echo "You may need to restart WSL to apply some changes."
 echo "--------------------------------------------"
 echo "You can see the test web pages by navigating to http://localhost and http://localhost/hello in your web browser."
 echo "To watch IoT Edge logs, use the command: sudo iotedge system logs -- -f"
