@@ -96,7 +96,9 @@ if [ ! -f /etc/systemd/system/docker.service.d/override.conf ]; then
 Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 EOF
     systemctl daemon-reload
-    sleep 1
+    # Reset any failed state to ensure clean start with new config
+    systemctl reset-failed docker.service 2>/dev/null || true
+    sleep 2
     echo "*************** Systemd configuration reloaded"
 fi
 
