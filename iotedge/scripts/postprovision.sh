@@ -8,7 +8,7 @@ DEVICE_KEY=$(az iot hub device-identity show -n "$IOTHUB_NAME" -d "${DEVICE_NAME
 if [ -z "$DEVICE_KEY" ]; then
     echo "Device not found. Creating device identity for device ${DEVICE_NAME}"
     # --ee enables edge-enabled device
-    DEVICE_KEY=$(az iot hub device-identity create -n $IOTHUB_NAME -d $DEVICE_NAME --ee --query authentication.symmetricKey.primaryKey -o tsv)
+    DEVICE_KEY=$(az iot hub device-identity create -n "$IOTHUB_NAME" -d "$DEVICE_NAME" --ee --query authentication.symmetricKey.primaryKey -o tsv)
     echo "Device identity created for device ${DEVICE_NAME}."
 fi
 
