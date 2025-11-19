@@ -1,0 +1,56 @@
+name: Apply Repository Settings
+
+# This workflow can be run manually to apply repository settings
+# It enforces squash and merge as the only allowed merge method
+
+on:
+  workflow_dispatch:
+    inputs:
+      apply_settings:
+        description: 'Apply repository settings'
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  # Note: Modifying repository settings requires admin permissions
+  # This workflow may need to be run by a repository admin
+
+jobs:
+  apply-settings:
+    runs-on: ubuntu-latest
+    if: ${{ inputs.apply_settings }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Apply Repository Settings
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            
+            console.log(`Applying settings to ${owner}/${repo}`);
+            
+            try {
+              await github.rest.repos.update({
+                owner,
+                repo,
+                allow_squash_merge: true,
+                allow_merge_commit: false,
+                allow_rebase_merge: false,
+                allow_auto_merge: true,
+                delete_branch_on_merge: true
+              });
+              
+              console.log('✅ Repository settings applied successfully!');
+              console.log('Squash and merge is now the only allowed merge method.');
+            } catch (error) {
+              console.error('❌ Failed to apply settings:', error.message);
+              console.error('Note: This action requires admin permissions on the repository.');
+              throw error;
+            }
