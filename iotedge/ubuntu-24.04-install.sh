@@ -34,7 +34,7 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
-if [ "$#" -ne 1 ]; then
+if [ "$#" -lt 1 ]; then
     echo "Usage: $0 <iot-edge-device-connection-string>"
     exit 1
 fi
@@ -44,25 +44,29 @@ fi
 DEVICE_ID=$(echo "$1" | sed -n 's/.*DeviceId=\([^;]*\).*/\1/p')
 echo -e "${CYAN}*************** Device ID: $DEVICE_ID${NC}"
 
-# Configure WSL if needed
-if ! grep -q "generateResolvConf" /etc/wsl.conf 2>/dev/null; then
-    echo -e "${CYAN}*************** Configuring WSL settings${NC}"
-    cat << EOF >> /etc/wsl.conf
+# if second parameter is --wsl-fix, apply WSL specific fixes
+if [ "$#" -eq 2 ] && [ "$2" == "--wsl-fix" ]; then
+    echo -e "${CYAN}*************** Applying WSL specific fixes${NC}"    
+    # Configure WSL if needed
+    if ! grep -q "generateResolvConf" /etc/wsl.conf 2>/dev/null; then
+        echo -e "${CYAN}*************** Configuring WSL settings${NC}"
+        cat << EOF >> /etc/wsl.conf
 [network]
 generateResolvConf=false
 hostname=$DEVICE_ID
 EOF
-fi
+    fi
 
-# Configure DNS if needed
-if ! grep -q "nameserver 8.8.8.8" /etc/resolv.conf 2>/dev/null; then
-    echo -e "${CYAN}*************** Configuring DNS${NC}"
-    mountpoint -q /etc/resolv.conf 2>/dev/null && umount /etc/resolv.conf || true
-    cat > /etc/resolv.conf << EOF
+    # Configure DNS if needed
+    if ! grep -q "nameserver 8.8.8.8" /etc/resolv.conf 2>/dev/null; then
+        echo -e "${CYAN}*************** Configuring DNS${NC}"
+        mountpoint -q /etc/resolv.conf 2>/dev/null && umount /etc/resolv.conf || true
+        cat > /etc/resolv.conf << EOF
 nameserver 8.8.8.8
 nameserver 1.1.1.1
 EOF
-    chattr +i /etc/resolv.conf 2>/dev/null || true
+        chattr +i /etc/resolv.conf 2>/dev/null || true
+    fi
 fi
 
 wget https://packages.microsoft.com/config/ubuntu/24.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
